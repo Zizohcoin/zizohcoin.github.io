@@ -3,91 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exclusive Research Access</title>
+    <title>Zizohcoin (ZOH) Research Reports</title>
     <style>
+        /* General Styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #4f8ec2;
+            margin: 0;
+            padding: 0;
+            background-color: #4f8ec2; /* Main blue shade */
             color: #fff;
-            text-align: center;
+        }
+        header, nav, section, footer {
             padding: 20px;
+            text-align: center;
         }
-        h1 {
+        header, nav, footer {
+            background-color: #3a6f9b; /* Darker blue for contrast */
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
             color: #fff;
         }
-        p {
-            font-size: 18px;
+        section {
+            padding: 40px 20px;
         }
-        #connectWallet {
-            background-color: #fff;
-            color: #4f8ec2;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+        .report-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .report-list li {
+            background-color: #3a6f9b;
+            margin: 10px auto;
+            padding: 15px;
             border-radius: 5px;
+            max-width: 800px;
+            text-align: left;
         }
-        #content {
-            display: none;
-            margin-top: 20px;
+        .report-list a {
+            color: #2a4f6e;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        footer {
+            background-color: #3a6f9b;
+        }
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+            .report-list li {
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Exclusive Research for ZOH Holders</h1>
-    <button id="connectWallet">Connect Wallet</button>
-    <div id="content">
-        <p>Welcome! You now have access to exclusive research content.</p>
-        <!-- Adicione mais conteúdo conforme necessário -->
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/web3@4.0.3/dist/web3.min.js"></script>
-    <script>
-        document.getElementById('connectWallet').addEventListener('click', async () => {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    // Solicita acesso à conta MetaMask do usuário
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    const account = accounts[0];
-                    const web3 = new Web3(window.ethereum);
-
-                    // Endereço do Contrato do Token ZOH e ABI
-                    const tokenAddress = 'SEU_ENDEREÇO_DO_CONTRATO_ZOH';
-                    const tokenABI = [
-                        {
-                            "constant": true,
-                            "inputs": [{"name": "owner", "type": "address"}],
-                            "name": "balanceOf",
-                            "outputs": [{"name": "", "type": "uint256"}],
-                            "type": "function"
-                        },
-                        {
-                            "constant": true,
-                            "inputs": [],
-                            "name": "decimals",
-                            "outputs": [{"name": "", "type": "uint8"}],
-                            "type": "function"
-                        }
-                    ];
-
-                    const tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
-                    const balance = await tokenContract.methods.balanceOf(account).call();
-                    const decimals = await tokenContract.methods.decimals().call();
-                    const adjustedBalance = balance / (10 ** decimals);
-
-                    if (adjustedBalance > 0) {
-                        document.getElementById('content').style.display = 'block';
-                        document.getElementById('connectWallet').style.display = 'none';
-                    } else {
-                        alert('Access restricted to ZOH token holders.');
-                    }
-                } catch (error) {
-                    console.error('Error connecting to wallet:', error);
-                }
-            } else {
-                alert('MetaMask not detected. Please install MetaMask.');
-            }
-        });
-    </script>
+    <header>
+        <h1>Zizohcoin (ZOH) Research Reports</h1>
+        <p>Explore our in-depth analyses and insights into the cryptocurrency market.</p>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About Zizohcoin</a>
+        <a href="index.html#how-to-buy">How to Buy</a>
+        <a href="index.html#meme-gallery">Meme Gallery</a>
+        <a href="research.html">Research</a>
+    </nav>
+    <section id="reports">
+        <h2>Available Reports</h2>
+        <ul class="report-list">
+            <li>
+                <a href="reports/market-analysis-march-2025.pdf" target="_blank">Market Analysis - March 2025</a>
+                <p>A comprehensive analysis of cryptocurrency market trends in March 2025.</p>
+            </li>
+            <li>
+                <a href="reports/memecoins-impact-2025.pdf" target="_blank">The Impact of Memecoins on the Crypto Ecosystem</a>
+                <p>An in-depth study on the role and influence of memecoins in the current market.</p>
+            </li>
+            <!-- Add more report items as needed -->
+        </ul>
+    </section>
+    <footer>
+        <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
+        <p>
+            <a href="https://twitter.com/zizohcoin" target="_blank">Twitter</a> |
+            <a href="https://telegram.me/zizohcoin" target="_blank">Telegram</a> |
+            <a href="https://github.com/zizohcoin" target="_blank">GitHub</a>
+        </p>
+    </footer>
 </body>
 </html>
