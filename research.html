@@ -1,40 +1,38 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Acesso com ZOH Token</title>
+  <meta charset="UTF-8">
+  <title>Área de Pesquisa ZOH</title>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
-    body { font-family: sans-serif; padding: 30px; }
-    button { padding: 10px 20px; font-size: 16px; }
-    #status { margin-top: 20px; white-space: pre-line; }
-    #conteudo { display: none; margin-top: 30px; padding: 20px; border: 1px solid #ccc; }
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    #connectBtn { padding: 10px 20px; font-size: 16px; }
+    #researchContent { display: none; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h2>🔐 Área de Pesquisa - Acesso com $ZOH</h2>
+
+  <h1>🔍 Área de Pesquisa ZOH</h1>
+  <p id="status">Clique no botão para conectar sua carteira.</p>
   <button id="connectBtn">Conectar Carteira</button>
-  <div id="status">Clique para acessar com sua carteira Phantom.</div>
-  <div id="conteudo">
-    🎉 Bem-vindo! Você possui o token $ZOH. <br>
-    Aqui está o conteúdo secreto da área de pesquisa...
+
+  <div id="researchContent">
+    <h2>🎉 Bem-vindo, portador de ZOH!</h2>
+    <p>Você tem acesso ao conteúdo exclusivo da pesquisa.</p>
   </div>
 
   <script>
+    const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
     const connectBtn = document.getElementById("connectBtn");
     const status = document.getElementById("status");
-    const conteudo = document.getElementById("conteudo");
-
-    const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    const researchContent = document.getElementById("researchContent");
 
     connectBtn.addEventListener("click", async () => {
-      status.textContent = "🔄 Conectando à carteira...";
-      try {
-        if (window.solana && window.solana.isPhantom) {
+      if (window.solana && window.solana.isPhantom) {
+        try {
           const resp = await window.solana.connect();
           const publicKey = resp.publicKey;
-          const address = publicKey.toString();
-          status.textContent = `📲 Conectado: ${address}\nVerificando token $ZOH...`;
+          status.textContent = `✅ Conectado com sucesso! Verificando token ZOH...`;
 
           const connection = new solanaWeb3.Connection(
             solanaWeb3.clusterApiUrl("mainnet-beta"),
@@ -44,9 +42,7 @@
           const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
             publicKey,
             {
-              programId: new solanaWeb3.PublicKey(
-                "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-              ),
+              programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
             }
           );
 
@@ -59,20 +55,22 @@
           });
 
           if (hasZOH) {
-            status.textContent = "✅ Acesso liberado. Token $ZOH detectado!";
-            conteudo.style.display = "block";
+            status.textContent = "✅ Acesso concedido. Você possui tokens ZOH!";
+            researchContent.style.display = "block";
+            connectBtn.style.display = "none";
           } else {
-            status.textContent = "⛔ Você precisa possuir o token $ZOH para acessar.";
-            conteudo.style.display = "none";
+            status.textContent = "⛔ Você não possui tokens ZOH nesta carteira.";
           }
-        } else {
-          status.textContent = "⚠️ Instale a carteira Phantom para continuar.";
+
+        } catch (error) {
+          console.error("Erro ao conectar com a carteira:", error);
+          status.textContent = "❌ Erro ao conectar com a carteira. Tente novamente.";
         }
-      } catch (error) {
-        console.error("Erro ao conectar/verificar:", error);
-        status.textContent = "❌ Erro ao conectar com a carteira. Tente novamente.";
+      } else {
+        status.textContent = "⚠️ Phantom Wallet não detectada. Instale a extensão para continuar.";
       }
     });
   </script>
+
 </body>
 </html>
