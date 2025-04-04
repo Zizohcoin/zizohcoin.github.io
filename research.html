@@ -1,77 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Área de Pesquisa - $ZOH</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
-    #researchContent { display: none; margin-top: 20px; border: 1px solid #ccc; padding: 20px; border-radius: 10px; }
-    #connectBtn { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    .hidden { display: none; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Verificação ZOH Token</title>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        #connectBtn { padding: 10px 20px; font-size: 16px; }
+        #status { margin-top: 20px; }
+    </style>
 </head>
 <body>
+    <h2>🔍 Verificação de Token ZOH</h2>
+    <button id="connectBtn">Conectar Phantom Wallet</button>
+    <div id="status">Carteira não conectada.</div>
+    <div id="researchContent" style="display: none; margin-top: 20px;">
+        <h3>🎉 Acesso concedido à área de pesquisa!</h3>
+        <p>Conteúdo reservado para holders de ZOH.</p>
+    </div>
 
-  <h1>🔍 Área de Pesquisa Exclusiva</h1>
-  <p id="status">Conecte sua carteira Phantom para verificar acesso.</p>
-  <button id="connectBtn">🔗 Conectar Wallet</button>
+    <script>
+        const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+        const connectBtn = document.getElementById("connectBtn");
+        const status = document.getElementById("status");
+        const researchContent = document.getElementById("researchContent");
 
-  <div id="researchContent">
-    <h2>🎉 Bem-vindo, portador de ZOH!</h2>
-    <p>Você agora tem acesso ao conteúdo exclusivo da pesquisa.</p>
-  </div>
+        connectBtn.addEventListener("click", async () => {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const resp = await window.solana.connect(); // exibe o popup para conectar
+                    const walletAddress = resp.publicKey.toString();
+                    status.textContent = `🔍 Verificando tokens ZOH da carteira: ${walletAddress}`;
 
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-  <script>
-    const TOKEN_ADDRESS = '22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump';
-    const status = document.getElementById('status');
-    const connectBtn = document.getElementById('connectBtn');
-    const researchContent = document.getElementById('researchContent');
+                    const connection = new solanaWeb3.Connection(
+                        solanaWeb3.clusterApiUrl("mainnet-beta"),
+                        "confirmed"
+                    );
 
-    connectBtn.addEventListener('click', async () => {
-      if (window.solana && window.solana.isPhantom) {
-        try {
-          const resp = await window.solana.connect({ onlyIfTrusted: false });
-          const walletAddress = resp.publicKey.toString();
-          status.textContent = `🔍 Verificando tokens ZOH na carteira ${walletAddress}...`;
+                    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+                        resp.publicKey,
+                        {
+                            programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+                        }
+                    );
 
-          const connection = new solanaWeb3.Connection(
-            solanaWeb3.clusterApiUrl("mainnet-beta"),
-            "confirmed"
-          );
+                    console.log("Total de tokens encontrados:", tokenAccounts.value.length);
 
-          const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-            resp.publicKey,
-            {
-              programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+                    const hasZOH = tokenAccounts.value.some((account) => {
+                        const info = account.account.data.parsed.info;
+                        console.log("Token:", info.mint, "Quantidade:", info.tokenAmount.uiAmount);
+                        return (
+                            info.mint === TOKEN_ADDRESS &&
+                            parseFloat(info.tokenAmount.uiAmount) > 0
+                        );
+                    });
+
+                    if (hasZOH) {
+                        status.textContent = "✅ Acesso concedido! Você possui ZOH.";
+                        researchContent.style.display = "block";
+                    } else {
+                        status.textContent = "⛔ Você precisa ter ZOH para acessar esta área.";
+                        researchContent.style.display = "none";
+                    }
+                } catch (err) {
+                    console.error("Erro ao conectar com a Phantom:", err);
+                    status.textContent = "❌ Erro ao conectar com a carteira. Tente novamente.";
+                }
+            } else {
+                status.textContent = "⚠️ Phantom Wallet não detectada. Instale a extensão para continuar.";
+                window.open("https://phantom.app/", "_blank");
             }
-          );
-
-          const hasZOH = tokenAccounts.value.some(account => {
-            const info = account.account.data.parsed.info;
-            return (
-              info.mint === TOKEN_ADDRESS &&
-              parseFloat(info.tokenAmount.uiAmount) > 0
-            );
-          });
-
-          if (hasZOH) {
-            status.textContent = "✅ Acesso liberado!";
-            researchContent.style.display = 'block';
-            connectBtn.style.display = 'none';
-          } else {
-            status.textContent = "⛔ Você precisa possuir tokens $ZOH para acessar esta área.";
-          }
-
-        } catch (err) {
-          console.error("Erro ao conectar com a carteira:", err);
-          status.textContent = "❌ Erro ao conectar com a carteira. Tente novamente.";
-        }
-      } else {
-        status.textContent = "⚠️ Phantom Wallet não detectada. Instale a extensão Phantom.";
-      }
-    });
-  </script>
-
+        });
+    </script>
 </body>
 </html>
