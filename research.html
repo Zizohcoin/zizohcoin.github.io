@@ -1,81 +1,64 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Verificador de Token ZOH</title>
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    #status {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Verificação de Token ZOH</title>
 </head>
 <body>
-  <h2>🔍 Verificador de acesso ZOH</h2>
-  <p>Insira seu endereço de carteira Solana:</p>
-  <input type="text" id="walletInput" placeholder="Ex: 4F3zD..." size="50" />
-  <br>
-  <button onclick="checkToken()">Verificar acesso</button>
-  <div id="status"></div>
+  <h2>Verificar se a carteira possui o token ZOH</h2>
+  <input type="text" id="walletInput" placeholder="Cole o endereço da carteira aqui" size="50">
+  <button onclick="verificarToken()">Verificar</button>
+  <p id="status">Status: aguardando...</p>
 
+  <script src="https://unpkg.com/@solana/web3.js@1.73.2/lib/index.iife.min.js"></script>
   <script>
     const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
 
-    async function checkToken() {
+    async function verificarToken() {
+      const walletInput = document.getElementById("walletInput").value.trim();
       const status = document.getElementById("status");
-      const wallet = document.getElementById("walletInput").value.trim();
 
-      if (!wallet) {
-        status.textContent = "❗ Insira um endereço de carteira.";
+      if (!walletInput) {
+        status.textContent = "Por favor, insira um endereço de carteira.";
         return;
       }
 
-      status.textContent = "🔄 Verificando token...";
-
       try {
+        const publicKey = new solanaWeb3.PublicKey(walletInput);
         const connection = new solanaWeb3.Connection(
           solanaWeb3.clusterApiUrl("mainnet-beta"),
           "confirmed"
         );
 
-        const publicKey = new solanaWeb3.PublicKey(wallet);
+        status.textContent = "🔍 Verificando tokens...";
 
-        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-          publicKey,
-          {
-            programId: new solanaWeb3.PublicKey(
-              "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-            )
-          }
-        );
-
-        const hasToken = tokenAccounts.value.some((account) => {
-          const info = account.account.data.parsed.info;
-          return (
-            info.mint === TOKEN_ADDRESS &&
-            parseFloat(info.tokenAmount.uiAmount) > 0
-          );
+        const tokens = await connection.getParsedTokenAccountsByOwner(publicKey, {
+          programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
         });
 
-        if (hasToken) {
-          status.textContent = "✅ Acesso liberado! Você possui $ZOH.";
+        let encontrou = false;
+
+        tokens.value.forEach((account) => {
+          const info = account.account.data.parsed.info;
+          const mint = info.mint;
+          const amount = info.tokenAmount.uiAmount;
+
+          console.log("Token:", mint, "Quantidade:", amount);
+
+          if (mint === TOKEN_ADDRESS && parseFloat(amount) > 0) {
+            encontrou = true;
+          }
+        });
+
+        if (encontrou) {
+          status.textContent = "✅ Acesso liberado. Token ZOH encontrado!";
         } else {
-          status.textContent = "⛔ Você não possui tokens $ZOH nesta carteira.";
+          status.textContent = "⛔ Esta carteira não possui o token ZOH.";
         }
-      } catch (err) {
-        console.error(err);
-        status.textContent = "❌ Erro ao verificar o token. Verifique o endereço.";
+
+      } catch (error) {
+        console.error("Erro:", error);
+        status.textContent = "❌ Erro ao verificar. Endereço inválido ou rede indisponível.";
       }
     }
   </script>
