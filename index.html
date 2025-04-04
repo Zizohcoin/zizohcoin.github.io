@@ -46,7 +46,8 @@
         /* Image Styling */
         img {
             display: block; /* Prevents overlap with text */
-            max-width: 90%; /* Adjusts to fit screen */
+            width: 100%; /* Makes sure images fit within the container */
+            max-width: 600px; /* Keeps images at a reasonable size */
             height: auto;
             margin: 20px auto; /* Centers the image */
             border-radius: 10px; /* Rounded corners */
@@ -59,7 +60,8 @@
             gap: 15px;
         }
         .meme-gallery img {
-            max-width: 300px; /* Sets a fixed size */
+            width: 100%; /* Makes sure images are responsive */
+            max-width: 400px; /* Limits the size */
         }
         /* Responsive */
         @media (max-width: 768px) {
