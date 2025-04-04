@@ -2,36 +2,75 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Teste de Conexão com Phantom</title>
+  <title>Acesso com ZOH Token</title>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
     body { font-family: sans-serif; padding: 30px; }
     button { padding: 10px 20px; font-size: 16px; }
     #status { margin-top: 20px; white-space: pre-line; }
+    #conteudo { display: none; margin-top: 30px; padding: 20px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
-  <h2>🔗 Teste de Conexão com Phantom</h2>
+  <h2>🔐 Área de Pesquisa - Acesso com $ZOH</h2>
   <button id="connectBtn">Conectar Carteira</button>
-  <div id="status">Clique no botão para conectar à Phantom.</div>
+  <div id="status">Clique para acessar com sua carteira Phantom.</div>
+  <div id="conteudo">
+    🎉 Bem-vindo! Você possui o token $ZOH. <br>
+    Aqui está o conteúdo secreto da área de pesquisa...
+  </div>
 
   <script>
     const connectBtn = document.getElementById("connectBtn");
     const status = document.getElementById("status");
+    const conteudo = document.getElementById("conteudo");
+
+    const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
 
     connectBtn.addEventListener("click", async () => {
-      status.textContent = "🕐 Tentando conectar à Phantom...";
+      status.textContent = "🔄 Conectando à carteira...";
       try {
         if (window.solana && window.solana.isPhantom) {
           const resp = await window.solana.connect();
-          const address = resp.publicKey.toString();
-          status.textContent = `✅ Conectado com sucesso!\nEndereço: ${address}`;
+          const publicKey = resp.publicKey;
+          const address = publicKey.toString();
+          status.textContent = `📲 Conectado: ${address}\nVerificando token $ZOH...`;
+
+          const connection = new solanaWeb3.Connection(
+            solanaWeb3.clusterApiUrl("mainnet-beta"),
+            "confirmed"
+          );
+
+          const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+            publicKey,
+            {
+              programId: new solanaWeb3.PublicKey(
+                "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+              ),
+            }
+          );
+
+          const hasZOH = tokenAccounts.value.some((account) => {
+            const info = account.account.data.parsed.info;
+            return (
+              info.mint === TOKEN_ADDRESS &&
+              parseFloat(info.tokenAmount.uiAmount) > 0
+            );
+          });
+
+          if (hasZOH) {
+            status.textContent = "✅ Acesso liberado. Token $ZOH detectado!";
+            conteudo.style.display = "block";
+          } else {
+            status.textContent = "⛔ Você precisa possuir o token $ZOH para acessar.";
+            conteudo.style.display = "none";
+          }
         } else {
-          status.textContent = "⚠️ Phantom não detectada. Instale em: https://phantom.app";
+          status.textContent = "⚠️ Instale a carteira Phantom para continuar.";
         }
       } catch (error) {
-        console.error("Erro de conexão:", error);
-        status.textContent = "❌ Erro ao conectar com a carteira.\nVerifique se a Phantom está desbloqueada.";
+        console.error("Erro ao conectar/verificar:", error);
+        status.textContent = "❌ Erro ao conectar com a carteira. Tente novamente.";
       }
     });
   </script>
