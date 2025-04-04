@@ -83,22 +83,24 @@
             try {
                 const response = await window.solana.connect();
                 const publicKey = response.publicKey.toString();
-                console.log("Wallet connected:", publicKey);
+                console.log("✅ Wallet connected:", publicKey);
                 checkZOHBalance(publicKey);
             } catch (err) {
-                console.error("Wallet connection failed", err);
+                console.error("❌ Wallet connection failed", err);
             }
         }
 
         async function checkZOHBalance(walletAddress) {
+            console.log("🔄 Checking ZOH balance for:", walletAddress);
             const connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com");
+
             try {
                 const accounts = await connection.getParsedTokenAccountsByOwner(
                     new solanaWeb3.PublicKey(walletAddress),
                     { mint: new solanaWeb3.PublicKey(ZOH_MINT_ADDRESS) }
                 );
 
-                console.log("Token Accounts:", accounts.value);
+                console.log("📊 Token Accounts Found:", accounts.value);
 
                 if (accounts.value.length > 0) {
                     console.log("✅ ZOH found! Displaying reports...");
@@ -108,7 +110,7 @@
                     document.getElementById("error-message").style.display = "block";
                 }
             } catch (error) {
-                console.error("Error checking token balance:", error);
+                console.error("⚠️ Error checking token balance:", error);
                 document.getElementById("error-message").innerText = "Error fetching token balance.";
                 document.getElementById("error-message").style.display = "block";
             }
@@ -120,7 +122,6 @@
                 report.style.display = "block";
             });
 
-            // Esconde botão de conectar e mensagem de erro
             document.querySelector(".connect-wallet").style.display = "none";
             document.getElementById("error-message").style.display = "none";
 
