@@ -1,57 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>ZOH Research Access</title>
+  <title>Acesso Exclusivo ZOH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.2/lib/index.iife.min.js"></script>
   <style>
     body {
-      background-color: #121212;
-      color: white;
-      font-family: Arial, sans-serif;
+      background-color: #121e2d;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      padding: 40px;
+      padding: 50px;
     }
-
-    #connectBtn {
+    button {
+      background-color: #4f8ec2;
+      border: none;
+      color: white;
       padding: 12px 24px;
       font-size: 16px;
-      background: #8247e5;
-      border: none;
       border-radius: 8px;
-      color: white;
       cursor: pointer;
       margin-top: 20px;
     }
-
     #researchContent {
       margin-top: 40px;
       display: none;
-      background: #1e1e1e;
-      padding: 20px;
-      border-radius: 12px;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
 
-  <h1>🔐 ZOH Research Access</h1>
-  <p id="status">Click the button below to connect your Phantom wallet.</p>
-  <button id="connectBtn">Connect Wallet</button>
+  <h1>🔐 Acesso Exclusivo ZOH</h1>
+  <p id="status">Conecte sua carteira Phantom para continuar.</p>
+  <button id="connectBtn">Conectar Carteira</button>
 
   <div id="researchContent">
-    <h2>📊 Exclusive Research Reports</h2>
+    <h2>✅ Conteúdo Liberado</h2>
     <ul>
-      <li>✅ Weekly Market Overview</li>
-      <li>✅ On-chain ZOH Analysis</li>
-      <li>✅ Alpha Reports</li>
+      <li>📊 Relatório semanal de mercado (PDF)</li>
+      <li>🧠 Gerador de imagem com IA (em breve)</li>
+      <li>🎞️ Criador de GIFs (em breve)</li>
+      <li>📈 Análises on-chain</li>
     </ul>
   </div>
 
   <script>
-    const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump"; // seu token
-    const status = document.getElementById("status");
+    const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
     const connectBtn = document.getElementById("connectBtn");
+    const status = document.getElementById("status");
     const researchContent = document.getElementById("researchContent");
 
     async function checkWallet() {
@@ -59,7 +60,7 @@
         try {
           const resp = await window.solana.connect({ onlyIfTrusted: false });
           const walletAddress = resp.publicKey.toString();
-          status.textContent = `🔍 Checking $ZOH balance for wallet: ${walletAddress}`;
+          status.textContent = `🔍 Verificando $ZOH na carteira: ${walletAddress}`;
 
           const connection = new solanaWeb3.Connection(
             solanaWeb3.clusterApiUrl("mainnet-beta"),
@@ -84,22 +85,18 @@
           });
 
           if (hasZOH) {
-            status.textContent = "✅ Access granted. Welcome, ZOH holder!";
+            status.textContent = "✅ Acesso concedido. Você é um holder de $ZOH!";
             researchContent.style.display = "block";
             connectBtn.style.display = "none";
           } else {
-            status.textContent = "⛔ You need to hold $ZOH tokens to access this page.";
-            connectBtn.style.display = "block";
+            status.textContent = "⛔ Você precisa ter $ZOH na carteira para acessar.";
           }
         } catch (err) {
-          console.error("Erro ao conectar com Phantom:", err);
-          status.textContent = "❌ Wallet connection failed. Please try again.";
-          connectBtn.style.display = "block";
+          console.error("Erro ao conectar:", err);
+          status.textContent = "❌ Conexão com a carteira falhou.";
         }
       } else {
-        status.textContent = "⚠️ Phantom Wallet not detected. Please install it.";
-        connectBtn.style.display = "block";
-        window.open("https://phantom.app/", "_blank");
+        status.textContent = "⚠️ Phantom Wallet não encontrada. Instale a extensão.";
       }
     }
 
