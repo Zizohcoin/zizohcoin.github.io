@@ -1,52 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Verificação de Token $ZOH</title>
+  <meta charset="UTF-8" />
+  <title>Verificador de Token ZOH</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; padding: 2rem; text-align: center; }
-    input, button { padding: 0.5rem; font-size: 1rem; margin: 0.5rem; width: 300px; }
-    .hidden { display: none; }
-    #researchContent { margin-top: 2rem; }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1>🔍 Verificação de Acesso - Token $ZOH</h1>
-
-  <p>Insira o endereço da sua carteira Solana:</p>
-  <input type="text" id="walletInput" placeholder="Ex: 5PjLg3..." />
+  <h2>🔍 Verificador de acesso ZOH</h2>
+  <p>Insira seu endereço de carteira Solana:</p>
+  <input type="text" id="walletInput" placeholder="Ex: 4F3zD..." size="50" />
   <br>
-  <button id="verifyBtn">Verificar</button>
+  <button onclick="checkToken()">Verificar acesso</button>
+  <div id="status"></div>
 
-  <p id="status"></p>
-
-  <div id="researchContent" class="hidden">
-    <h2>🎉 Acesso liberado!</h2>
-    <p>Você é um detentor de tokens $ZOH. Aqui estão seus relatórios:</p>
-    <ul>
-      <li><a href="#">📄 Relatório 1</a></li>
-      <li><a href="#">📄 Relatório 2</a></li>
-      <li><a href="#">📄 Relatório 3</a></li>
-    </ul>
-  </div>
-
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <script>
-    const verifyBtn = document.getElementById("verifyBtn");
-    const walletInput = document.getElementById("walletInput");
-    const status = document.getElementById("status");
-    const researchContent = document.getElementById("researchContent");
-
     const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
 
-    verifyBtn.addEventListener("click", async () => {
-      const address = walletInput.value.trim();
-      if (!address) {
-        status.textContent = "⚠️ Por favor, insira um endereço válido.";
+    async function checkToken() {
+      const status = document.getElementById("status");
+      const wallet = document.getElementById("walletInput").value.trim();
+
+      if (!wallet) {
+        status.textContent = "❗ Insira um endereço de carteira.";
         return;
       }
 
-      status.textContent = "⏳ Verificando tokens na carteira...";
+      status.textContent = "🔄 Verificando token...";
 
       try {
         const connection = new solanaWeb3.Connection(
@@ -54,9 +49,9 @@
           "confirmed"
         );
 
-        const publicKey = new solanaWeb3.PublicKey(address);
+        const publicKey = new solanaWeb3.PublicKey(wallet);
 
-        const tokens = await connection.getParsedTokenAccountsByOwner(
+        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
           publicKey,
           {
             programId: new solanaWeb3.PublicKey(
@@ -65,7 +60,7 @@
           }
         );
 
-        const hasZOH = tokens.value.some((account) => {
+        const hasToken = tokenAccounts.value.some((account) => {
           const info = account.account.data.parsed.info;
           return (
             info.mint === TOKEN_ADDRESS &&
@@ -73,19 +68,16 @@
           );
         });
 
-        if (hasZOH) {
-          status.textContent = "✅ Verificação concluída. Acesso liberado!";
-          researchContent.classList.remove("hidden");
+        if (hasToken) {
+          status.textContent = "✅ Acesso liberado! Você possui $ZOH.";
         } else {
-          status.textContent = "⛔ Essa carteira não possui tokens $ZOH.";
-          researchContent.classList.add("hidden");
+          status.textContent = "⛔ Você não possui tokens $ZOH nesta carteira.";
         }
-
       } catch (err) {
         console.error(err);
-        status.textContent = "❌ Erro ao verificar. Endereço inválido ou rede com falha.";
+        status.textContent = "❌ Erro ao verificar o token. Verifique o endereço.";
       }
-    });
+    }
   </script>
 </body>
 </html>
