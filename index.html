@@ -12,10 +12,10 @@
             padding: 0;
             background-color: #4f8ec2; /* Main blue tone */
             color: #fff;
+            text-align: center;
         }
         header, nav, section, footer {
             padding: 20px;
-            text-align: center;
         }
         header, nav, footer {
             background-color: #3a6f9b; /* Darker blue for contrast */
@@ -25,6 +25,8 @@
             text-decoration: none;
             color: #fff;
             font-weight: bold;
+            display: inline-block;
+            padding: 10px;
         }
         section {
             padding: 40px 20px;
@@ -45,7 +47,7 @@
         }
         /* Image Styling */
         img {
-            display: block; /* Prevents overlap with text */
+            display: block;
             width: 100%; /* Makes sure images fit within the container */
             max-width: 600px; /* Keeps images at a reasonable size */
             height: auto;
@@ -60,8 +62,8 @@
             gap: 15px;
         }
         .meme-gallery img {
-            width: 100%; /* Makes sure images are responsive */
-            max-width: 400px; /* Limits the size */
+            width: 100%;
+            max-width: 400px;
         }
         /* Responsive */
         @media (max-width: 768px) {
@@ -91,7 +93,7 @@
     <section id="about">
         <h2>About Zizohcoin</h2>
         <p>Zizohcoin is an innovative memecoin created on the Pump.fun platform, aiming to provide holders with exclusive access to in-depth cryptocurrency market research.</p>
-        <img src="about-image.jpg" alt="About Zizohcoin">
+        <img src="about-image.jpg" alt="Information about Zizohcoin">
     </section>
     
     <section id="how-to-buy">
@@ -110,9 +112,9 @@
         <h2>Meme Gallery</h2>
         <p>Check out the latest memes from the Zizohcoin community:</p>
         <div class="meme-gallery">
-            <img src="images/airdrop.png" alt="Airdrop meme">
-            <img src="images/rest.png" alt="Resting meme">
-            <img src="images/moon.png" alt="Moon meme">
+            <img src="https://zizohcoin.github.io/airdrop.png" alt="Airdrop meme">
+            <img src="https://zizohcoin.github.io/descanso.png" alt="Resting meme">
+            <img src="https://zizohcoin.github.io/lua.png" alt="Moon meme">
         </div>
     </section>
     
