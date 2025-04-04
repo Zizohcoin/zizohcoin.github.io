@@ -1,52 +1,100 @@
-async function checkWallet() {
-    if (window.solana && window.solana.isPhantom) {
-        try {
-            // Conecta com popup se necessário
-            const resp = await window.solana.connect({ onlyIfTrusted: false });
-
-            const walletAddress = resp.publicKey.toString();
-            status.textContent = `🔍 Checking $ZOH balance for wallet: ${walletAddress}`;
-
-            const connection = new solanaWeb3.Connection(
-                solanaWeb3.clusterApiUrl("mainnet-beta"),
-                "confirmed"
-            );
-
-            // Consulta os tokens da carteira
-            const tokens = await connection.getParsedTokenAccountsByOwner(
-                resp.publicKey,
-                {
-                    programId: new solanaWeb3.PublicKey(
-                        "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-                    )
-                }
-            );
-
-            // Verifica se tem o token ZOH
-            const hasZOH = tokens.value.some((account) => {
-                const info = account.account.data.parsed.info;
-                return (
-                    info.mint === TOKEN_ADDRESS &&
-                    parseFloat(info.tokenAmount.uiAmount) > 0
-                );
-            });
-
-            if (hasZOH) {
-                status.textContent = "✅ Access granted. Welcome, ZOH holder!";
-                researchContent.classList.remove("hidden");
-                connectBtn.classList.add("hidden");
-            } else {
-                status.textContent = "⛔ You need to hold $ZOH tokens to access this page.";
-                connectBtn.classList.remove("hidden");
-            }
-
-        } catch (err) {
-            console.error("Erro ao conectar com Phantom:", err);
-            status.textContent = "❌ Wallet connection failed. Please try again.";
-            connectBtn.classList.remove("hidden");
-        }
-    } else {
-        status.textContent = "⚠️ Phantom Wallet not detected. Please install it.";
-        connectBtn.classList.remove("hidden");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZOH Research Access</title>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.2/lib/index.iife.min.js"></script>
+  <style>
+    body {
+      background-color: #1e2a38;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
     }
-}
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #4f8ec2;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 ZOH Research Reports</h1>
+  <p>Exclusive access for $ZOH holders only</p>
+  <p id="status">Click the button below to connect your Phantom wallet.</p>
+  <button id="connectBtn">Connect Wallet</button>
+
+  <div id="researchContent" class="hidden">
+    <h2>📊 Research Dashboard</h2>
+    <ul>
+      <li>✅ Weekly Market Report - PDF</li>
+      <li>✅ AI Image Generator (Coming Soon)</li>
+      <li>✅ GIF Maker Access (Coming Soon)</li>
+      <li>✅ Token Trends & On-Chain Analysis</li>
+    </ul>
+  </div>
+
+  <script>
+    const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    const status = document.getElementById("status");
+    const connectBtn = document.getElementById("connectBtn");
+    const researchContent = document.getElementById("researchContent");
+
+    connectBtn.addEventListener("click", async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const resp = await window.solana.connect();
+          const walletAddress = resp.publicKey.toString();
+          status.textContent = `🔍 Checking $ZOH balance for ${walletAddress}...`;
+
+          const connection = new solanaWeb3.Connection(
+            solanaWeb3.clusterApiUrl("mainnet-beta"),
+            "confirmed"
+          );
+
+          const tokens = await connection.getParsedTokenAccountsByOwner(
+            resp.publicKey,
+            {
+              programId: new solanaWeb3.PublicKey(
+                "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+              )
+            }
+          );
+
+          const hasZOH = tokens.value.some((account) => {
+            const info = account.account.data.parsed.info;
+            return (
+              info.mint === TOKEN_ADDRESS &&
+              parseFloat(info.tokenAmount.uiAmount) > 0
+            );
+          });
+
+          if (hasZOH) {
+            status.textContent = "✅ Access granted. Welcome, ZOH holder!";
+            researchContent.classList.remove("hidden");
+            connectBtn.classList.add("hidden");
+          } else {
+            status.textContent = "⛔ You need to hold $ZOH tokens to access this page.";
+          }
+        } catch (err) {
+          console.error("Erro ao conectar com Phantom:", err);
+          status.textContent = "❌ Wallet connection failed. Please try again.";
+        }
+      } else {
+        status.textContent = "🦊 Please install Phantom Wallet to continue.";
+        window.open("https://phantom.app", "_blank");
+      }
+    });
+  </script>
+</body>
+</html>
