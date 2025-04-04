@@ -1,96 +1,113 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <title>Área de Pesquisa ZOH</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background: #f2f2f2;
-      color: #333;
-    }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    .hidden {
-      display: none;
-    }
-    #access {
-      margin-top: 20px;
-      padding: 15px;
-      background: #fff;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-  </style>
-</head>
-<body>
-  <h2>🔐 Área Restrita - Detentores de $ZOH</h2>
-  <p>Digite o endereço da sua carteira Solana:</p>
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  ConnectionProvider,
+  WalletProvider,
+  useWallet
+} from "@solana/wallet-adapter-react";
+import {
+  WalletModalProvider,
+  WalletMultiButton
+} from "@solana/wallet-adapter-react-ui";
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+  TorusWalletAdapter
+} from "@solana/wallet-adapter-wallets";
+import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
 
-  <input type="text" id="walletInput" placeholder="Ex: 3n4g...tZc" size="60" />
-  <br />
-  <button onclick="checkAccess()">Verificar Acesso</button>
+const TOKEN_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
 
-  <div id="status"></div>
+const WalletAccess = () => {
+  const { publicKey, connected } = useWallet();
+  const [hasToken, setHasToken] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  <div id="access" class="hidden">
-    <h3>🎉 Acesso Liberado!</h3>
-    <p>Bem-vindo à área de pesquisa exclusiva para detentores do token $ZOH.</p>
-    <!-- Coloque aqui os links ou conteúdo restrito -->
-  </div>
+  const verificarToken = async () => {
+    if (!publicKey) return;
+    setLoading(true);
 
-  <!-- Solana Web3.js -->
-  <script src="https://unpkg.com/@solana/web3.js@1.76.1/lib/index.iife.min.js"></script>
-
-  <script>
-    const TOKEN_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
-    const SOLANA_ENDPOINT = "https://solana-api.projectserum.com";
-
-    async function checkAccess() {
-      const wallet = document.getElementById("walletInput").value.trim();
-      const status = document.getElementById("status");
-      const accessDiv = document.getElementById("access");
-      status.textContent = "";
-      accessDiv.classList.add("hidden");
-
-      if (!wallet) {
-        status.textContent = "⚠️ Por favor, insira o endereço da carteira.";
-        return;
-      }
-
-      try {
-        status.textContent = "🔎 Verificando token ZOH na carteira...";
-
-        const connection = new solanaWeb3.Connection(SOLANA_ENDPOINT, "confirmed");
-        const publicKey = new solanaWeb3.PublicKey(wallet);
-
-        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
-          programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
-        });
-
-        const hasToken = tokenAccounts.value.some((account) => {
-          const info = account.account.data.parsed.info;
-          return (
-            info.mint === TOKEN_MINT &&
-            parseFloat(info.tokenAmount.uiAmount) > 0
-          );
-        });
-
-        if (hasToken) {
-          status.textContent = "✅ Token ZOH encontrado! Acesso liberado.";
-          accessDiv.classList.remove("hidden");
-        } else {
-          status.textContent = "⛔ Esta carteira não possui o token $ZOH.";
+    try {
+      const connection = new Connection(
+        "https://rpc.helius.xyz/?api-key=6a3b2ee3-2359-4ef2-8eb7-91a6c73d3b36",
+        "confirmed"
+      );
+      const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+        publicKey,
+        {
+          programId: new PublicKey(
+            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          )
         }
-      } catch (error) {
-        console.error("Erro ao verificar o token:", error);
-        status.textContent = "❌ Erro ao verificar a carteira. Tente novamente.";
-      }
+      );
+
+      const possui = tokenAccounts.value.some((account) => {
+        const info = account.account.data.parsed.info;
+        return (
+          info.mint === TOKEN_MINT &&
+          parseFloat(info.tokenAmount.uiAmount) > 0
+        );
+      });
+
+      setHasToken(possui);
+    } catch (error) {
+      console.error("Erro ao verificar token:", error);
+      setHasToken(false);
     }
-  </script>
-</body>
-</html>
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (connected) {
+      verificarToken();
+    }
+  }, [connected, publicKey]);
+
+  if (!connected) {
+    return <p>Conecte sua carteira para continuar.</p>;
+  }
+
+  return (
+    <div>
+      <p>Carteira: {publicKey.toBase58()}</p>
+      {loading ? (
+        <p>🔄 Verificando tokens...</p>
+      ) : hasToken ? (
+        <div>
+          <p>✅ Acesso liberado! Você possui o token ZOH.</p>
+          <div className="research-content">[Conteúdo da pesquisa aqui]</div>
+        </div>
+      ) : (
+        <p>❌ Você não possui o token necessário para acessar esta área.</p>
+      )}
+    </div>
+  );
+};
+
+const ResearchPage = () => {
+  const endpoint = clusterApiUrl("mainnet-beta");
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter(),
+      new TorusWalletAdapter()
+    ],
+    []
+  );
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <div className="container" style={{ padding: 20 }}>
+            <h1>🔐 Acesso à Área de Pesquisa</h1>
+            <WalletMultiButton />
+            <WalletAccess />
+          </div>
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+};
+
+export default ResearchPage;
