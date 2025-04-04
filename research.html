@@ -1,24 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Área de Pesquisa ZOH</title>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    #connectBtn { padding: 10px 20px; font-size: 16px; }
-    #researchContent { display: none; margin-top: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f5f5f5;
+      text-align: center;
+    }
+    #connectBtn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    #researchContent {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 10px;
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <h1>🔍 Área de Pesquisa ZOH</h1>
-  <p id="status">Clique no botão para conectar sua carteira.</p>
+  <h1>🔒 Área de Pesquisa Exclusiva</h1>
+  <p>Conecte sua carteira para verificar se possui tokens <strong>$ZOH</strong>.</p>
   <button id="connectBtn">Conectar Carteira</button>
+  <p id="status">⏳ Aguardando conexão...</p>
 
   <div id="researchContent">
-    <h2>🎉 Bem-vindo, portador de ZOH!</h2>
-    <p>Você tem acesso ao conteúdo exclusivo da pesquisa.</p>
+    <h2>🎉 Conteúdo Exclusivo Liberado!</h2>
+    <p>Bem-vindo, portador de $ZOH! Você agora tem acesso ao conteúdo de pesquisa.</p>
+    <!-- Coloque aqui o conteúdo exclusivo -->
   </div>
 
   <script>
@@ -32,7 +55,13 @@
         try {
           const resp = await window.solana.connect();
           const publicKey = resp.publicKey;
-          status.textContent = `✅ Conectado com sucesso! Verificando token ZOH...`;
+
+          if (!publicKey) {
+            status.textContent = "❌ Não foi possível obter a chave pública da carteira.";
+            return;
+          }
+
+          status.textContent = "✅ Conectado com sucesso! Verificando token $ZOH...";
 
           const connection = new solanaWeb3.Connection(
             solanaWeb3.clusterApiUrl("mainnet-beta"),
@@ -55,19 +84,19 @@
           });
 
           if (hasZOH) {
-            status.textContent = "✅ Acesso concedido. Você possui tokens ZOH!";
+            status.textContent = "✅ Acesso concedido. Você possui tokens $ZOH!";
             researchContent.style.display = "block";
             connectBtn.style.display = "none";
           } else {
-            status.textContent = "⛔ Você não possui tokens ZOH nesta carteira.";
+            status.textContent = "⛔ Você não possui tokens $ZOH nesta carteira.";
           }
 
         } catch (error) {
-          console.error("Erro ao conectar com a carteira:", error);
+          console.error("Erro durante verificação da carteira:", error);
           status.textContent = "❌ Erro ao conectar com a carteira. Tente novamente.";
         }
       } else {
-        status.textContent = "⚠️ Phantom Wallet não detectada. Instale a extensão para continuar.";
+        status.textContent = "⚠️ Phantom Wallet não detectada. Instale a extensão Phantom para continuar.";
       }
     });
   </script>
