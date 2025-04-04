@@ -1,53 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Acesso Exclusivo ZOH</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.2/lib/index.iife.min.js"></script>
+  <title>Verificar ZOH Token</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
-    body {
-      background-color: #121e2d;
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-    button {
-      background-color: #4f8ec2;
-      border: none;
-      color: white;
-      padding: 12px 24px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    #researchContent {
-      margin-top: 40px;
-      display: none;
-    }
-    #status {
-      margin-top: 20px;
-      font-size: 18px;
-    }
+    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
+    #status { margin-top: 1rem; font-weight: bold; }
+    #researchContent { display: none; margin-top: 2rem; padding: 1rem; background: #e0ffe0; }
   </style>
 </head>
 <body>
-
-  <h1>🔐 Acesso Exclusivo ZOH</h1>
-  <p id="status">Conecte sua carteira Phantom para continuar.</p>
-  <button id="connectBtn">Conectar Carteira</button>
-
-  <div id="researchContent">
-    <h2>✅ Conteúdo Liberado</h2>
-    <ul>
-      <li>📊 Relatório semanal de mercado (PDF)</li>
-      <li>🧠 Gerador de imagem com IA (em breve)</li>
-      <li>🎞️ Criador de GIFs (em breve)</li>
-      <li>📈 Análises on-chain</li>
-    </ul>
-  </div>
+  <h2>Verificar Token $ZOH</h2>
+  <button id="connectBtn">🔗 Conectar Carteira</button>
+  <div id="status">Aguardando conexão...</div>
+  <div id="researchContent">🎉 Acesso liberado ao conteúdo exclusivo!</div>
 
   <script>
     const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
@@ -55,12 +22,12 @@
     const status = document.getElementById("status");
     const researchContent = document.getElementById("researchContent");
 
-    async function checkWallet() {
+    connectBtn.addEventListener("click", async () => {
       if (window.solana && window.solana.isPhantom) {
         try {
-          const resp = await window.solana.connect({ onlyIfTrusted: false });
+          const resp = await window.solana.connect();
           const walletAddress = resp.publicKey.toString();
-          status.textContent = `🔍 Verificando $ZOH na carteira: ${walletAddress}`;
+          status.textContent = `🔍 Verificando tokens para: ${walletAddress}`;
 
           const connection = new solanaWeb3.Connection(
             solanaWeb3.clusterApiUrl("mainnet-beta"),
@@ -85,23 +52,21 @@
           });
 
           if (hasZOH) {
-            status.textContent = "✅ Acesso concedido. Você é um holder de $ZOH!";
+            status.textContent = "✅ Acesso concedido. Você possui o token $ZOH!";
             researchContent.style.display = "block";
-            connectBtn.style.display = "none";
           } else {
-            status.textContent = "⛔ Você precisa ter $ZOH na carteira para acessar.";
+            status.textContent = "⛔ Você precisa possuir o token $ZOH para acessar o conteúdo.";
+            researchContent.style.display = "none";
           }
+
         } catch (err) {
-          console.error("Erro ao conectar:", err);
-          status.textContent = "❌ Conexão com a carteira falhou.";
+          console.error("Erro ao conectar à carteira:", err);
+          status.textContent = "❌ Falha na conexão com a carteira. Tente novamente.";
         }
       } else {
-        status.textContent = "⚠️ Phantom Wallet não encontrada. Instale a extensão.";
+        status.textContent = "⚠️ Carteira Phantom não detectada. Instale a extensão no navegador.";
       }
-    }
-
-    connectBtn.addEventListener("click", checkWallet);
+    });
   </script>
-
 </body>
 </html>
