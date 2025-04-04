@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Reports</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.73.0/solana-web3.min.js"></script>
     <style>
-        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -21,9 +21,6 @@
             background-color: #3a6f9b;
             color: white;
         }
-        section {
-            padding: 40px 20px;
-        }
         .report {
             background-color: white;
             margin: 20px auto;
@@ -31,40 +28,79 @@
             border-radius: 5px;
             max-width: 800px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: none;
         }
-        .report h2 {
-            margin-top: 0;
+        .connect-wallet {
+            padding: 10px 20px;
+            background-color: #2a4f6e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        .report p {
-            text-align: justify;
-        }
-        footer {
-            margin-top: 20px;
+        .error {
+            color: red;
+            display: none;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Research Reports</h1>
-        <p>Access our latest in-depth research reports below.</p>
+        <p>Only Zizohcoin (ZOH) holders can access the reports.</p>
+        <button class="connect-wallet" onclick="connectWallet()">Connect Wallet</button>
+        <p class="error" id="error-message">You do not have the required ZOH tokens.</p>
     </header>
-    <section>
+    
+    <section id="reports-section" style="display:none;">
         <div class="report">
             <h2>Report Title 1</h2>
             <p><strong>Published on:</strong> March 15, 2025</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque aliquet odio, a tincidunt erat suscipit non. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+            <p>Lorem ipsum dolor sit amet...</p>
             <a href="reports/report1.pdf" target="_blank">Read Full Report</a>
         </div>
         <div class="report">
             <h2>Report Title 2</h2>
             <p><strong>Published on:</strong> February 20, 2025</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque aliquet odio, a tincidunt erat suscipit non. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+            <p>Lorem ipsum dolor sit amet...</p>
             <a href="reports/report2.pdf" target="_blank">Read Full Report</a>
         </div>
-        <!-- Add more reports as needed -->
     </section>
+    
     <footer>
         <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
     </footer>
+    
+    <script>
+        const ZOH_MINT_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+
+        async function connectWallet() {
+            if (!window.solana) {
+                alert("Solana wallet not found. Please install Phantom or another wallet.");
+                return;
+            }
+            try {
+                const response = await window.solana.connect();
+                const publicKey = response.publicKey.toString();
+                checkZOHBalance(publicKey);
+            } catch (err) {
+                console.error("Wallet connection failed", err);
+            }
+        }
+
+        async function checkZOHBalance(walletAddress) {
+            const connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com");
+            const accounts = await connection.getParsedTokenAccountsByOwner(new solanaWeb3.PublicKey(walletAddress), { mint: new solanaWeb3.PublicKey(ZOH_MINT_ADDRESS) });
+            
+            if (accounts.value.length > 0) {
+                document.getElementById("reports-section").style.display = "block";
+                document.querySelectorAll(".report").forEach(report => report.style.display = "block");
+                document.querySelector(".connect-wallet").style.display = "none";
+                document.getElementById("error-message").style.display = "none";
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        }
+    </script>
 </body>
 </html>
