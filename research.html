@@ -51,7 +51,7 @@
         <button class="connect-wallet" onclick="connectWallet()">Connect Wallet</button>
         <p class="error" id="error-message">You do not have the required ZOH tokens.</p>
     </header>
-    
+
     <section id="reports-section" style="display:none;">
         <div class="report">
             <h2>Report Title 1</h2>
@@ -66,22 +66,24 @@
             <a href="reports/report2.pdf" target="_blank">Read Full Report</a>
         </div>
     </section>
-    
+
     <footer>
         <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
     </footer>
-    
+
     <script>
         const ZOH_MINT_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
 
         async function connectWallet() {
-            if (!window.solana) {
-                alert("Solana wallet not found. Please install Phantom or another wallet.");
+            if (!window.solana || !window.solana.isPhantom) {
+                alert("Solana wallet not found. Please install Phantom.");
                 return;
             }
+
             try {
                 const response = await window.solana.connect();
                 const publicKey = response.publicKey.toString();
+                console.log("Wallet connected:", publicKey);
                 checkZOHBalance(publicKey);
             } catch (err) {
                 console.error("Wallet connection failed", err);
@@ -90,14 +92,27 @@
 
         async function checkZOHBalance(walletAddress) {
             const connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com");
-            const accounts = await connection.getParsedTokenAccountsByOwner(new solanaWeb3.PublicKey(walletAddress), { mint: new solanaWeb3.PublicKey(ZOH_MINT_ADDRESS) });
-            
-            if (accounts.value.length > 0) {
-                document.getElementById("reports-section").style.display = "block";
-                document.querySelectorAll(".report").forEach(report => report.style.display = "block");
-                document.querySelector(".connect-wallet").style.display = "none";
-                document.getElementById("error-message").style.display = "none";
-            } else {
+            try {
+                const accounts = await connection.getParsedTokenAccountsByOwner(
+                    new solanaWeb3.PublicKey(walletAddress),
+                    { mint: new solanaWeb3.PublicKey(ZOH_MINT_ADDRESS) }
+                );
+
+                console.log("Token Accounts:", accounts.value);
+
+                if (accounts.value.length > 0) {
+                    document.getElementById("reports-section").style.display = "block";
+                    document.querySelectorAll(".report").forEach(report => {
+                        report.style.display = "block";
+                    });
+                    document.querySelector(".connect-wallet").style.display = "none";
+                    document.getElementById("error-message").style.display = "none";
+                } else {
+                    document.getElementById("error-message").style.display = "block";
+                }
+            } catch (error) {
+                console.error("Error checking token balance:", error);
+                document.getElementById("error-message").innerText = "Error fetching token balance.";
                 document.getElementById("error-message").style.display = "block";
             }
         }
