@@ -1,79 +1,77 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
-import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js';
-import '@solana/wallet-adapter-react-ui/styles.css';
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Área de Pesquisa - $ZOH</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+    #researchContent { display: none; margin-top: 20px; border: 1px solid #ccc; padding: 20px; border-radius: 10px; }
+    #connectBtn { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
 
-const TOKEN_ADDRESS = '22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump';
+  <h1>🔍 Área de Pesquisa Exclusiva</h1>
+  <p id="status">Conecte sua carteira Phantom para verificar acesso.</p>
+  <button id="connectBtn">🔗 Conectar Wallet</button>
 
-const ResearchPage = () => {
-  const [hasAccess, setHasAccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [walletAddress, setWalletAddress] = useState(null);
+  <div id="researchContent">
+    <h2>🎉 Bem-vindo, portador de ZOH!</h2>
+    <p>Você agora tem acesso ao conteúdo exclusivo da pesquisa.</p>
+  </div>
 
-  const network = clusterApiUrl('mainnet-beta');
-  const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <script>
+    const TOKEN_ADDRESS = '22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump';
+    const status = document.getElementById('status');
+    const connectBtn = document.getElementById('connectBtn');
+    const researchContent = document.getElementById('researchContent');
 
-  const checkToken = async (publicKey) => {
-    setLoading(true);
-    try {
-      const connection = new Connection(network, 'confirmed');
-      const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-        publicKey,
-        {
-          programId: new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA')
+    connectBtn.addEventListener('click', async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const resp = await window.solana.connect({ onlyIfTrusted: false });
+          const walletAddress = resp.publicKey.toString();
+          status.textContent = `🔍 Verificando tokens ZOH na carteira ${walletAddress}...`;
+
+          const connection = new solanaWeb3.Connection(
+            solanaWeb3.clusterApiUrl("mainnet-beta"),
+            "confirmed"
+          );
+
+          const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+            resp.publicKey,
+            {
+              programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+            }
+          );
+
+          const hasZOH = tokenAccounts.value.some(account => {
+            const info = account.account.data.parsed.info;
+            return (
+              info.mint === TOKEN_ADDRESS &&
+              parseFloat(info.tokenAmount.uiAmount) > 0
+            );
+          });
+
+          if (hasZOH) {
+            status.textContent = "✅ Acesso liberado!";
+            researchContent.style.display = 'block';
+            connectBtn.style.display = 'none';
+          } else {
+            status.textContent = "⛔ Você precisa possuir tokens $ZOH para acessar esta área.";
+          }
+
+        } catch (err) {
+          console.error("Erro ao conectar com a carteira:", err);
+          status.textContent = "❌ Erro ao conectar com a carteira. Tente novamente.";
         }
-      );
-
-      const ownsToken = tokenAccounts.value.some(account => {
-        const info = account.account.data.parsed.info;
-        return (
-          info.mint === TOKEN_ADDRESS && parseFloat(info.tokenAmount.uiAmount) > 0
-        );
-      });
-
-      setHasAccess(ownsToken);
-    } catch (error) {
-      console.error('Erro ao verificar o token:', error);
-      setHasAccess(false);
-    }
-    setLoading(false);
-  };
-
-  const WalletAccess = () => {
-    const { publicKey, connected } = require('@solana/wallet-adapter-react').useWallet();
-
-    useEffect(() => {
-      if (connected && publicKey) {
-        setWalletAddress(publicKey.toBase58());
-        checkToken(publicKey);
+      } else {
+        status.textContent = "⚠️ Phantom Wallet não detectada. Instale a extensão Phantom.";
       }
-    }, [connected, publicKey]);
+    });
+  </script>
 
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-        <h1 className="text-2xl font-bold mb-4">🔍 Acesso à Área de Pesquisa</h1>
-        <WalletMultiButton className="mb-4" />
-        {walletAddress && <p>Carteira conectada: {walletAddress}</p>}
-        {loading && <p>Verificando tokens ZOH...</p>}
-        {!loading && hasAccess && <div className="mt-4 p-4 bg-white shadow-md rounded">🎉 Bem-vindo, portador de ZOH! Acesse o conteúdo da pesquisa abaixo.</div>}
-        {!loading && !hasAccess && walletAddress && (
-          <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">⛔ Você precisa possuir tokens $ZOH para acessar esta área.</div>
-        )}
-      </div>
-    );
-  };
-
-  return (
-    <ConnectionProvider endpoint={network}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <WalletAccess />
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
-  );
-};
-
-export default ResearchPage;
+</body>
+</html>
