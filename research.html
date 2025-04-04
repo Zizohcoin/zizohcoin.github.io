@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Verificação ZOH Token</title>
@@ -7,7 +7,7 @@
     <style>
         body { font-family: sans-serif; padding: 20px; }
         #connectBtn { padding: 10px 20px; font-size: 16px; }
-        #status { margin-top: 20px; }
+        #status { margin-top: 20px; white-space: pre-line; }
     </style>
 </head>
 <body>
@@ -26,11 +26,13 @@
         const researchContent = document.getElementById("researchContent");
 
         connectBtn.addEventListener("click", async () => {
+            status.textContent = "🕐 Conectando...";
             if (window.solana && window.solana.isPhantom) {
                 try {
-                    const resp = await window.solana.connect(); // exibe o popup para conectar
-                    const walletAddress = resp.publicKey.toString();
-                    status.textContent = `🔍 Verificando tokens ZOH da carteira: ${walletAddress}`;
+                    const resp = await window.solana.connect();
+                    const publicKey = resp.publicKey;
+                    const walletAddress = publicKey.toString();
+                    status.textContent = `Carteira conectada: ${walletAddress}\n🔍 Buscando tokens ZOH...`;
 
                     const connection = new solanaWeb3.Connection(
                         solanaWeb3.clusterApiUrl("mainnet-beta"),
@@ -38,17 +40,19 @@
                     );
 
                     const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-                        resp.publicKey,
+                        publicKey,
                         {
-                            programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+                            programId: new solanaWeb3.PublicKey(
+                                "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+                            )
                         }
                     );
 
-                    console.log("Total de tokens encontrados:", tokenAccounts.value.length);
+                    console.log("Contas encontradas:", tokenAccounts.value);
 
-                    const hasZOH = tokenAccounts.value.some((account) => {
+                    const hasZOH = tokenAccounts.value.some(account => {
                         const info = account.account.data.parsed.info;
-                        console.log("Token:", info.mint, "Quantidade:", info.tokenAmount.uiAmount);
+                        console.log("Token encontrado:", info.mint, "Quantidade:", info.tokenAmount.uiAmount);
                         return (
                             info.mint === TOKEN_ADDRESS &&
                             parseFloat(info.tokenAmount.uiAmount) > 0
@@ -56,19 +60,19 @@
                     });
 
                     if (hasZOH) {
-                        status.textContent = "✅ Acesso concedido! Você possui ZOH.";
+                        status.textContent += "\n✅ Token ZOH encontrado! Acesso liberado.";
                         researchContent.style.display = "block";
                     } else {
-                        status.textContent = "⛔ Você precisa ter ZOH para acessar esta área.";
+                        status.textContent += "\n⛔ Você não possui ZOH nesta carteira.";
                         researchContent.style.display = "none";
                     }
+
                 } catch (err) {
-                    console.error("Erro ao conectar com a Phantom:", err);
-                    status.textContent = "❌ Erro ao conectar com a carteira. Tente novamente.";
+                    console.error("Erro ao conectar:", err);
+                    status.textContent = "❌ Erro ao conectar com a carteira. Verifique se a Phantom está logada.";
                 }
             } else {
-                status.textContent = "⚠️ Phantom Wallet não detectada. Instale a extensão para continuar.";
-                window.open("https://phantom.app/", "_blank");
+                status.textContent = "⚠️ Phantom Wallet não detectada. Instale em https://phantom.app";
             }
         });
     </script>
