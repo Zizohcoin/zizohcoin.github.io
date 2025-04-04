@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zizohcoin (ZOH)</title>
     <style>
-        /* Estilos Gerais */
+        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #4f8ec2; /* Tom de azul principal */
+            background-color: #4f8ec2; /* Main blue tone */
             color: #fff;
         }
         header, nav, section, footer {
@@ -18,73 +18,104 @@
             text-align: center;
         }
         header, nav, footer {
-            background-color: #3a6f9b; /* Tom de azul mais escuro para contraste */
+            background-color: #3a6f9b; /* Darker blue for contrast */
         }
         nav a {
             margin: 0 15px;
             text-decoration: none;
             color: #fff;
+            font-weight: bold;
         }
         section {
             padding: 40px 20px;
         }
         .cta-button {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 12px 24px;
             margin: 20px 0;
-            background-color: #2a4f6e; /* Tom de azul ainda mais escuro para botões */
+            background-color: #2a4f6e;
             color: white;
             text-decoration: none;
             border-radius: 5px;
+            font-size: 16px;
         }
         footer {
             background-color: #3a6f9b;
+            margin-top: 20px;
         }
-        /* Estilos Responsivos */
+        /* Image Styling */
+        img {
+            display: block; /* Prevents overlap with text */
+            max-width: 90%; /* Adjusts to fit screen */
+            height: auto;
+            margin: 20px auto; /* Centers the image */
+            border-radius: 10px; /* Rounded corners */
+        }
+        /* Meme Gallery */
+        .meme-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .meme-gallery img {
+            max-width: 300px; /* Sets a fixed size */
+        }
+        /* Responsive */
         @media (max-width: 768px) {
             nav a {
                 display: block;
                 margin: 10px 0;
+            }
+            .meme-gallery {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Bem-vindo à Zizohcoin (ZOH)</h1>
-        <p>Seu portal para o futuro das finanças descentralizadas.</p>
+        <h1>Welcome to Zizohcoin (ZOH)</h1>
+        <p>Your gateway to the future of decentralized finance.</p>
     </header>
     <nav>
-        <a href="#about">Sobre Zizohcoin</a>
-        <a href="#how-to-buy">Como Comprar</a>
-        <a href="#meme-gallery">Galeria de Memes</a>
-        <a href="pesquisas.html">Pesquisas</a>
+        <a href="#about">About Zizohcoin</a>
+        <a href="#how-to-buy">How to Buy</a>
+        <a href="#meme-gallery">Meme Gallery</a>
+        <a href="research.html">Research</a>
     </nav>
+    
     <section id="about">
-        <h2>Sobre Zizohcoin</h2>
-        <p>Zizohcoin é uma memecoin inovadora criada na plataforma Pump.fun, com o objetivo de oferecer aos detentores acesso exclusivo a pesquisas aprofundadas sobre o mercado de criptomoedas.</p>
-        <img src="about-image.jpg" alt="Sobre Zizohcoin" style="max-width:100%;height:auto;">
+        <h2>About Zizohcoin</h2>
+        <p>Zizohcoin is an innovative memecoin created on the Pump.fun platform, aiming to provide holders with exclusive access to in-depth cryptocurrency market research.</p>
+        <img src="about-image.jpg" alt="About Zizohcoin">
     </section>
+    
     <section id="how-to-buy">
-        <h2>Como Comprar</h2>
-        <p>Para adquirir ZOH, siga os passos abaixo:</p>
+        <h2>How to Buy</h2>
+        <p>To acquire ZOH, follow these steps:</p>
         <ol>
-            <li>Configure uma carteira compatível com tokens ERC-20.</li>
-            <li>Adicione fundos à sua carteira.</li>
-            <li>Acesse uma exchange descentralizada e conecte sua carteira.</li>
-            <li>Troque seus fundos por ZOH.</li>
+            <li>Set up a wallet compatible with ERC-20 tokens.</li>
+            <li>Add funds to your wallet.</li>
+            <li>Go to a decentralized exchange and connect your wallet.</li>
+            <li>Swap your funds for ZOH.</li>
         </ol>
-        <a href="#" class="cta-button">Compre $ZOH</a>
+        <a href="#" class="cta-button">Buy $ZOH</a>
     </section>
+    
     <section id="meme-gallery">
-        <h2>Galeria de Memes</h2>
-        <p>Confira os memes mais recentes da comunidade Zizohcoin:</p>
-        <img src="images/airdrop.png" alt="Meme sobre airdrop" style="max-width:100%;height:auto;">
-        <img src="images/descanso.png" alt="Meme sobre descanso" style="max-width:100%;height:auto;">
-        <img src="images/lua.png" alt="Meme sobre lua" style="max-width:100%;height:auto;">
+        <h2>Meme Gallery</h2>
+        <p>Check out the latest memes from the Zizohcoin community:</p>
+        <div class="meme-gallery">
+            <img src="images/airdrop.png" alt="Airdrop meme">
+            <img src="images/rest.png" alt="Resting meme">
+            <img src="images/moon.png" alt="Moon meme">
+        </div>
     </section>
+    
     <footer>
-        <p>&copy; 2025 Zizohcoin. Todos os direitos reservados.</p>
+        <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
         <p>
             <a href="https://twitter.com/zizohcoin" target="_blank">Twitter</a> |
             <a href="https://telegram.me/zizohcoin" target="_blank">Telegram</a> |
@@ -93,4 +124,3 @@
     </footer>
 </body>
 </html>
-
