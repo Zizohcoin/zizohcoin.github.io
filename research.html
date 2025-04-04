@@ -101,13 +101,10 @@
                 console.log("Token Accounts:", accounts.value);
 
                 if (accounts.value.length > 0) {
-                    document.getElementById("reports-section").style.display = "block";
-                    document.querySelectorAll(".report").forEach(report => {
-                        report.style.display = "block";
-                    });
-                    document.querySelector(".connect-wallet").style.display = "none";
-                    document.getElementById("error-message").style.display = "none";
+                    console.log("✅ ZOH found! Displaying reports...");
+                    showReports();
                 } else {
+                    console.log("❌ No ZOH tokens found.");
                     document.getElementById("error-message").style.display = "block";
                 }
             } catch (error) {
@@ -115,6 +112,19 @@
                 document.getElementById("error-message").innerText = "Error fetching token balance.";
                 document.getElementById("error-message").style.display = "block";
             }
+        }
+
+        function showReports() {
+            document.getElementById("reports-section").style.display = "block";
+            document.querySelectorAll(".report").forEach(report => {
+                report.style.display = "block";
+            });
+
+            // Esconde botão de conectar e mensagem de erro
+            document.querySelector(".connect-wallet").style.display = "none";
+            document.getElementById("error-message").style.display = "none";
+
+            console.log("📄 Reports are now visible.");
         }
     </script>
 </body>
