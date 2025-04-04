@@ -1,125 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zizohcoin (ZOH)</title>
-    <style>
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #4f8ec2; /* Main blue tone */
-            color: #fff;
-            text-align: center;
-        }
-        header, nav, section, footer {
-            padding: 20px;
-        }
-        header, nav, footer {
-            background-color: #3a6f9b; /* Darker blue for contrast */
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-            display: inline-block;
-            padding: 10px;
-        }
-        section {
-            padding: 40px 20px;
-        }
-        .cta-button {
-            display: inline-block;
-            padding: 12px 24px;
-            margin: 20px 0;
-            background-color: #2a4f6e;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        footer {
-            background-color: #3a6f9b;
-            margin-top: 20px;
-        }
-        /* Image Styling */
-        img {
-            display: block;
-            width: 100%; /* Makes sure images fit within the container */
-            max-width: 600px; /* Keeps images at a reasonable size */
-            height: auto;
-            margin: 20px auto; /* Centers the image */
-            border-radius: 10px; /* Rounded corners */
-        }
-        /* Meme Gallery */
-        .meme-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-        }
-        .meme-gallery img {
-            width: 100%;
-            max-width: 400px;
-        }
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav a {
-                display: block;
-                margin: 10px 0;
-            }
-            .meme-gallery {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zizohcoin (ZOH)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0a1a2f;
+      color: #fff;
+      text-align: center;
+    }
+
+    header, nav, footer {
+      background-color: #112b4c;
+      padding: 20px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      display: inline-block;
+      padding: 10px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 40px 20px;
+      background-color: #0a1a2f;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 12px 24px;
+      margin: 20px 0;
+      background-color: #1c4f91;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background-color: #2176bd;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      margin: 20px auto;
+      border-radius: 10px;
+    }
+
+    .meme-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .meme-gallery img {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    @media (max-width: 768px) {
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
+      .meme-gallery {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Zizohcoin (ZOH)</h1>
-        <p>Your gateway to the future of decentralized finance.</p>
-    </header>
+  <header>
+    <h1>Welcome to Zizohcoin (ZOH)</h1>
+    <p>Your gateway to the future of decentralized finance.</p>
+  </header>
 
-    <nav>
-        <a href="#about">About Zizohcoin</a>
-        <a href="#tokenomics">Tokenomics</a>
-        <a href="#meme-gallery">Meme Gallery</a>
-        <a href="research.html">Research</a>
-    </nav>
-    
-    <section id="about">
-        <h2>About Zizohcoin</h2>
-        <p>Zizohcoin is an innovative memecoin created on the Pump.fun platform, aiming to provide holders with exclusive access to in-depth cryptocurrency market research.</p>
-        <img src="about-image.jpg" alt="Information about Zizohcoin">
-    </section>
+  <nav>
+    <a href="#about">About Zizohcoin</a>
+    <a href="#tokenomics">Tokenomics</a>
+    <a href="#meme-gallery">Meme Gallery</a>
+    <a href="research.html">Research</a>
+  </nav>
 
-    <section id="tokenomics">
-        <h2>Tokenomics</h2>
-        <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTRsb2hyNGpsN210dm5xczI2Y3A2dmU4NzdtM2Y1bzFjdzFmN2pkNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RszAQS7Cig16VxcaJe/giphy.gif" alt="Tokenomics GIF">
-        <a href="https://jup.ag/swap/SOL-22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump" class="cta-button" target="_blank">BUY ZIZOH HERE</a>
-    </section>
+  <section id="about">
+    <h2>About Zizohcoin</h2>
+    <p>Zizohcoin is an innovative memecoin created on the Pump.fun platform, aiming to provide holders with exclusive access to in-depth cryptocurrency market research.</p>
+    <img src="about-image.jpg" alt="Information about Zizohcoin">
+  </section>
 
-    <section id="meme-gallery">
-        <h2>Meme Gallery</h2>
-        <p>Check out the latest memes from the Zizohcoin community:</p>
-        <div class="meme-gallery">
-            <img src="https://zizohcoin.github.io/airdrop.png" alt="Airdrop meme">
-            <img src="https://zizohcoin.github.io/descanso.png" alt="Resting meme">
-            <img src="https://zizohcoin.github.io/lua.png" alt="Moon meme">
-        </div>
-    </section>
+  <section id="tokenomics">
+    <h2>Tokenomics</h2>
+    <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTRsb2hyNGpsN210dm5xczI2Y3A2dmU4NzdtM2Y1bzFjdzFmN2pkNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RszAQS7Cig16VxcaJe/giphy.gif" alt="Tokenomics GIF">
+    <a href="https://jup.ag/swap/SOL-22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump" class="cta-button" target="_blank">BUY ZIZOH HERE</a>
+  </section>
 
-    <footer>
-        <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
-        <p>
-            <a href="https://twitter.com/zizohcoin" target="_blank">Twitter</a> |
-            <a href="https://telegram.me/zizohcoin" target="_blank">Telegram</a> |
-            <a href="https://github.com/zizohcoin" target="_blank">GitHub</a>
-        </p>
-    </footer>
+  <section id="meme-gallery">
+    <h2>Meme Gallery</h2>
+    <p>Check out the latest memes from the Zizohcoin community:</p>
+    <div class="meme-gallery">
+      <img src="https://zizohcoin.github.io/airdrop.png" alt="Airdrop meme">
+      <img src="https://zizohcoin.github.io/descanso.png" alt="Resting meme">
+      <img src="https://zizohcoin.github.io/lua.png" alt="Moon meme">
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
+    <p>
+      <a href="https://twitter.com/zizohcoin" target="_blank">Twitter</a> |
+      <a href="https://telegram.me/zizohcoin" target="_blank">Telegram</a> |
+      <a href="https://github.com/zizohcoin" target="_blank">GitHub</a>
+    </p>
+  </footer>
 </body>
 </html>
