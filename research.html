@@ -1,89 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Área de Pesquisa ZOH</title>
+  <meta charset="UTF-8" />
+  <title>Verificação de Token ZOH</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/@solana/wallet-adapter-wallets@latest/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/@solana/wallet-adapter-base@latest/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/@solana/wallet-adapter-react@latest/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/@solana/wallet-adapter-react-ui@latest/lib/index.iife.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@solana/wallet-adapter-react-ui/styles.css" />
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      max-width: 600px;
-      margin: auto;
-    }
-    input, button {
-      padding: 0.5rem;
-      margin-top: 1rem;
-      width: 100%;
-      font-size: 1rem;
-    }
-    #resultado {
-      margin-top: 2rem;
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    .card { background: white; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    button { margin-top: 10px; padding: 10px 20px; font-size: 16px; }
+    .status { margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h2>🔐 Área de Pesquisa - Verificação de Token ZOH</h2>
+  <div class="card">
+    <h2>🔐 Acesso à Área de Pesquisa</h2>
+    <p>Conecte sua carteira Solana para verificar acesso ao conteúdo exclusivo de portadores do token ZOH.</p>
 
-  <p>Insira seu endereço de carteira Solana:</p>
-  <input type="text" id="carteira" placeholder="Ex: 4wS7...">
-
-  <button onclick="verificarToken()">Verificar</button>
-
-  <div id="resultado"></div>
+    <button onclick="conectarCarteira()">🔗 Conectar Carteira</button>
+    <div id="status" class="status"></div>
+    <div id="conteudo" style="display: none; margin-top: 20px;">
+      <h3>🎉 Bem-vindo, portador do token ZOH!</h3>
+      <p>Aqui está o conteúdo exclusivo de pesquisa...</p>
+    </div>
+  </div>
 
   <script>
-    async function verificarToken() {
-      const endereco = document.getElementById('carteira').value.trim();
-      const resultado = document.getElementById('resultado');
-      const tokenMint = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    const { Connection, PublicKey } = solanaWeb3;
+    const TOKEN_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    const HELIUS_ENDPOINT = "https://rpc.helius.xyz/?api-key=f7bd5799-804e-4b03-97d6-0a36718ac40d";
+    const connection = new Connection(HELIUS_ENDPOINT, "confirmed");
 
-      if (!endereco) {
-        resultado.innerText = "Por favor, insira um endereço de carteira.";
+    async function conectarCarteira() {
+      if (!window.solana || !window.solana.isPhantom) {
+        alert("Carteira Phantom não encontrada. Instale a extensão Phantom.");
         return;
       }
 
-      resultado.innerText = "⏳ Verificando...";
+      try {
+        const resp = await window.solana.connect();
+        const publicKey = resp.publicKey;
+        document.getElementById("status").innerText = `✅ Carteira conectada: ${publicKey.toBase58()}`;
+        verificarToken(publicKey);
+      } catch (err) {
+        console.error("Erro ao conectar com a carteira:", err);
+        document.getElementById("status").innerText = "❌ Erro ao conectar com a carteira.";
+      }
+    }
+
+    async function verificarToken(publicKey) {
+      document.getElementById("status").innerText += "\n🔍 Verificando tokens ZOH...";
 
       try {
-        const response = await fetch("https://api.mainnet-beta.solana.com", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            jsonrpc: "2.0",
-            id: 1,
-            method: "getParsedTokenAccountsByOwner",
-            params: [
-              endereco,
-              { programId: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
-              { encoding: "jsonParsed" }
-            ]
-          })
+        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
+          programId: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
         });
 
-        const data = await response.json();
-
-        if (!data.result) {
-          resultado.innerText = "❌ Erro ao buscar informações. Verifique o endereço e tente novamente.";
-          return;
-        }
-
-        const tokens = data.result.value;
-        const possui = tokens.some(account => {
+        const possuiToken = tokenAccounts.value.some(account => {
           const info = account.account.data.parsed.info;
-          return info.mint === tokenMint && parseFloat(info.tokenAmount.uiAmount) > 0;
+          return info.mint === TOKEN_MINT && parseFloat(info.tokenAmount.uiAmount) > 0;
         });
 
-        if (possui) {
-          resultado.innerHTML = "<p style='color:green;'>✅ Acesso liberado! Você possui o token ZOH.</p><p><strong>[Conteúdo da pesquisa aqui]</strong></p>";
+        if (possuiToken) {
+          document.getElementById("status").innerText += "\n✅ Token ZOH encontrado!";
+          document.getElementById("conteudo").style.display = "block";
         } else {
-          resultado.innerHTML = "<p style='color:red;'>❌ Você não possui o token necessário ($ZOH).</p>";
+          document.getElementById("status").innerText += "\n❌ Você não possui o token ZOH.";
         }
-
-      } catch (err) {
-        console.error(err);
-        resultado.innerText = "❌ Erro ao verificar. Tente novamente mais tarde.";
+      } catch (error) {
+        console.error("Erro ao verificar token:", error);
+        document.getElementById("status").innerText += "\n❌ Erro ao verificar token.";
       }
     }
   </script>
