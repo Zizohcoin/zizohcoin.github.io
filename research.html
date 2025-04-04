@@ -1,15 +1,18 @@
 async function checkWallet() {
     if (window.solana && window.solana.isPhantom) {
         try {
-            const resp = await window.solana.connect(); // <- conexão normal com popup
+            // Conecta com popup se necessário
+            const resp = await window.solana.connect({ onlyIfTrusted: false });
+
             const walletAddress = resp.publicKey.toString();
-            status.textContent = `🔍 Checking ZOH balance for ${walletAddress}...`;
+            status.textContent = `🔍 Checking $ZOH balance for wallet: ${walletAddress}`;
 
             const connection = new solanaWeb3.Connection(
                 solanaWeb3.clusterApiUrl("mainnet-beta"),
                 "confirmed"
             );
 
+            // Consulta os tokens da carteira
             const tokens = await connection.getParsedTokenAccountsByOwner(
                 resp.publicKey,
                 {
@@ -19,6 +22,7 @@ async function checkWallet() {
                 }
             );
 
+            // Verifica se tem o token ZOH
             const hasZOH = tokens.value.some((account) => {
                 const info = account.account.data.parsed.info;
                 return (
@@ -30,15 +34,19 @@ async function checkWallet() {
             if (hasZOH) {
                 status.textContent = "✅ Access granted. Welcome, ZOH holder!";
                 researchContent.classList.remove("hidden");
+                connectBtn.classList.add("hidden");
             } else {
-                status.textContent = "⛔ You need to hold ZOH tokens to access this page.";
+                status.textContent = "⛔ You need to hold $ZOH tokens to access this page.";
+                connectBtn.classList.remove("hidden");
             }
+
         } catch (err) {
-            console.error("Erro ao conectar:", err);
-            status.textContent = "❌ Wallet connection failed.";
+            console.error("Erro ao conectar com Phantom:", err);
+            status.textContent = "❌ Wallet connection failed. Please try again.";
             connectBtn.classList.remove("hidden");
         }
     } else {
-        status.textContent = "🦊 Please install Phantom Wallet to continue.";
+        status.textContent = "⚠️ Phantom Wallet not detected. Please install it.";
+        connectBtn.classList.remove("hidden");
     }
 }
