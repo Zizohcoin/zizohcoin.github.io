@@ -1,61 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>ZOH Research Access</title>
   <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.2/lib/index.iife.min.js"></script>
   <style>
     body {
-      background-color: #1e2a38;
-      color: #fff;
+      background-color: #121212;
+      color: white;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      padding: 40px;
     }
-    button {
+
+    #connectBtn {
       padding: 12px 24px;
       font-size: 16px;
-      background: #4f8ec2;
+      background: #8247e5;
       border: none;
       border-radius: 8px;
-      color: #fff;
+      color: white;
       cursor: pointer;
       margin-top: 20px;
     }
-    .hidden {
+
+    #researchContent {
+      margin-top: 40px;
       display: none;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
     }
   </style>
 </head>
 <body>
-  <h1>🔐 ZOH Research Reports</h1>
-  <p>Exclusive access for $ZOH holders only</p>
+
+  <h1>🔐 ZOH Research Access</h1>
   <p id="status">Click the button below to connect your Phantom wallet.</p>
   <button id="connectBtn">Connect Wallet</button>
 
-  <div id="researchContent" class="hidden">
-    <h2>📊 Research Dashboard</h2>
+  <div id="researchContent">
+    <h2>📊 Exclusive Research Reports</h2>
     <ul>
-      <li>✅ Weekly Market Report - PDF</li>
-      <li>✅ AI Image Generator (Coming Soon)</li>
-      <li>✅ GIF Maker Access (Coming Soon)</li>
-      <li>✅ Token Trends & On-Chain Analysis</li>
+      <li>✅ Weekly Market Overview</li>
+      <li>✅ On-chain ZOH Analysis</li>
+      <li>✅ Alpha Reports</li>
     </ul>
   </div>
 
   <script>
-    const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    const TOKEN_ADDRESS = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump"; // seu token
     const status = document.getElementById("status");
     const connectBtn = document.getElementById("connectBtn");
     const researchContent = document.getElementById("researchContent");
 
-    connectBtn.addEventListener("click", async () => {
+    async function checkWallet() {
       if (window.solana && window.solana.isPhantom) {
         try {
-          const resp = await window.solana.connect();
+          const resp = await window.solana.connect({ onlyIfTrusted: false });
           const walletAddress = resp.publicKey.toString();
-          status.textContent = `🔍 Checking $ZOH balance for ${walletAddress}...`;
+          status.textContent = `🔍 Checking $ZOH balance for wallet: ${walletAddress}`;
 
           const connection = new solanaWeb3.Connection(
             solanaWeb3.clusterApiUrl("mainnet-beta"),
@@ -81,20 +85,26 @@
 
           if (hasZOH) {
             status.textContent = "✅ Access granted. Welcome, ZOH holder!";
-            researchContent.classList.remove("hidden");
-            connectBtn.classList.add("hidden");
+            researchContent.style.display = "block";
+            connectBtn.style.display = "none";
           } else {
             status.textContent = "⛔ You need to hold $ZOH tokens to access this page.";
+            connectBtn.style.display = "block";
           }
         } catch (err) {
           console.error("Erro ao conectar com Phantom:", err);
           status.textContent = "❌ Wallet connection failed. Please try again.";
+          connectBtn.style.display = "block";
         }
       } else {
-        status.textContent = "🦊 Please install Phantom Wallet to continue.";
-        window.open("https://phantom.app", "_blank");
+        status.textContent = "⚠️ Phantom Wallet not detected. Please install it.";
+        connectBtn.style.display = "block";
+        window.open("https://phantom.app/", "_blank");
       }
-    });
+    }
+
+    connectBtn.addEventListener("click", checkWallet);
   </script>
+
 </body>
 </html>
