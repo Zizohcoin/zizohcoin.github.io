@@ -14,23 +14,25 @@
       text-align: center;
     }
 
-    /* NavBar fixa no topo */
+    header {
+      background-color: #0a1a2f;
+      padding: 10px 20px;
+    }
+
     nav {
-      background-color: #112b4c;
+      background-color: #0a1a2f;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       padding: 10px 20px;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1000;
     }
 
     .logo {
-      height: 40px;
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 10px;
     }
 
     .nav-links {
@@ -51,13 +53,8 @@
       text-decoration: underline;
     }
 
-    /* Ajuste para as seções ficarem visíveis abaixo do nav */
-    main {
-      margin-top: 70px; /* Espaço para evitar sobreposição do nav */
-    }
-
     section {
-      padding: 60px 20px;
+      padding: 40px 20px;
       background-color: #0a1a2f;
     }
 
@@ -98,6 +95,21 @@
       max-width: 400px;
     }
 
+    footer {
+      background-color: #0a1a2f;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 768px) {
       .nav-links {
         flex-direction: column;
@@ -113,6 +125,8 @@
 </head>
 <body>
 
+  <header></header>
+
   <nav>
     <img src="logo.png" alt="Zizohcoin Logo" class="logo" />
     <div class="nav-links">
@@ -123,29 +137,27 @@
     </div>
   </nav>
 
-  <main>
-    <section id="about">
-      <h2>About Zizohcoin</h2>
-      <p>Zizohcoin is an innovative memecoin created on the Pump.fun platform, aiming to provide holders with exclusive access to in-depth cryptocurrency market research.</p>
-      <img src="about-image.jpg" alt="Information about Zizohcoin" />
-    </section>
+  <section id="about">
+    <h2>About Zizohcoin</h2>
+    <p>Zizohcoin is an innovative memecoin created on the Pump.fun platform, aiming to provide holders with exclusive access to in-depth cryptocurrency market research.</p>
+    <img src="about-image.jpg" alt="Information about Zizohcoin" />
+  </section>
 
-    <section id="tokenomics">
-      <h2>Tokenomics</h2>
-      <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTRsb2hyNGpsN210dm5xczI2Y3A2dmU4NzdtM2Y1bzFjdzFmN2pkNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RszAQS7Cig16VxcaJe/giphy.gif" alt="Tokenomics GIF" />
-      <a href="https://jup.ag/swap/SOL-22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump" class="cta-button" target="_blank">BUY ZIZOH HERE</a>
-    </section>
+  <section id="tokenomics">
+    <h2>Tokenomics</h2>
+    <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTRsb2hyNGpsN210dm5xczI2Y3A2dmU4NzdtM2Y1bzFjdzFmN2pkNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RszAQS7Cig16VxcaJe/giphy.gif" alt="Tokenomics GIF" />
+    <a href="https://jup.ag/swap/SOL-22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump" class="cta-button" target="_blank">BUY ZIZOH HERE</a>
+  </section>
 
-    <section id="meme-gallery">
-      <h2>Meme Gallery</h2>
-      <p>Check out the latest memes from the Zizohcoin community:</p>
-      <div class="meme-gallery">
-        <img src="https://zizohcoin.github.io/airdrop.png" alt="Airdrop meme" />
-        <img src="https://zizohcoin.github.io/descanso.png" alt="Resting meme" />
-        <img src="https://zizohcoin.github.io/lua.png" alt="Moon meme" />
-      </div>
-    </section>
-  </main>
+  <section id="meme-gallery">
+    <h2>Meme Gallery</h2>
+    <p>Check out the latest memes from the Zizohcoin community:</p>
+    <div class="meme-gallery">
+      <img src="https://zizohcoin.github.io/airdrop.png" alt="Airdrop meme" />
+      <img src="https://zizohcoin.github.io/descanso.png" alt="Resting meme" />
+      <img src="https://zizohcoin.github.io/lua.png" alt="Moon meme" />
+    </div>
+  </section>
 
   <footer>
     <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
@@ -155,6 +167,5 @@
       <a href="https://github.com/zizohcoin" target="_blank">GitHub</a>
     </p>
   </footer>
-
 </body>
 </html>
