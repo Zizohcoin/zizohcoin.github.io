@@ -14,34 +14,30 @@
       text-align: center;
     }
 
-    header {
-      background-color: #0a1a2f;
-      padding: 10px 20px;
-    }
-
     nav {
       background-color: #0a1a2f;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
+      flex-wrap: wrap;
     }
 
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 20px;
     }
 
     .logo {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
+      height: 60px;
+      width: 60px;
       border-radius: 10px;
+      margin-right: 15px;
     }
 
     .nav-links {
       display: flex;
+      flex-wrap: wrap;
       gap: 15px;
     }
 
@@ -58,24 +54,28 @@
 
     .social-icons {
       display: flex;
+      gap: 10px;
       align-items: center;
-      gap: 15px;
     }
 
     .social-icons img {
-      width: 28px;
-      height: 28px;
-      opacity: 0.8;
-      transition: opacity 0.3s ease;
+      width: 32px;
+      height: 32px;
+      background-color: #fff;
+      border-radius: 50%;
+      padding: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease, opacity 0.3s ease;
+      opacity: 0.9;
     }
 
     .social-icons img:hover {
       opacity: 1;
+      transform: scale(1.1);
     }
 
     section {
       padding: 40px 20px;
-      background-color: #0a1a2f;
     }
 
     .cta-button {
@@ -116,14 +116,14 @@
     }
 
     footer {
-      background-color: #0a1a2f;
       padding: 20px;
-      font-size: 14px;
+      background-color: #0a1a2f;
     }
 
     footer a {
       color: #fff;
       text-decoration: none;
+      margin: 0 8px;
     }
 
     footer a:hover {
@@ -139,11 +139,11 @@
       .nav-left {
         flex-direction: column;
         align-items: center;
+        margin-bottom: 10px;
       }
 
       .nav-links {
-        flex-direction: column;
-        align-items: center;
+        justify-content: center;
       }
 
       .meme-gallery {
@@ -155,28 +155,25 @@
 </head>
 <body>
 
-  <header></header>
-
   <nav>
     <div class="nav-left">
       <img src="logo.png" alt="Zizohcoin Logo" class="logo" />
       <div class="nav-links">
-        <a href="#about">About</a>
+        <a href="#about">About Zizohcoin</a>
         <a href="#tokenomics">Tokenomics</a>
-        <a href="#meme-gallery">Memes</a>
+        <a href="#meme-gallery">Meme Gallery</a>
         <a href="research.html">Research</a>
       </div>
     </div>
-
     <div class="social-icons">
       <a href="https://x.com/zizohcoin" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968958.png" alt="X logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968831.png" alt="X Logo">
       </a>
       <a href="https://www.instagram.com/zizohsolana/" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram Logo">
       </a>
       <a href="https://www.tiktok.com/@zizohsolana" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok Logo">
       </a>
     </div>
   </nav>
@@ -206,10 +203,9 @@
   <footer>
     <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
     <p>
-      <a href="https://twitter.com/zizohcoin" target="_blank">Twitter</a> |
-      <a href="https://instagram.com/zizohsolana" target="_blank">Instagram</a> |
-      <a href="https://tiktok.com/@zizohsolana" target="_blank">TikTok</a> |
-      <a href="https://telegram.me/zizohcoin" target="_blank">Telegram</a> |
+      <a href="https://x.com/zizohcoin" target="_blank">Twitter/X</a> |
+      <a href="https://www.instagram.com/zizohsolana/" target="_blank">Instagram</a> |
+      <a href="https://www.tiktok.com/@zizohsolana" target="_blank">TikTok</a> |
       <a href="https://github.com/zizohcoin" target="_blank">GitHub</a>
     </p>
   </footer>
