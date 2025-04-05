@@ -24,21 +24,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       padding: 10px 20px;
     }
 
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
     .logo {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
       border-radius: 10px;
     }
 
     .nav-links {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
       gap: 15px;
     }
 
@@ -51,6 +54,17 @@
 
     .nav-links a:hover {
       text-decoration: underline;
+    }
+
+    .x-logo {
+      width: 24px;
+      height: 24px;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .x-logo:hover {
+      opacity: 1;
     }
 
     section {
@@ -111,6 +125,16 @@
     }
 
     @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .nav-left {
+        flex-direction: column;
+        align-items: center;
+      }
+
       .nav-links {
         flex-direction: column;
         align-items: center;
@@ -128,13 +152,18 @@
   <header></header>
 
   <nav>
-    <img src="logo.png" alt="Zizohcoin Logo" class="logo" />
-    <div class="nav-links">
-      <a href="#about">About Zizohcoin</a>
-      <a href="#tokenomics">Tokenomics</a>
-      <a href="#meme-gallery">Meme Gallery</a>
-      <a href="research.html">Research</a>
+    <div class="nav-left">
+      <img src="logo.png" alt="Zizohcoin Logo" class="logo" />
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#meme-gallery">Memes</a>
+        <a href="research.html">Research</a>
+      </div>
     </div>
+    <a href="https://x.com/zizohcoin" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/X_logo_2023.svg" alt="X" class="x-logo" />
+    </a>
   </nav>
 
   <section id="about">
