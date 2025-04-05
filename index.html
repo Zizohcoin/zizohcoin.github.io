@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #4f8ec2; /* Main blue tone */
+            background-color: #1a2a44; /* Azul escuro */
             color: #fff;
         }
         header, nav, section, footer {
@@ -18,7 +18,7 @@
             text-align: center;
         }
         header, nav, footer {
-            background-color: #3a6f9b; /* Darker blue for contrast */
+            background-color: #1a2a44; /* Azul escuro */
         }
         nav a {
             margin: 0 15px;
@@ -40,18 +40,36 @@
             font-size: 16px;
         }
         footer {
-            background-color: #3a6f9b;
             margin-top: 20px;
         }
+
+        /* Header Styling */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+        }
+        .logo {
+            width: 60px; /* Ajuste o tamanho da logo */
+            height: auto;
+            margin-right: 15px;
+        }
+        .header-content {
+            display: flex;
+            flex-direction: column;
+        }
+
         /* Image Styling */
         img {
-            display: block; /* Prevents overlap with text */
-            width: 100%; /* Makes sure images fit within the container */
-            max-width: 600px; /* Keeps images at a reasonable size */
+            display: block;
+            width: 100%;
+            max-width: 600px;
             height: auto;
-            margin: 20px auto; /* Centers the image */
-            border-radius: 10px; /* Rounded corners */
+            margin: 20px auto;
+            border-radius: 10px;
         }
+
         /* Meme Gallery */
         .meme-gallery {
             display: flex;
@@ -60,9 +78,10 @@
             gap: 15px;
         }
         .meme-gallery img {
-            width: 100%; /* Makes sure images are responsive */
-            max-width: 400px; /* Limits the size */
+            width: 100%;
+            max-width: 400px;
         }
+
         /* Responsive */
         @media (max-width: 768px) {
             nav a {
@@ -73,13 +92,23 @@
                 flex-direction: column;
                 align-items: center;
             }
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .logo {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to Zizohcoin (ZOH)</h1>
-        <p>Your gateway to the future of decentralized finance.</p>
+        <img src="logo.png" alt="Zizohcoin Logo" class="logo">
+        <div class="header-content">
+            <h1>Welcome to Zizohcoin (ZOH)</h1>
+            <p>Your gateway to the future of decentralized finance.</p>
+        </div>
     </header>
     <nav>
         <a href="#about">About Zizohcoin</a>
