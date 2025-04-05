@@ -16,21 +16,32 @@
         }
 
         /* Estiliza o cabeçalho e mantém a mesma cor do fundo */
-        header, nav {
-            background-color: #0a1a2f; /* Ajuste para uniformizar */
+        header {
+            background-color: #0a1a2f; /* Mesma cor do fundo */
             padding: 15px 0;
             text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        /* Espaço extra abaixo do cabeçalho para evitar sobreposição */
+        main {
+            padding-top: 80px; /* Ajuste conforme necessário */
         }
 
         /* Ajuste para o logo */
         .logo img {
-            width: 80px; /* Ajuste o tamanho conforme necessário */
+            width: 80px;
         }
 
         /* Ajuste para os links de navegação */
         .nav-links {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .nav-links li {
@@ -45,8 +56,8 @@
         }
 
         /* Seções principais */
-        main {
-            padding: 20px;
+        section {
+            padding: 50px 20px;
         }
 
         h1, h2 {
@@ -79,6 +90,16 @@
         <section id="tokenomics">
             <h2>Tokenomics</h2>
             <p>Information about Zizohcoin’s token distribution...</p>
+        </section>
+
+        <section id="gallery">
+            <h2>Meme Gallery</h2>
+            <p>Check out our latest memes and community creations!</p>
+        </section>
+
+        <section id="research">
+            <h2>Research</h2>
+            <p>In-depth analysis of the crypto market trends...</p>
         </section>
     </main>
 
