@@ -3,81 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zizohcoin</title>
+    <title>Zizohcoin (ZOH)</title>
     <style>
-        * {
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            background-color: #4f8ec2; /* Main blue tone */
+            color: #fff;
         }
-        body {
-            background-color: #0a192f;
-            color: white;
+        header, nav, section, footer {
+            padding: 20px;
             text-align: center;
         }
-        .container {
-            width: 90%;
-            max-width: 1024px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-        header {
-            background-color: #112240;
-            padding: 15px 0;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        header, nav, footer {
+            background-color: #3a6f9b; /* Darker blue for contrast */
         }
         nav a {
-            color: white;
+            margin: 0 15px;
             text-decoration: none;
+            color: #fff;
             font-weight: bold;
         }
-        .hero-image {
-            display: block;
-            width: 100%;
-            max-width: 400px; /* Mantém proporção */
-            height: auto; 
-            margin: 20px auto;
-            border-radius: 10px;
+        section {
+            padding: 40px 20px;
         }
-        .section {
-            margin: 40px 0;
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 20px 0;
+            background-color: #2a4f6e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
         }
-        .tokenomics {
-            background-color: #f5deb3;
-            color: black;
-            padding: 20px;
-            border-radius: 10px;
+        footer {
+            background-color: #3a6f9b;
+            margin-top: 20px;
+        }
+        /* Image Styling */
+        img {
+            display: block; /* Prevents overlap with text */
+            width: 100%; /* Makes sure images fit within the container */
+            max-width: 600px; /* Keeps images at a reasonable size */
+            height: auto;
+            margin: 20px auto; /* Centers the image */
+            border-radius: 10px; /* Rounded corners */
+        }
+        /* Meme Gallery */
+        .meme-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .meme-gallery img {
+            width: 100%; /* Makes sure images are responsive */
+            max-width: 400px; /* Limits the size */
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+            .meme-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
-
     <header>
-        <nav>
-            <a href="#">About Zizohcoin</a>
-            <a href="#">Tokenomics</a>
-            <a href="#">Meme Gallery</a>
-            <a href="#">Research</a>
-        </nav>
+        <h1>Welcome to Zizohcoin (ZOH)</h1>
+        <p>Your gateway to the future of decentralized finance.</p>
     </header>
-
-    <div class="container">
-        <section class="section">
-            <h2>About Zizohcoin</h2>
-            <p>Zizohcoin is an innovative memecoin created on the Pump.fun platform, aiming to provide holders with exclusive access to in-depth cryptocurrency market research.</p>
-            <img src="image.png" alt="Zizohcoin Logo" class="hero-image">
-        </section>
-
-        <section class="section tokenomics">
-            <h2>Tokenomics</h2>
-            <p>Details about the tokenomics of Zizohcoin...</p>
-        </section>
-    </div>
-
+    <nav>
+        <a href="#about">About Zizohcoin</a>
+        <a href="#how-to-buy">How to Buy</a>
+        <a href="#meme-gallery">Meme Gallery</a>
+        <a href="research.html">Research</a>
+    </nav>
+    
+    <section id="about">
+        <h2>About Zizohcoin</h2>
+        <p>Zizohcoin is an innovative memecoin created on the Pump.fun platform, aiming to provide holders with exclusive access to in-depth cryptocurrency market research.</p>
+        <img src="about-image.jpg" alt="About Zizohcoin">
+    </section>
+    
+    <section id="how-to-buy">
+        <h2>How to Buy</h2>
+        <p>To acquire ZOH, follow these steps:</p>
+        <ol>
+            <li>Set up a wallet compatible with ERC-20 tokens.</li>
+            <li>Add funds to your wallet.</li>
+            <li>Go to a decentralized exchange and connect your wallet.</li>
+            <li>Swap your funds for ZOH.</li>
+        </ol>
+        <a href="#" class="cta-button">Buy $ZOH</a>
+    </section>
+    
+    <section id="meme-gallery">
+        <h2>Meme Gallery</h2>
+        <p>Check out the latest memes from the Zizohcoin community:</p>
+        <div class="meme-gallery">
+            <img src="images/airdrop.png" alt="Airdrop meme">
+            <img src="images/rest.png" alt="Resting meme">
+            <img src="images/moon.png" alt="Moon meme">
+        </div>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
+        <p>
+            <a href="https://twitter.com/zizohcoin" target="_blank">Twitter</a> |
+            <a href="https://telegram.me/zizohcoin" target="_blank">Telegram</a> |
+            <a href="https://github.com/zizohcoin" target="_blank">GitHub</a>
+        </p>
+    </footer>
 </body>
 </html>
