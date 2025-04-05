@@ -15,9 +15,9 @@
     }
 
     header {
-      background-color: #112b4c; /* Destaca o cabeçalho */
+      background-color: #112b4c;
       padding: 10px 20px;
-      border-bottom: 2px solid #1c4f91; /* Linha para separação */
+      border-bottom: 2px solid #1c4f91;
     }
 
     nav {
@@ -31,6 +31,8 @@
 
     .logo {
       height: 40px;
+      max-width: 100%;
+      object-fit: contain;
     }
 
     .nav-links {
@@ -79,7 +81,7 @@
       height: auto;
       margin: 20px auto;
       border-radius: 10px;
-      image-rendering: crisp-edges;
+      object-fit: contain;
     }
 
     .meme-gallery {
@@ -92,7 +94,9 @@
     .meme-gallery img {
       width: 100%;
       max-width: 400px;
+      height: auto;
       border-radius: 10px;
+      object-fit: contain;
     }
 
     @media (max-width: 768px) {
@@ -109,7 +113,6 @@
   </style>
 </head>
 <body>
-
   <header></header>
 
   <nav>
@@ -152,6 +155,5 @@
       <a href="https://github.com/zizohcoin" target="_blank">GitHub</a>
     </p>
   </footer>
-
 </body>
 </html>
