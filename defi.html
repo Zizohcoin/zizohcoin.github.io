@@ -1,72 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Portal Exclusivo ZOH</title>
+  <title>Verificar ZOH</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
-    body {
-      background-color: #0f172a;
-      color: #f1f5f9;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 8px;
-      background-color: #3b82f6;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #2563eb;
-    }
-
-    #status {
-      margin-top: 20px;
-      font-size: 16px;
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    button { padding: 10px 20px; font-size: 16px; }
+    #result { margin-top: 20px; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>Área restrita ZOH</h1>
-  <p>Apenas detentores do token ZOH podem acessar.</p>
-  <button id="connect-btn">Conectar carteira Phantom</button>
-  <div id="status"></div>
+  <h2>Verificar se a carteira tem o token ZOH</h2>
+  <button id="connectButton">Conectar Carteira</button>
+  <div id="result"></div>
 
-  <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.js"></script>
   <script>
-    const tokenZOH = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    const connectButton = document.getElementById("connectButton");
+    const resultDiv = document.getElementById("result");
 
-    async function connectAndVerify() {
-      const provider = window.solana;
-      if (!provider?.isPhantom) {
-        alert("Por favor, instale a carteira Phantom.");
+    connectButton.onclick = async () => {
+      if (!window.solana || !window.solana.isPhantom) {
+        alert("Phantom Wallet não está instalada.");
         return;
       }
 
       try {
-        // Conectar carteira
-        const resp = await provider.connect();
+        const resp = await window.solana.connect();
         const publicKey = resp.publicKey.toString();
-        document.getElementById("status").innerText = `Carteira conectada: ${publicKey}`;
+        resultDiv.innerText = `Carteira conectada: ${publicKey}`;
 
-        // Assinar mensagem
-        const message = `Acesso ao portal ZOH em ${new Date().toISOString()}`;
-        const encodedMessage = new TextEncoder().encode(message);
-        await provider.signMessage(encodedMessage, "utf8");
+        // Conectar à mainnet-beta
+        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"), "confirmed");
 
-        // Verificar token
-        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+        // Token ZOH Mint Address
+        const zohMint = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHfpump";
+
+        // Buscar contas de tokens SPL da carteira
         const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
           new solanaWeb3.PublicKey(publicKey),
           {
@@ -74,28 +44,23 @@
           }
         );
 
-        const ownsZOH = tokenAccounts.value.some(account =>
-          account.account.data.parsed.info.mint === tokenZOH &&
-          Number(account.account.data.parsed.info.tokenAmount.uiAmount) > 0
-        );
+        // Verificar se existe o token ZOH
+        const hasZOH = tokenAccounts.value.some((accountInfo) => {
+          const info = accountInfo.account.data.parsed.info;
+          return info.mint === zohMint;
+        });
 
-        if (ownsZOH) {
-          alert("✅ Acesso liberado! Bem-vindo ao portal ZOH.");
-          document.getElementById("status").innerText += "\nToken ZOH verificado com sucesso.";
-          // Redirecionar para página protegida
-          window.location.href = "portal.html"; // substitua por sua página real
+        if (hasZOH) {
+          resultDiv.innerText += "\n✅ Esta carteira possui o token ZOH!";
         } else {
-          alert("❌ Você não possui o token ZOH.");
-          document.getElementById("status").innerText += "\nAcesso negado.";
+          resultDiv.innerText += "\n❌ Esta carteira NÃO possui o token ZOH.";
         }
 
       } catch (err) {
         console.error(err);
-        alert("Erro ao verificar token. Tente novamente.");
+        resultDiv.innerText = "Erro ao conectar ou verificar.";
       }
-    }
-
-    document.getElementById("connect-btn").addEventListener("click", connectAndVerify);
+    };
   </script>
 </body>
 </html>
