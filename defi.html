@@ -120,7 +120,7 @@
       const status = document.getElementById("status");
 
       try {
-        const response = await connection.getTokenAccountsByOwner(
+        const response = await connection.getParsedTokenAccountsByOwner(
           new solanaWeb3.PublicKey(publicKey),
           {
             programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
@@ -130,10 +130,9 @@
         let hasZOH = false;
 
         for (let acc of response.value) {
-          const data = acc.account.data;
-          const decoded = solanaWeb3.AccountLayout.decode(data);
-          const mint = new solanaWeb3.PublicKey(decoded.mint).toBase58();
-          const amount = Number(decoded.amount);
+          const accountInfo = acc.account.data.parsed.info;
+          const mint = accountInfo.mint;
+          const amount = parseFloat(accountInfo.tokenAmount.uiAmountString);
 
           if (mint === ZOH_MINT && amount > 0) {
             hasZOH = true;
