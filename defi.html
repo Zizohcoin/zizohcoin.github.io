@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZOH Analyzer - NFT & DeFi</title>
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
   <style>
     body {
       background-color: #0a1a2f;
@@ -56,9 +56,10 @@
     .result {
       text-align: left;
       margin-top: 1.5rem;
+      display: none;
     }
 
-    #wallet-section, #resultado {
+    #wallet-section {
       display: none;
     }
   </style>
@@ -68,24 +69,27 @@
   <p>Exclusive tool for ZOH holders. Track recent NFT and DeFi activity from the most relevant Solana wallets.</p>
 
   <button onclick="connectWallet()">🔗 Connect Phantom Wallet</button>
-  <div id="status" style="margin-top: 1rem;"></div>
+  <p id="status" style="margin-top: 1rem;">Wallet not connected.</p>
 
-  <div class="card" id="wallet-section">
-    <h2>🔍 Check Wallet</h2>
-    <div class="input-group">
-      <input id="wallet" type="text" placeholder="Paste Solana wallet address" />
+  <div id="wallet-section">
+    <div class="card">
+      <h2>🔍 Check Wallet</h2>
+      <div class="input-group">
+        <input id="wallet" type="text" placeholder="Paste Solana wallet address">
+      </div>
+      <button onclick="verificarAnalise()">Analyze Activity</button>
+
+      <div id="resultado" class="result"></div>
     </div>
-    <button onclick="verificarAnalise()">Analyze Activity</button>
-    <div id="resultado" class="result"></div>
-  </div>
 
-  <div class="card">
-    <h2>📄 How It Works</h2>
-    <p>
-      This tool uses APIs to detect top minted NFTs, DeFi transactions, and token movements.<br />
-      You need to hold ZOH to unlock full reports.<br /><br />
-      🔐 <strong>Coming soon: pay with ZOH to access detailed insights.</strong>
-    </p>
+    <div class="card">
+      <h2>📄 How It Works</h2>
+      <p>
+        This tool uses APIs to detect top minted NFTs, DeFi transactions, and token movements.<br>
+        You need to hold ZOH to unlock full reports.<br><br>
+        🔐 <strong>Coming soon: pay with ZOH to access detailed insights.</strong>
+      </p>
+    </div>
   </div>
 
   <script>
@@ -102,7 +106,7 @@
         const resp = await window.solana.connect();
         const publicKey = resp.publicKey.toString();
         status.innerText = `✅ Connected: ${publicKey}`;
-        checkZOHBalance(publicKey);
+        await checkZOHBalance(publicKey);
       } catch (err) {
         console.error(err);
         status.innerText = "❌ Connection failed.";
@@ -112,26 +116,34 @@
     async function checkZOHBalance(userPublicKey) {
       const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
 
-      const accounts = await connection.getParsedTokenAccountsByOwner(
-        new solanaWeb3.PublicKey(userPublicKey),
-        { programId: solanaWeb3.TOKEN_PROGRAM_ID }
-      );
+      try {
+        const accounts = await connection.getParsedTokenAccountsByOwner(
+          new solanaWeb3.PublicKey(userPublicKey),
+          { programId: solanaWeb3.TOKEN_PROGRAM_ID }
+        );
 
-      let hasZOH = false;
+        let hasZOH = false;
 
-      accounts.value.forEach(({ account }) => {
-        const info = account.data.parsed.info;
-        if (info.mint === ZOH_MINT && parseFloat(info.tokenAmount.uiAmount) > 0) {
-          hasZOH = true;
+        accounts.value.forEach(({ account }) => {
+          const info = account.data.parsed.info;
+          const mint = info.mint;
+          const amount = parseFloat(info.tokenAmount.uiAmountString || "0");
+
+          if (mint === ZOH_MINT && amount > 0) {
+            hasZOH = true;
+            console.log("✅ ZOH token detected:", amount);
+          }
+        });
+
+        if (hasZOH) {
+          document.getElementById("wallet-section").style.display = "block";
+          document.getElementById("status").innerText += " | 🟢 ZOH token found. Access granted.";
+        } else {
+          document.getElementById("status").innerText += " | 🔴 No ZOH found.";
+          alert("❌ Access denied. You need to hold ZOH to use this tool.");
         }
-      });
-
-      if (hasZOH) {
-        document.getElementById("wallet-section").style.display = "block";
-        document.getElementById("status").innerText += " | 🟢 ZOH detected.";
-      } else {
-        document.getElementById("status").innerText += " | 🔴 No ZOH found in wallet.";
-        alert("You must hold ZOH to access this tool.");
+      } catch (error) {
+        console.error("Error checking ZOH balance:", error);
       }
     }
 
