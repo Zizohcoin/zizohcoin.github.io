@@ -3,137 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Relatórios ZOH</title>
+  <title>ZOH Research</title>
   <style>
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background-color: #0d1117;
+      background-color: #000b1d; /* cor igual à homepage */
       color: white;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 20px;
+    header {
+      background-color: #0a1a2f;
+      padding: 2rem 1rem;
       text-align: center;
+      border-bottom: 1px solid #1e3a5f;
     }
 
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
+    header h1 {
+      font-size: 2rem;
+      color: #4dabf7;
+      margin: 0;
     }
 
-    .sub {
-      color: #ccc;
-      margin-bottom: 40px;
+    header p {
       font-size: 1rem;
+      color: #b0c7e1;
+      margin-top: 0.5rem;
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
 
-    .card {
-      background-color: #161b22;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      text-align: left;
+    section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border: 1px solid #1e3a5f;
+      border-radius: 8px;
+      background-color: #0a1a2f;
     }
 
-    .card h2 {
-      font-size: 1.4rem;
-      margin: 10px 0;
+    section h2 {
+      color: #4dabf7;
+      margin-bottom: 0.5rem;
     }
 
-    .card p {
-      font-size: 0.95rem;
-      line-height: 1.4;
-      color: #ccc;
-    }
-
-    .btns {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    section p {
+      color: #c4d4e3;
+      line-height: 1.6;
     }
 
     .btn {
-      flex: 1;
-      text-align: center;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-
-    .btn-buy {
-      background-color: #007bff;
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 10px 20px;
+      background-color: #2176bd;
       color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s;
     }
 
-    .btn-share {
-      background-color: #343a40;
-      color: #fff;
+    .btn:hover {
+      background-color: #2891db;
     }
 
     footer {
-      margin-top: 60px;
-      color: #666;
-      font-size: 0.85rem;
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #a1b5d8;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>ZOH Research</h1>
+    <p>Relatórios estratégicos para a comunidade Zizoh Coin (ZOH)</p>
+  </header>
 
-  <div class="container">
-    <h1>Relatórios Exclusivos ZOH</h1>
-    <p class="sub">Adquira análises por apenas <strong>$0.99</strong>. Cada compra ajuda a fortalecer o projeto através da recompra de tokens ZOH.</p>
+  <main>
+    <section>
+      <h2>📊 Relatório Semanal - Tendências de Mercado</h2>
+      <p>Análise detalhada do comportamento das principais criptomoedas, eventos macroeconômicos e como isso pode afetar o ZOH.</p>
+      <a href="https://gumroad.com/l/relatorio-fake01" target="_blank" class="btn">Comprar por $0.99</a>
+    </section>
 
-    <div class="cards">
-      
-      <!-- Tendências -->
-      <div class="card">
-        <h2>Tendências de Mercado</h2>
-        <p>Descubra os principais movimentos do mercado cripto esta semana.</p>
-        <div class="btns">
-          <button class="btn btn-buy" onclick="window.open('#', '_blank')">Comprar por $0.99</button>
-          <button class="btn btn-share" onclick="navigator.clipboard.writeText(window.location.href)">Compartilhar</button>
-        </div>
-      </div>
+    <section>
+      <h2>📈 Previsões e Estratégias para Holders</h2>
+      <p>Dicas sobre como se posicionar com base no comportamento do mercado, ideal para quem quer manter ZOH no longo prazo.</p>
+      <a href="https://gumroad.com/l/relatorio-fake02" target="_blank" class="btn">Comprar por $0.99</a>
+    </section>
 
-      <!-- Estratégia -->
-      <div class="card">
-        <h2>Estratégia Semanal ZOH</h2>
-        <p>Análise técnica e tática com foco no ecossistema do token ZOH.</p>
-        <div class="btns">
-          <button class="btn btn-buy" onclick="window.open('#', '_blank')">Comprar por $0.99</button>
-          <button class="btn btn-share" onclick="navigator.clipboard.writeText(window.location.href)">Compartilhar</button>
-        </div>
-      </div>
+    <section>
+      <h2>🧠 Inteligência de Mercado Cripto</h2>
+      <p>Informações valiosas para identificar oportunidades de compra e venda, com foco em memecoins e tokens emergentes.</p>
+      <a href="https://gumroad.com/l/relatorio-fake03" target="_blank" class="btn">Comprar por $0.99</a>
+    </section>
+  </main>
 
-      <!-- Novidades -->
-      <div class="card">
-        <h2>Novidades do Projeto</h2>
-        <p>O que vem por aí no roadmap da Zizoh Coin? Fique por dentro.</p>
-        <div class="btns">
-          <button class="btn btn-buy" onclick="window.open('#', '_blank')">Comprar por $0.99</button>
-          <button class="btn btn-share" onclick="navigator.clipboard.writeText(window.location.href)">Compartilhar</button>
-        </div>
-      </div>
-
-    </div>
-
-    <footer>
-      © 2025 Zizohcoin — Todos os direitos reservados.
-    </footer>
-  </div>
-
+  <footer>
+    © 2025 Zizoh Coin (ZOH) — Powered by comunidade cripto independente 🌐
+  </footer>
 </body>
 </html>
