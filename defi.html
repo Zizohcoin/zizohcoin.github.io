@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZOH Analyzer - NFT & DeFi</title>
+  <style>
+    body {
+      background-color: #0a1a2f;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+      margin: 0;
+      text-align: center;
+    }
+
+    h1, h2 {
+      color: #4dabf7;
+    }
+
+    .card {
+      background-color: #112b4c;
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem auto;
+      max-width: 800px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      width: 70%;
+    }
+
+    button {
+      background-color: #1c4f91;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: #2176bd;
+    }
+
+    .result {
+      text-align: left;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 ZOH Analyzer</h1>
+  <p>Ferramenta exclusiva para holders ZOH. Veja atividades recentes de NFTs e DeFi das carteiras mais relevantes da Solana.</p>
+
+  <div class="card">
+    <h2>🔍 Verificar Carteira</h2>
+    <div class="input-group">
+      <input id="wallet" type="text" placeholder="Cole o endereço da carteira Solana">
+    </div>
+    <button onclick="verificarAnalise()">Analisar Atividade</button>
+
+    <div id="resultado" class="result"></div>
+  </div>
+
+  <div class="card">
+    <h2>📄 Como Funciona</h2>
+    <p>
+      Esta ferramenta usa APIs para identificar os NFTs mais mintados, transações em DeFi e tokens movimentados.<br>
+      É necessário possuir ZOH para desbloquear os relatórios completos.<br><br>
+      🔐 <strong>Em breve: pagamento com ZOH para acessar relatórios detalhados.</strong>
+    </p>
+  </div>
+
+  <script>
+    function verificarAnalise() {
+      const wallet = document.getElementById("wallet").value.trim();
+      const resultado = document.getElementById("resultado");
+
+      if (!wallet) {
+        resultado.innerHTML = "❌ Por favor, insira um endereço válido.";
+        return;
+      }
+
+      // Simulação básica de resultado
+      resultado.innerHTML = `
+        <p>📬 Endereço analisado: <strong>${wallet}</strong></p>
+        <ul>
+          <li>🧩 NFT Mintado: <strong>Zebra Club #238</strong> (há 2 dias)</li>
+          <li>💧 Pool de Liquidez: <strong>JUP/SOL</strong> - Adicionado 12.5 SOL</li>
+          <li>💸 Token Swaps: <strong>USDC → JUP</strong> (valor estimado $153)</li>
+        </ul>
+        <p>🔒 Relatório detalhado disponível com acesso ZOH.</p>
+      `;
+    }
+  </script>
+</body>
+</html>
