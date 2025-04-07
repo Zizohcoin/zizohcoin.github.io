@@ -1,129 +1,51 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>ZOH Analyzer</title>
-  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.41.3/lib/index.iife.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    #analyzer {
-      display: none;
-      margin-top: 20px;
-      border: 2px solid #3f3;
-      padding: 20px;
-      background-color: #eefaf0;
-    }
-    #resultado {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    table {
-      margin-top: 10px;
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
-    }
-    th {
-      background-color: #e0f5e9;
-    }
-  </style>
-</head>
-<body>
+<script type="module">
+  import {
+    Connection,
+    PublicKey,
+    clusterApiUrl
+  } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/+esm";
 
-  <h2>🔐 Acesso ao ZOH Analyzer</h2>
-  <input type="text" id="wallet" placeholder="Cole o endereço da carteira" size="50">
-  <button onclick="verificarToken()">Verificar acesso</button>
-  <p id="resultado"></p>
+  const ZOH_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
 
-  <div id="analyzer">
-    <h3>📊 ZOH Analyzer — Maiores Transações NFT/DeFi</h3>
-    <p>Consultando transações recentes da rede Solana...</p>
-    <button onclick="consultarTransacoes()">🔍 Consultar transações</button>
-    <div id="transacoes"></div>
-  </div>
+  async function checkIfHasZOH(walletAddress) {
+    const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+    const ownerPublicKey = new PublicKey(walletAddress);
+    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(ownerPublicKey, {
+      programId: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
+    });
 
-  <script>
-    const ZOH_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    for (const { account } of tokenAccounts.value) {
+      const mint = account.data.parsed.info.mint;
+      const amount = account.data.parsed.info.tokenAmount.uiAmount;
 
-    async function verificarToken() {
-      const walletAddress = document.getElementById("wallet").value.trim();
-      const resultado = document.getElementById("resultado");
-      const analyzer = document.getElementById("analyzer");
-      analyzer.style.display = "none";
-      resultado.textContent = "Verificando...";
-
-      try {
-        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-          new solanaWeb3.PublicKey(walletAddress),
-          { programId: solanaWeb3.TOKEN_PROGRAM_ID }
-        );
-
-        let possuiZOH = false;
-
-        tokenAccounts.value.forEach(accountInfo => {
-          const info = accountInfo.account.data.parsed.info;
-          const mint = info.mint;
-          const balance = info.tokenAmount.uiAmount;
-
-          if (mint === ZOH_MINT && balance > 0) {
-            possuiZOH = true;
-          }
-        });
-
-        if (possuiZOH) {
-          resultado.textContent = "✅ Acesso liberado. Bem-vindo ao ZOH Analyzer!";
-          analyzer.style.display = "block";
-        } else {
-          resultado.textContent = "❌ Acesso negado. Esta carteira não possui o token ZOH.";
-        }
-
-      } catch (error) {
-        console.error(error);
-        resultado.textContent = "Erro ao verificar a carteira. Verifique o endereço.";
+      if (mint === ZOH_MINT && amount > 0) {
+        return true;
       }
     }
 
-    async function consultarTransacoes() {
-      const transacoesDiv = document.getElementById("transacoes");
-      transacoesDiv.innerHTML = "🔄 Buscando transações...";
-      
-      try {
-        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
-        const slot = await connection.getSlot();
-        const signatures = await connection.getSignaturesForAddress(
-          new solanaWeb3.PublicKey("HPLqzSPUQvVDUgXmRU7rrtw7JkgDvhBaBzXefq2tUvTs"), // exemplo de address NFT/DeFi
-          { limit: 10 }
-        );
+    return false;
+  }
 
-        if (signatures.length === 0) {
-          transacoesDiv.innerHTML = "Nenhuma transação encontrada.";
-          return;
-        }
+  // exemplo de uso
+  const input = document.getElementById("wallet");
+  const resultDiv = document.getElementById("resultado");
 
-        let tableHTML = "<table><tr><th>Assinatura</th><th>Slot</th><th>Data</th></tr>";
-        for (let sig of signatures) {
-          const tx = await connection.getTransaction(sig.signature);
-          if (tx) {
-            const timestamp = new Date((tx.blockTime || 0) * 1000).toLocaleString();
-            tableHTML += `<tr><td>${sig.signature.slice(0, 15)}...</td><td>${tx.slot}</td><td>${timestamp}</td></tr>`;
-          }
-        }
-        tableHTML += "</table>";
-        transacoesDiv.innerHTML = tableHTML;
+  document.getElementById("verificar").addEventListener("click", async () => {
+    const address = input.value.trim();
+    resultDiv.innerText = "🔍 Verificando...";
 
-      } catch (error) {
-        console.error(error);
-        transacoesDiv.innerHTML = "Erro ao buscar transações.";
+    try {
+      const hasZOH = await checkIfHasZOH(address);
+      if (hasZOH) {
+        resultDiv.innerHTML = "✅ ZOH detectado! Acesso liberado à ferramenta.";
+        // aqui você pode mostrar sua ferramenta
+        document.getElementById("ferramenta").style.display = "block";
+      } else {
+        resultDiv.innerHTML = "❌ Você não possui ZOH nessa carteira.";
       }
+    } catch (e) {
+      console.error(e);
+      resultDiv.innerHTML = "⚠️ Erro ao verificar a carteira. Verifique se o endereço é válido.";
     }
-  </script>
-
-</body>
-</html>
+  });
+</script>
