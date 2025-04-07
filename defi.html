@@ -1,177 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ZOH Analyzer - NFT & DeFi</title>
+  <meta charset="UTF-8">
+  <title>Verificador ZOH</title>
   <style>
     body {
-      background-color: #0a1a2f;
-      color: #ffffff;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 2rem;
-      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1b2a;
+      color: white;
       text-align: center;
-    }
-
-    h1, h2 {
-      color: #4dabf7;
-    }
-
-    .card {
-      background-color: #112b4c;
-      border-radius: 12px;
-      padding: 2rem;
-      margin: 2rem auto;
-      max-width: 800px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .input-group {
-      margin-bottom: 1rem;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      width: 70%;
+      padding-top: 100px;
     }
 
     button {
-      background-color: #1c4f91;
+      background: #007bff;
       color: white;
-      padding: 12px 20px;
       border: none;
-      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
       cursor: pointer;
-      margin-top: 1rem;
     }
 
-    button:hover {
-      background-color: #2176bd;
-    }
-
-    .result {
-      text-align: left;
-      margin-top: 1.5rem;
-    }
-
-    .hidden {
-      display: none;
+    #status {
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>🧠 ZOH Analyzer</h1>
-  <p>Exclusive tool for ZOH holders. Track recent NFT and DeFi activity from the most relevant Solana wallets.</p>
+  <h2>Conecte sua carteira Phantom</h2>
+  <button id="connectBtn">Conectar Wallet</button>
+  <p id="status"></p>
 
-  <div class="card">
-    <h2>🔐 Connect Wallet</h2>
-    <p id="status">Waiting for wallet connection...</p>
-    <button onclick="connectWallet()">Connect Phantom Wallet</button>
-  </div>
-
-  <div id="wallet-section" class="card hidden">
-    <h2>🔍 Check Wallet</h2>
-    <div class="input-group">
-      <input id="wallet" type="text" placeholder="Paste Solana wallet address">
-    </div>
-    <button onclick="verificarAnalise()">Analyze Activity</button>
-    <div id="resultado" class="result"></div>
-  </div>
-
-  <div class="card">
-    <h2>📄 How It Works</h2>
-    <p>
-      This tool uses APIs to detect top minted NFTs, DeFi transactions, and token movements.<br>
-      You need to hold ZOH to unlock full reports.<br><br>
-      🔐 <strong>Coming soon: pay with ZOH to access detailed insights.</strong>
-    </p>
-  </div>
-
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <script>
-    const ZOH_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    const ZOH_TOKEN_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+    const HELIUS_API_KEY = ""; // Opcional: adicione sua API key da helius.xyz aqui
 
-    async function connectWallet() {
-      const status = document.getElementById("status");
-
+    document.getElementById("connectBtn").addEventListener("click", async () => {
       try {
         const provider = window.solana;
+
         if (!provider || !provider.isPhantom) {
-          alert("Phantom Wallet não detectada.");
+          alert("Instale a carteira Phantom para continuar.");
           return;
         }
 
-        const response = await provider.connect();
-        const publicKey = response.publicKey.toString();
-        status.innerText = "🔗 Conectado: " + publicKey;
+        const resp = await provider.connect();
+        const walletAddress = resp.publicKey.toString();
+        document.getElementById("status").innerText = `Conectado: ${walletAddress}`;
 
-        checkZOH(publicKey);
-      } catch (err) {
-        console.error("Erro ao conectar:", err);
-        alert("Erro ao conectar à Phantom.");
-      }
-    }
+        const url = `https://api.helius.xyz/v0/addresses/${walletAddress}/balances?api-key=${HELIUS_API_KEY}`;
+        const result = await fetch(url);
+        const data = await result.json();
 
-    async function checkZOH(publicKey) {
-      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
-      const status = document.getElementById("status");
+        const zohToken = data.tokens.find(token => token.mint === ZOH_TOKEN_MINT);
 
-      try {
-        const response = await connection.getParsedTokenAccountsByOwner(
-          new solanaWeb3.PublicKey(publicKey),
-          {
-            programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
-          }
-        );
-
-        let hasZOH = false;
-
-        for (let acc of response.value) {
-          const accountInfo = acc.account.data.parsed.info;
-          const mint = accountInfo.mint;
-          const amount = parseFloat(accountInfo.tokenAmount.uiAmountString);
-
-          if (mint === ZOH_MINT && amount > 0) {
-            hasZOH = true;
-            break;
-          }
-        }
-
-        if (hasZOH) {
-          status.innerText += " ✅ ZOH detectado!";
-          document.getElementById("wallet-section").classList.remove("hidden");
+        if (zohToken && parseFloat(zohToken.amount) > 0) {
+          alert("✅ Acesso liberado: você possui o token ZOH!");
+          // Aqui você pode redirecionar para outra página se quiser:
+          // window.location.href = "dashboard.html";
         } else {
-          status.innerText += " ❌ Você não possui ZOH.";
-          alert("❌ Acesso negado. Você precisa possuir o token ZOH.");
+          alert("⛔ Acesso negado: você não possui o token ZOH.");
         }
-      } catch (error) {
-        console.error("Erro ao buscar tokens:", error);
+
+      } catch (err) {
+        console.error(err);
         alert("Erro ao verificar tokens.");
       }
-    }
-
-    function verificarAnalise() {
-      const wallet = document.getElementById("wallet").value.trim();
-      const resultado = document.getElementById("resultado");
-
-      if (!wallet) {
-        resultado.innerHTML = "❌ Please enter a valid address.";
-        return;
-      }
-
-      resultado.innerHTML = `
-        <p>📬 Analyzed address: <strong>${wallet}</strong></p>
-        <ul>
-          <li>🧩 Minted NFT: <strong>Zebra Club #238</strong> (2 days ago)</li>
-          <li>💧 Liquidity Pool: <strong>JUP/SOL</strong> - Added 12.5 SOL</li>
-          <li>💸 Token Swaps: <strong>USDC → JUP</strong> (estimated $153)</li>
-        </ul>
-        <p>🔓 Full report unlocked with ZOH!</p>
-      `;
-    }
+    });
   </script>
 </body>
 </html>
