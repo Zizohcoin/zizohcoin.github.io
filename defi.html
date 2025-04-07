@@ -87,7 +87,9 @@
         const resp = await window.solana.connect();
         const publicKey = resp.publicKey.toString();
         status.innerText = "🔗 Conectado: " + publicKey;
-        checkZOH(publicKey);
+
+        // Chamar a verificação com logs
+        await checkZOH(publicKey);
       } catch (err) {
         console.error(err);
         status.innerText = "❌ Falha ao conectar.";
@@ -96,27 +98,42 @@
 
     async function checkZOH(publicKey) {
       const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+      const status = document.getElementById("status");
 
       try {
-        const accounts = await connection.getParsedTokenAccountsByOwner(
+        const response = await connection.getParsedTokenAccountsByOwner(
           new solanaWeb3.PublicKey(publicKey),
-          { programId: solanaWeb3.TOKEN_PROGRAM_ID }
+          {
+            programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
+          }
         );
 
-        const hasZOH = accounts.value.some(({ account }) => {
-          const info = account.data.parsed.info;
-          return info.mint === ZOH_MINT && parseFloat(info.tokenAmount.uiAmountString || "0") > 0;
-        });
+        console.log("Contas encontradas:", response.value.length);
+        let hasZOH = false;
+
+        for (let acc of response.value) {
+          const info = acc.account.data.parsed.info;
+          const mint = info.mint;
+          const amount = info.tokenAmount.uiAmount;
+
+          console.log(`Token: ${mint} | Quantidade: ${amount}`);
+
+          if (mint === ZOH_MINT && amount > 0) {
+            hasZOH = true;
+            break;
+          }
+        }
 
         if (hasZOH) {
+          status.innerText += " ✅ ZOH detectado!";
           document.getElementById("wallet-section").classList.remove("hidden");
-          document.getElementById("status").innerText += " | ✅ ZOH detectado. Acesso liberado!";
         } else {
-          alert("Você precisa possuir ZOH para acessar.");
-          document.getElementById("status").innerText += " | ❌ ZOH não encontrado.";
+          status.innerText += " ❌ Você não possui ZOH.";
+          alert("❌ Acesso negado. Você precisa possuir o token ZOH.");
         }
       } catch (error) {
-        console.error("Erro ao verificar token:", error);
+        console.error("Erro na verificação:", error);
+        alert("Erro ao verificar tokens.");
       }
     }
 
