@@ -6,131 +6,134 @@
   <title>Relatórios ZOH</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0a1a2f;
-      color: #ffffff;
       margin: 0;
-      padding: 2rem;
-    }
-
-    h1 {
-      color: #4dabf7;
-      text-align: center;
-    }
-
-    p {
-      color: #cbd5e1;
-      text-align: center;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #0d1117;
+      color: white;
     }
 
     .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem 0;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      text-align: center;
     }
 
-    .relatorio {
-      background-color: #112b4c;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
     }
 
-    .relatorio:hover {
-      transform: translateY(-5px);
-    }
-
-    .relatorio img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .relatorio-content {
-      padding: 1.5rem;
-    }
-
-    .relatorio h2 {
-      margin-top: 0;
-      color: #ffffff;
-      font-size: 1.5rem;
-    }
-
-    .relatorio p {
-      margin-bottom: 1.2rem;
-      color: #d1d5db;
+    .sub {
+      color: #ccc;
+      margin-bottom: 40px;
       font-size: 1rem;
     }
 
-    .botao-compra, .botao-compartilhar {
-      background-color: #4dabf7;
-      color: #000;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-      display: inline-block;
-      margin-right: 10px;
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
     }
 
-    .botao-compra:hover, .botao-compartilhar:hover {
-      background-color: #339af0;
+    .card {
+      background-color: #161b22;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      text-align: left;
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      margin: 10px 0;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #ccc;
+    }
+
+    .btns {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .btn-buy {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-share {
+      background-color: #343a40;
+      color: #fff;
     }
 
     footer {
-      margin-top: 3rem;
-      color: #6c757d;
-      font-size: 14px;
-      text-align: center;
+      margin-top: 60px;
+      color: #666;
+      font-size: 0.85rem;
     }
   </style>
 </head>
 <body>
-  <h1>📊 Relatórios Exclusivos ZOH</h1>
-  <p>Adquira análises por apenas <strong>$0,99</strong>. Cada compra ajuda a fortalecer o projeto através da recompra de tokens ZOH.</p>
 
   <div class="container">
-    <!-- Relatório 1 -->
-    <div class="relatorio">
-      <img src="https://via.placeholder.com/500x180" alt="Tendências de Mercado">
-      <div class="relatorio-content">
-        <h2>📈 Tendências de Mercado</h2>
+    <h1>Relatórios Exclusivos ZOH</h1>
+    <p class="sub">Adquira análises por apenas <strong>$0.99</strong>. Cada compra ajuda a fortalecer o projeto através da recompra de tokens ZOH.</p>
+
+    <div class="cards">
+      
+      <!-- Tendências -->
+      <div class="card">
+        <h2>Tendências de Mercado</h2>
         <p>Descubra os principais movimentos do mercado cripto esta semana.</p>
-        <a href="https://gumroad.com/l/fake-relatorio1" target="_blank" class="botao-compra">Comprar por $0,99</a>
-        <a href="https://twitter.com/intent/tweet?text=Confira+este+relatório+da+ZOH!&url=https://zizohcoin.github.io/research.html" target="_blank" class="botao-compartilhar">Compartilhar</a>
+        <div class="btns">
+          <button class="btn btn-buy" onclick="window.open('#', '_blank')">Comprar por $0.99</button>
+          <button class="btn btn-share" onclick="navigator.clipboard.writeText(window.location.href)">Compartilhar</button>
+        </div>
       </div>
-    </div>
 
-    <!-- Relatório 2 -->
-    <div class="relatorio">
-      <img src="https://via.placeholder.com/500x180" alt="Estratégia Semanal ZOH">
-      <div class="relatorio-content">
-        <h2>🧠 Estratégia Semanal ZOH</h2>
+      <!-- Estratégia -->
+      <div class="card">
+        <h2>Estratégia Semanal ZOH</h2>
         <p>Análise técnica e tática com foco no ecossistema do token ZOH.</p>
-        <a href="https://gumroad.com/l/fake-relatorio2" target="_blank" class="botao-compra">Comprar por $0,99</a>
-        <a href="https://twitter.com/intent/tweet?text=Confira+este+relatório+da+ZOH!&url=https://zizohcoin.github.io/research.html" target="_blank" class="botao-compartilhar">Compartilhar</a>
+        <div class="btns">
+          <button class="btn btn-buy" onclick="window.open('#', '_blank')">Comprar por $0.99</button>
+          <button class="btn btn-share" onclick="navigator.clipboard.writeText(window.location.href)">Compartilhar</button>
+        </div>
       </div>
+
+      <!-- Novidades -->
+      <div class="card">
+        <h2>Novidades do Projeto</h2>
+        <p>O que vem por aí no roadmap da Zizoh Coin? Fique por dentro.</p>
+        <div class="btns">
+          <button class="btn btn-buy" onclick="window.open('#', '_blank')">Comprar por $0.99</button>
+          <button class="btn btn-share" onclick="navigator.clipboard.writeText(window.location.href)">Compartilhar</button>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Relatório 3 -->
-    <div class="relatorio">
-      <img src="https://via.placeholder.com/500x180" alt="Novidades do Projeto">
-      <div class="relatorio-content">
-        <h2>🔍 Novidades do Projeto</h2>
-        <p>O que vem por aí no roadmap da Zizoh Coin? Fique por dentro.</p>
-        <a href="https://gumroad.com/l/fake-relatorio3" target="_blank" class="botao-compra">Comprar por $0,99</a>
-        <a href="https://twitter.com/intent/tweet?text=Confira+este+relatório+da+ZOH!&url=https://zizohcoin.github.io/research.html" target="_blank" class="botao-compartilhar">Compartilhar</a>
-      </div>
-    </div>
+    <footer>
+      © 2025 Zizohcoin — Todos os direitos reservados.
+    </footer>
   </div>
 
-  <footer>
-    © 2025 Zizoh Coin — Todos os direitos reservados.
-  </footer>
 </body>
 </html>
