@@ -1,73 +1,101 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Verificador ZOH</title>
+  <title>Portal Exclusivo ZOH</title>
   <style>
     body {
+      background-color: #0f172a;
+      color: #f1f5f9;
       font-family: Arial, sans-serif;
-      background: #0d1b2a;
-      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
-      padding-top: 100px;
     }
 
     button {
-      background: #007bff;
-      color: white;
-      border: none;
       padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
+      font-size: 18px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #3b82f6;
+      color: white;
       cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2563eb;
     }
 
     #status {
       margin-top: 20px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <h2>Conecte sua carteira Phantom</h2>
-  <button id="connectBtn">Conectar Wallet</button>
-  <p id="status"></p>
+  <h1>Área restrita ZOH</h1>
+  <p>Apenas detentores do token ZOH podem acessar.</p>
+  <button id="connect-btn">Conectar carteira Phantom</button>
+  <div id="status"></div>
 
+  <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.js"></script>
   <script>
-    const ZOH_TOKEN_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
-    const HELIUS_API_KEY = ""; // Opcional: adicione sua API key da helius.xyz aqui
+    const tokenZOH = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
 
-    document.getElementById("connectBtn").addEventListener("click", async () => {
+    async function connectAndVerify() {
+      const provider = window.solana;
+      if (!provider?.isPhantom) {
+        alert("Por favor, instale a carteira Phantom.");
+        return;
+      }
+
       try {
-        const provider = window.solana;
-
-        if (!provider || !provider.isPhantom) {
-          alert("Instale a carteira Phantom para continuar.");
-          return;
-        }
-
+        // Conectar carteira
         const resp = await provider.connect();
-        const walletAddress = resp.publicKey.toString();
-        document.getElementById("status").innerText = `Conectado: ${walletAddress}`;
+        const publicKey = resp.publicKey.toString();
+        document.getElementById("status").innerText = `Carteira conectada: ${publicKey}`;
 
-        const url = `https://api.helius.xyz/v0/addresses/${walletAddress}/balances?api-key=${HELIUS_API_KEY}`;
-        const result = await fetch(url);
-        const data = await result.json();
+        // Assinar mensagem
+        const message = `Acesso ao portal ZOH em ${new Date().toISOString()}`;
+        const encodedMessage = new TextEncoder().encode(message);
+        await provider.signMessage(encodedMessage, "utf8");
 
-        const zohToken = data.tokens.find(token => token.mint === ZOH_TOKEN_MINT);
+        // Verificar token
+        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+          new solanaWeb3.PublicKey(publicKey),
+          {
+            programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+          }
+        );
 
-        if (zohToken && parseFloat(zohToken.amount) > 0) {
-          alert("✅ Acesso liberado: você possui o token ZOH!");
-          // Aqui você pode redirecionar para outra página se quiser:
-          // window.location.href = "dashboard.html";
+        const ownsZOH = tokenAccounts.value.some(account =>
+          account.account.data.parsed.info.mint === tokenZOH &&
+          Number(account.account.data.parsed.info.tokenAmount.uiAmount) > 0
+        );
+
+        if (ownsZOH) {
+          alert("✅ Acesso liberado! Bem-vindo ao portal ZOH.");
+          document.getElementById("status").innerText += "\nToken ZOH verificado com sucesso.";
+          // Redirecionar para página protegida
+          window.location.href = "portal.html"; // substitua por sua página real
         } else {
-          alert("⛔ Acesso negado: você não possui o token ZOH.");
+          alert("❌ Você não possui o token ZOH.");
+          document.getElementById("status").innerText += "\nAcesso negado.";
         }
 
       } catch (err) {
         console.error(err);
-        alert("Erro ao verificar tokens.");
+        alert("Erro ao verificar token. Tente novamente.");
       }
-    });
+    }
+
+    document.getElementById("connect-btn").addEventListener("click", connectAndVerify);
   </script>
 </body>
 </html>
