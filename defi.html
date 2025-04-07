@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZOH Analyzer - NFT & DeFi</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZOH Analyzer</title>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
   <style>
     body {
@@ -15,10 +15,6 @@
       text-align: center;
     }
 
-    h1, h2 {
-      color: #4dabf7;
-    }
-
     .card {
       background-color: #112b4c;
       border-radius: 12px;
@@ -26,17 +22,6 @@
       margin: 2rem auto;
       max-width: 800px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .input-group {
-      margin-bottom: 1rem;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      width: 70%;
     }
 
     button {
@@ -53,42 +38,37 @@
       background-color: #2176bd;
     }
 
-    .result {
-      text-align: left;
-      margin-top: 1.5rem;
-      display: none;
+    input {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      width: 70%;
     }
 
-    #wallet-section {
-      display: none;
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
 <body>
   <h1>🧠 ZOH Analyzer</h1>
-  <p>Exclusive tool for ZOH holders. Track recent NFT and DeFi activity from the most relevant Solana wallets.</p>
+  <p>Exclusivo para holders de ZOH</p>
 
-  <button onclick="connectWallet()">🔗 Connect Phantom Wallet</button>
-  <p id="status" style="margin-top: 1rem;">Wallet not connected.</p>
+  <button onclick="connectWallet()">🔗 Conectar Phantom</button>
+  <p id="status">Carteira não conectada</p>
 
-  <div id="wallet-section">
+  <div id="wallet-section" class="hidden">
     <div class="card">
-      <h2>🔍 Check Wallet</h2>
-      <div class="input-group">
-        <input id="wallet" type="text" placeholder="Paste Solana wallet address">
-      </div>
-      <button onclick="verificarAnalise()">Analyze Activity</button>
-
-      <div id="resultado" class="result"></div>
+      <h2>🔍 Analisar Atividade</h2>
+      <input id="wallet" type="text" placeholder="Cole o endereço da carteira Solana" />
+      <br />
+      <button onclick="verificarAnalise()">Analisar</button>
+      <div id="resultado" style="margin-top: 1rem; text-align: left;"></div>
     </div>
 
     <div class="card">
-      <h2>📄 How It Works</h2>
-      <p>
-        This tool uses APIs to detect top minted NFTs, DeFi transactions, and token movements.<br>
-        You need to hold ZOH to unlock full reports.<br><br>
-        🔐 <strong>Coming soon: pay with ZOH to access detailed insights.</strong>
-      </p>
+      <h2>📄 Como Funciona</h2>
+      <p>Detecta NFTs mintados, transações DeFi e movimentação de tokens.</p>
     </div>
   </div>
 
@@ -97,53 +77,46 @@
 
     async function connectWallet() {
       const status = document.getElementById("status");
+
       if (!window.solana || !window.solana.isPhantom) {
-        alert("Please install Phantom wallet.");
+        alert("Instale a carteira Phantom.");
         return;
       }
 
       try {
         const resp = await window.solana.connect();
         const publicKey = resp.publicKey.toString();
-        status.innerText = `✅ Connected: ${publicKey}`;
-        await checkZOHBalance(publicKey);
+        status.innerText = "🔗 Conectado: " + publicKey;
+        checkZOH(publicKey);
       } catch (err) {
         console.error(err);
-        status.innerText = "❌ Connection failed.";
+        status.innerText = "❌ Falha ao conectar.";
       }
     }
 
-    async function checkZOHBalance(userPublicKey) {
-      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+    async function checkZOH(publicKey) {
+      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
 
       try {
         const accounts = await connection.getParsedTokenAccountsByOwner(
-          new solanaWeb3.PublicKey(userPublicKey),
+          new solanaWeb3.PublicKey(publicKey),
           { programId: solanaWeb3.TOKEN_PROGRAM_ID }
         );
 
-        let hasZOH = false;
-
-        accounts.value.forEach(({ account }) => {
+        const hasZOH = accounts.value.some(({ account }) => {
           const info = account.data.parsed.info;
-          const mint = info.mint;
-          const amount = parseFloat(info.tokenAmount.uiAmountString || "0");
-
-          if (mint === ZOH_MINT && amount > 0) {
-            hasZOH = true;
-            console.log("✅ ZOH token detected:", amount);
-          }
+          return info.mint === ZOH_MINT && parseFloat(info.tokenAmount.uiAmountString || "0") > 0;
         });
 
         if (hasZOH) {
-          document.getElementById("wallet-section").style.display = "block";
-          document.getElementById("status").innerText += " | 🟢 ZOH token found. Access granted.";
+          document.getElementById("wallet-section").classList.remove("hidden");
+          document.getElementById("status").innerText += " | ✅ ZOH detectado. Acesso liberado!";
         } else {
-          document.getElementById("status").innerText += " | 🔴 No ZOH found.";
-          alert("❌ Access denied. You need to hold ZOH to use this tool.");
+          alert("Você precisa possuir ZOH para acessar.");
+          document.getElementById("status").innerText += " | ❌ ZOH não encontrado.";
         }
       } catch (error) {
-        console.error("Error checking ZOH balance:", error);
+        console.error("Erro ao verificar token:", error);
       }
     }
 
@@ -152,21 +125,19 @@
       const resultado = document.getElementById("resultado");
 
       if (!wallet) {
-        resultado.innerHTML = "❌ Please enter a valid address.";
-        resultado.style.display = "block";
+        resultado.innerHTML = "⚠️ Endereço inválido.";
         return;
       }
 
       resultado.innerHTML = `
-        <p>📬 Analyzed address: <strong>${wallet}</strong></p>
+        <p>📬 Endereço analisado: <strong>${wallet}</strong></p>
         <ul>
-          <li>🧩 Minted NFT: <strong>Zebra Club #238</strong> (2 days ago)</li>
-          <li>💧 Liquidity Pool: <strong>JUP/SOL</strong> - Added 12.5 SOL</li>
-          <li>💸 Token Swaps: <strong>USDC → JUP</strong> (estimated $153)</li>
+          <li>🧩 NFT Mintado: Zebra Club #238</li>
+          <li>💧 LP: JUP/SOL - 12.5 SOL</li>
+          <li>💸 Swap: USDC → JUP ($153)</li>
         </ul>
-        <p>✅ Full report unlocked! You're a ZOH holder.</p>
+        <p>🔓 Acesso liberado porque você possui ZOH 🎉</p>
       `;
-      resultado.style.display = "block";
     }
   </script>
 </body>
