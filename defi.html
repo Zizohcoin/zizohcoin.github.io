@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ZOH Analyzer - NFT & DeFi</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
     body {
       background-color: #0a1a2f;
@@ -56,42 +57,94 @@
       text-align: left;
       margin-top: 1.5rem;
     }
+
+    #wallet-section, #resultado {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>🧠 ZOH Analyzer</h1>
   <p>Exclusive tool for ZOH holders. Track recent NFT and DeFi activity from the most relevant Solana wallets.</p>
 
-  <div class="card">
+  <button onclick="connectWallet()">🔗 Connect Phantom Wallet</button>
+  <div id="status" style="margin-top: 1rem;"></div>
+
+  <div class="card" id="wallet-section">
     <h2>🔍 Check Wallet</h2>
     <div class="input-group">
-      <input id="wallet" type="text" placeholder="Paste Solana wallet address">
+      <input id="wallet" type="text" placeholder="Paste Solana wallet address" />
     </div>
     <button onclick="verificarAnalise()">Analyze Activity</button>
-
     <div id="resultado" class="result"></div>
   </div>
 
   <div class="card">
     <h2>📄 How It Works</h2>
     <p>
-      This tool uses APIs to detect top minted NFTs, DeFi transactions, and token movements.<br>
-      You need to hold ZOH to unlock full reports.<br><br>
+      This tool uses APIs to detect top minted NFTs, DeFi transactions, and token movements.<br />
+      You need to hold ZOH to unlock full reports.<br /><br />
       🔐 <strong>Coming soon: pay with ZOH to access detailed insights.</strong>
     </p>
   </div>
 
   <script>
+    const ZOH_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+
+    async function connectWallet() {
+      const status = document.getElementById("status");
+      if (!window.solana || !window.solana.isPhantom) {
+        alert("Please install Phantom wallet.");
+        return;
+      }
+
+      try {
+        const resp = await window.solana.connect();
+        const publicKey = resp.publicKey.toString();
+        status.innerText = `✅ Connected: ${publicKey}`;
+        checkZOHBalance(publicKey);
+      } catch (err) {
+        console.error(err);
+        status.innerText = "❌ Connection failed.";
+      }
+    }
+
+    async function checkZOHBalance(userPublicKey) {
+      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+
+      const accounts = await connection.getParsedTokenAccountsByOwner(
+        new solanaWeb3.PublicKey(userPublicKey),
+        { programId: solanaWeb3.TOKEN_PROGRAM_ID }
+      );
+
+      let hasZOH = false;
+
+      accounts.value.forEach(({ account }) => {
+        const info = account.data.parsed.info;
+        if (info.mint === ZOH_MINT && parseFloat(info.tokenAmount.uiAmount) > 0) {
+          hasZOH = true;
+        }
+      });
+
+      if (hasZOH) {
+        document.getElementById("wallet-section").style.display = "block";
+        document.getElementById("status").innerText += " | 🟢 ZOH detected.";
+      } else {
+        document.getElementById("status").innerText += " | 🔴 No ZOH found in wallet.";
+        alert("You must hold ZOH to access this tool.");
+      }
+    }
+
     function verificarAnalise() {
       const wallet = document.getElementById("wallet").value.trim();
       const resultado = document.getElementById("resultado");
 
       if (!wallet) {
         resultado.innerHTML = "❌ Please enter a valid address.";
+        resultado.style.display = "block";
         return;
       }
 
-      // Basic mock result
       resultado.innerHTML = `
         <p>📬 Analyzed address: <strong>${wallet}</strong></p>
         <ul>
@@ -99,8 +152,9 @@
           <li>💧 Liquidity Pool: <strong>JUP/SOL</strong> - Added 12.5 SOL</li>
           <li>💸 Token Swaps: <strong>USDC → JUP</strong> (estimated $153)</li>
         </ul>
-        <p>🔒 Full report available with ZOH access.</p>
+        <p>✅ Full report unlocked! You're a ZOH holder.</p>
       `;
+      resultado.style.display = "block";
     }
   </script>
 </body>
