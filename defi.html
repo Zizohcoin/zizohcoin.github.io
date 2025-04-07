@@ -1,51 +1,91 @@
-<script type="module">
-  import {
-    Connection,
-    PublicKey,
-    clusterApiUrl
-  } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/+esm";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>ZOH Analyzer Access</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #ferramenta {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: #f0f0f0;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
 
-  const ZOH_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+  <h1>🔍 Verificador de Acesso ZOH</h1>
+  <p>Insira o endereço da sua carteira Solana para verificar acesso:</p>
 
-  async function checkIfHasZOH(walletAddress) {
-    const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
-    const ownerPublicKey = new PublicKey(walletAddress);
-    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(ownerPublicKey, {
-      programId: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
+  <input type="text" id="wallet" placeholder="Ex: 5uD2...SfiT" size="50">
+  <br><br>
+  <button id="verificar">Verificar</button>
+
+  <div id="resultado" style="margin-top: 20px; font-weight: bold;"></div>
+
+  <div id="ferramenta">
+    <h2>🛠️ Ferramenta ZOH Analyzer</h2>
+    <p>Aqui você pode consultar as maiores transações NFT DeFi (exemplo)...</p>
+    <!-- Você pode inserir sua ferramenta real aqui -->
+  </div>
+
+  <script type="module">
+    import {
+      Connection,
+      PublicKey,
+      clusterApiUrl
+    } from "https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/+esm";
+
+    const ZOH_MINT = "22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump";
+
+    async function checkIfHasZOH(walletAddress) {
+      const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+      const ownerPublicKey = new PublicKey(walletAddress);
+      const tokenAccounts = await connection.getParsedTokenAccountsByOwner(ownerPublicKey, {
+        programId: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
+      });
+
+      for (const { account } of tokenAccounts.value) {
+        const mint = account.data.parsed.info.mint;
+        const amount = account.data.parsed.info.tokenAmount.uiAmount;
+
+        if (mint === ZOH_MINT && amount > 0) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    document.getElementById("verificar").addEventListener("click", async () => {
+      const input = document.getElementById("wallet");
+      const resultDiv = document.getElementById("resultado");
+      const address = input.value.trim();
+
+      resultDiv.innerText = "🔍 Verificando...";
+
+      try {
+        const hasZOH = await checkIfHasZOH(address);
+        if (hasZOH) {
+          resultDiv.innerHTML = "✅ ZOH detectado! Acesso liberado à ferramenta.";
+          document.getElementById("ferramenta").style.display = "block";
+        } else {
+          resultDiv.innerHTML = "❌ Você não possui ZOH nessa carteira.";
+          document.getElementById("ferramenta").style.display = "none";
+        }
+      } catch (e) {
+        console.error(e);
+        resultDiv.innerHTML = "⚠️ Erro ao verificar a carteira. Verifique se o endereço está correto.";
+        document.getElementById("ferramenta").style.display = "none";
+      }
     });
+  </script>
 
-    for (const { account } of tokenAccounts.value) {
-      const mint = account.data.parsed.info.mint;
-      const amount = account.data.parsed.info.tokenAmount.uiAmount;
-
-      if (mint === ZOH_MINT && amount > 0) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  // exemplo de uso
-  const input = document.getElementById("wallet");
-  const resultDiv = document.getElementById("resultado");
-
-  document.getElementById("verificar").addEventListener("click", async () => {
-    const address = input.value.trim();
-    resultDiv.innerText = "🔍 Verificando...";
-
-    try {
-      const hasZOH = await checkIfHasZOH(address);
-      if (hasZOH) {
-        resultDiv.innerHTML = "✅ ZOH detectado! Acesso liberado à ferramenta.";
-        // aqui você pode mostrar sua ferramenta
-        document.getElementById("ferramenta").style.display = "block";
-      } else {
-        resultDiv.innerHTML = "❌ Você não possui ZOH nessa carteira.";
-      }
-    } catch (e) {
-      console.error(e);
-      resultDiv.innerHTML = "⚠️ Erro ao verificar a carteira. Verifique se o endereço é válido.";
-    }
-  });
-</script>
+</body>
+</html>
