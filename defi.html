@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,24 +60,24 @@
 </head>
 <body>
   <h1>🧠 ZOH Analyzer</h1>
-  <p>Ferramenta exclusiva para holders ZOH. Veja atividades recentes de NFTs e DeFi das carteiras mais relevantes da Solana.</p>
+  <p>Exclusive tool for ZOH holders. Track recent NFT and DeFi activity from the most relevant Solana wallets.</p>
 
   <div class="card">
-    <h2>🔍 Verificar Carteira</h2>
+    <h2>🔍 Check Wallet</h2>
     <div class="input-group">
-      <input id="wallet" type="text" placeholder="Cole o endereço da carteira Solana">
+      <input id="wallet" type="text" placeholder="Paste Solana wallet address">
     </div>
-    <button onclick="verificarAnalise()">Analisar Atividade</button>
+    <button onclick="verificarAnalise()">Analyze Activity</button>
 
     <div id="resultado" class="result"></div>
   </div>
 
   <div class="card">
-    <h2>📄 Como Funciona</h2>
+    <h2>📄 How It Works</h2>
     <p>
-      Esta ferramenta usa APIs para identificar os NFTs mais mintados, transações em DeFi e tokens movimentados.<br>
-      É necessário possuir ZOH para desbloquear os relatórios completos.<br><br>
-      🔐 <strong>Em breve: pagamento com ZOH para acessar relatórios detalhados.</strong>
+      This tool uses APIs to detect top minted NFTs, DeFi transactions, and token movements.<br>
+      You need to hold ZOH to unlock full reports.<br><br>
+      🔐 <strong>Coming soon: pay with ZOH to access detailed insights.</strong>
     </p>
   </div>
 
@@ -87,19 +87,19 @@
       const resultado = document.getElementById("resultado");
 
       if (!wallet) {
-        resultado.innerHTML = "❌ Por favor, insira um endereço válido.";
+        resultado.innerHTML = "❌ Please enter a valid address.";
         return;
       }
 
-      // Simulação básica de resultado
+      // Basic mock result
       resultado.innerHTML = `
-        <p>📬 Endereço analisado: <strong>${wallet}</strong></p>
+        <p>📬 Analyzed address: <strong>${wallet}</strong></p>
         <ul>
-          <li>🧩 NFT Mintado: <strong>Zebra Club #238</strong> (há 2 dias)</li>
-          <li>💧 Pool de Liquidez: <strong>JUP/SOL</strong> - Adicionado 12.5 SOL</li>
-          <li>💸 Token Swaps: <strong>USDC → JUP</strong> (valor estimado $153)</li>
+          <li>🧩 Minted NFT: <strong>Zebra Club #238</strong> (2 days ago)</li>
+          <li>💧 Liquidity Pool: <strong>JUP/SOL</strong> - Added 12.5 SOL</li>
+          <li>💸 Token Swaps: <strong>USDC → JUP</strong> (estimated $153)</li>
         </ul>
-        <p>🔒 Relatório detalhado disponível com acesso ZOH.</p>
+        <p>🔒 Full report available with ZOH access.</p>
       `;
     }
   </script>
