@@ -4,7 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Acesso à Área de Pesquisa</title>
+
+  <!-- Solana Web3.js -->
   <script src="https://unpkg.com/@solana/web3.js@1.79.2/lib/index.iife.js"></script>
+
+  <!-- Biblioteca bs58 (necessária se precisar depois) -->
+  <script src="https://cdn.jsdelivr.net/npm/bs58@5.0.0/dist/bs58.min.js"></script>
+
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -99,16 +105,16 @@
         const connection = new solanaWeb3.Connection(RPC_ENDPOINT, "confirmed");
         const publicKey = new solanaWeb3.PublicKey(walletAddress);
 
-        const tokenAccounts = await connection.getTokenAccountsByOwner(publicKey, {
+        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
           programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
         });
 
         let possuiToken = false;
 
         tokenAccounts.value.forEach(({ account }) => {
-          const data = account.data;
-          const mint = bs58.encode(data.slice(0, 32));
-          const amount = data.slice(64, 72).reverse().reduce((acc, byte, i) => acc + byte * 2 ** (8 * i), 0);
+          const info = account.data.parsed.info;
+          const mint = info.mint;
+          const amount = parseInt(info.tokenAmount.amount);
 
           if (mint === TOKEN_MINT && amount > 0) {
             possuiToken = true;
@@ -127,13 +133,6 @@
         document.getElementById("status").innerHTML = "❌ Erro ao verificar tokens. Tente novamente.";
       }
     }
-
-    // Função auxiliar para codificar bytes em base58 (mint address)
-    const bs58 = {
-      encode(bytes) {
-        return solanaWeb3.PublicKey.prototype.constructor.encode(bytes);
-      }
-    };
   </script>
 </body>
 </html>
