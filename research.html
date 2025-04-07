@@ -98,17 +98,25 @@
       try {
         const connection = new solanaWeb3.Connection(RPC_ENDPOINT, "confirmed");
         const publicKey = new solanaWeb3.PublicKey(walletAddress);
-        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
-          programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
+
+        const tokenAccounts = await connection.getTokenAccountsByOwner(publicKey, {
+          programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
         });
 
-        const possui = tokenAccounts.value.some((account) => {
-          const info = account.account.data.parsed.info;
-          return info.mint === TOKEN_MINT && parseFloat(info.tokenAmount.uiAmount) > 0;
+        let possuiToken = false;
+
+        tokenAccounts.value.forEach(({ account }) => {
+          const data = account.data;
+          const mint = bs58.encode(data.slice(0, 32));
+          const amount = data.slice(64, 72).reverse().reduce((acc, byte, i) => acc + byte * 2 ** (8 * i), 0);
+
+          if (mint === TOKEN_MINT && amount > 0) {
+            possuiToken = true;
+          }
         });
 
         const statusDiv = document.getElementById("status");
-        if (possui) {
+        if (possuiToken) {
           statusDiv.innerHTML += "<br>✅ Token ZOH encontrado!<br>🎉 Bem-vindo, portador do token ZOH!";
           document.getElementById("conteudo").classList.remove("hidden");
         } else {
@@ -119,6 +127,13 @@
         document.getElementById("status").innerHTML = "❌ Erro ao verificar tokens. Tente novamente.";
       }
     }
+
+    // Função auxiliar para codificar bytes em base58 (mint address)
+    const bs58 = {
+      encode(bytes) {
+        return solanaWeb3.PublicKey.prototype.constructor.encode(bytes);
+      }
+    };
   </script>
 </body>
 </html>
