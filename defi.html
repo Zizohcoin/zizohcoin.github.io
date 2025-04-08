@@ -1,101 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Buy $ZOH Now</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #e0f7fa;
-      color: #01579b;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: #fff;
+      padding: 30px;
       text-align: center;
-      padding: 20px;
     }
-    .container {
-      background-color: #ffffff;
-      border-radius: 10px;
-      padding: 20px;
-      display: inline-block;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    .box {
+      background: #1e40af;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
     }
-    select, input, button {
-      margin: 10px;
+    select, input {
       padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin: 10px 0;
+      width: 100%;
       font-size: 16px;
     }
-    .wallet-button {
-      display: inline-block;
-      margin: 10px;
-      padding: 10px 20px;
-      background-color: #0288d1;
-      color: white;
-      border-radius: 5px;
+    button {
+      background: #38bdf8;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s;
+      width: 100%;
+      margin-top: 10px;
     }
-    .wallet-button:hover {
-      background-color: #0277bd;
+    .wallets {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      gap: 10px;
+    }
+    .wallet {
+      background: #0ea5e9;
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <div class="box">
+    <h1>Buy $ZOH Now</h1>
+    <p>Select a currency:</p>
+    <select id="currency">
+      <option value="ETH">ETH</option>
+      <option value="SOL">SOL</option>
+      <option value="USDT">USDT</option>
+      <option value="BTC">BTC</option>
+    </select>
 
-<div class="container">
-  <h2>Buy $ZOH Now</h2>
-  <label for="crypto-select">Select Cryptocurrency:</label>
-  <select id="crypto-select">
-    <option value="USDT">USDT</option>
-    <option value="SOL">Solana (SOL)</option>
-    <option value="ETH">Ethereum (ETH)</option>
-    <option value="BTC">Bitcoin (BTC)</option>
-  </select>
+    <p>Enter amount:</p>
+    <input type="number" id="amount" placeholder="e.g. 0.5" />
 
-  <br>
+    <p>You will receive:</p>
+    <h2 id="result">0 ZOH</h2>
 
-  <label for="crypto-amount">Enter Amount:</label>
-  <input type="number" id="crypto-amount" placeholder="e.g., 0.5" step="any">
+    <div class="wallets">
+      <div class="wallet" onclick="connectPhantom()">Phantom</div>
+      <div class="wallet" onclick="connectMetaMask()">MetaMask</div>
+      <div class="wallet" onclick="connectWalletConnect()">WalletConnect</div>
+    </div>
 
-  <br>
-
-  <button onclick="calculateZOH()">Calculate ZOH</button>
-
-  <h3 id="zoh-amount">You will receive: 0 ZOH</h3>
-
-  <div id="wallet-buttons">
-    <div class="wallet-button" onclick="connectWallet('walletconnect')">WalletConnect</div>
-    <div class="wallet-button" onclick="connectWallet('phantom')">Phantom</div>
-    <div class="wallet-button" onclick="connectWallet('metamask')">MetaMask</div>
+    <button onclick="buyToken()">Buy Now</button>
   </div>
-</div>
 
-<script>
-  async function fetchExchangeRate(crypto) {
-    const rates = {
-      USDT: 0.000008,
-      SOL: 0.00025,
-      ETH: 0.005,
-      BTC: 0.09
+  <script>
+    const prices = {
+      ETH: 0.000005,
+      SOL: 0.000004,
+      USDT: 0.000005,
+      BTC: 0.000006,
     };
-    return rates[crypto];
-  }
 
-  async function calculateZOH() {
-    const crypto = document.getElementById('crypto-select').value;
-    const amount = parseFloat(document.getElementById('crypto-amount').value);
-    if (isNaN(amount) || amount <= 0) {
-      alert('Please enter a valid amount.');
-      return;
+    const result = document.getElementById("result");
+    const amountInput = document.getElementById("amount");
+    const currencySelect = document.getElementById("currency");
+
+    function updateResult() {
+      const currency = currencySelect.value;
+      const amount = parseFloat(amountInput.value) || 0;
+      const rate = prices[currency];
+      const zoh = amount / rate;
+      result.innerText = `${zoh.toFixed(0)} ZOH`;
     }
-    const rate = await fetchExchangeRate(crypto);
-    const zohAmount = amount / rate;
-    document.getElementById('zoh-amount').innerText = `You will receive: ${zohAmount.toFixed(2)} ZOH`;
-  }
 
-  function connectWallet(walletType) {
-    alert(`Connecting to ${walletType}...`);
-    // Placeholder: Integrate with actual wallet APIs (e.g., web3.js, solana/web3.js, etc.)
-  }
-</script>
+    amountInput.addEventListener("input", updateResult);
+    currencySelect.addEventListener("change", updateResult);
 
+    // Mock wallet connection
+    function connectPhantom() {
+      alert("Connecting to Phantom...");
+      // Aqui você implementaria a integração com o Solana/Phantom
+    }
+
+    function connectMetaMask() {
+      alert("Connecting to MetaMask...");
+      // Aqui você implementaria a integração com a MetaMask
+    }
+
+    function connectWalletConnect() {
+      alert("Connecting via WalletConnect...");
+      // Aqui você implementaria a integração com WalletConnect
+    }
+
+    function buyToken() {
+      const amount = amountInput.value;
+      if (!amount || amount <= 0) {
+        alert("Enter a valid amount");
+        return;
+      }
+      alert("Transaction submitted! You’ll receive your ZOH soon!");
+      // Aqui você enviaria a transação para o contrato inteligente
+    }
+  </script>
 </body>
 </html>
