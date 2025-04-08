@@ -1,103 +1,99 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zizoh Reporte</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zizoh Relatório</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0d0d0d; /* fundo do site Zizoh */
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-    }
-
-    h1, h3 {
-      color: #ffcc00;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 24px;
-      max-width: 500px;
-      width: 100%;
+      background-color: #0b0c0f; /* cor do site da Zizoh */
+      color: #f0f0f0;
+      font-family: 'Arial', sans-serif;
       text-align: center;
-      margin-top: 20px;
-      box-shadow: 0 0 16px rgba(255, 255, 255, 0.05);
+      padding: 2rem;
     }
-
-    code {
-      background: #1a1a1a;
-      padding: 6px 10px;
-      border-radius: 8px;
-      display: inline-block;
-      margin: 10px 0;
-      font-size: 1rem;
+    h1 {
+      color: #f1c40f;
     }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      background-color: #ffcc00;
+    .input-group {
+      margin: 1rem 0;
+    }
+    input, button {
+      padding: 0.5rem;
+      margin: 0.3rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #f1c40f;
+      color: #000;
       cursor: pointer;
-      transition: 0.3s;
     }
-
-    button:hover {
-      background-color: #ffd633;
-    }
-
-    #relatorio {
-      display: none;
-      margin-top: 30px;
-      background: #111;
+    .report {
+      background: #1e1e1e;
       border-radius: 10px;
-      padding: 20px;
-      font-family: monospace;
-      text-align: left;
+      padding: 1rem;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
 
-  <h1>Zizoh Reporte 🔍</h1>
+  <h1>Relatório Zizoh</h1>
 
-  <div class="card">
-    <h3>Libere seu relatório exclusivo</h3>
-    <p>Envie <strong>0.000005 SOL</strong> para:</p>
-    <code>6fUhYw5GNWoKBDm2RNypJCKmtn3XWAJX9KhdqtVsZt2a</code>
-    <p>Depois clique abaixo:</p>
-    <button onclick="liberarRelatorio()">Já paguei!</button>
+  <button id="connectWallet">Conectar Carteira Solana</button>
+  <div id="walletAddress"></div>
+
+  <p>Envie 0.005 SOL para: <br><b>6fUhYw5GNWoKBDm2RNypJCKmtn3XWAJX9KhdqtVsZt2a</b></p>
+
+  <div id="cryptoInputs" style="display:none;">
+    <div class="input-group">
+      <input type="text" id="token1" placeholder="Nome do Token 1">
+      <input type="number" id="amount1" placeholder="Quantidade">
+    </div>
+    <div class="input-group">
+      <input type="text" id="token2" placeholder="Nome do Token 2">
+      <input type="number" id="amount2" placeholder="Quantidade">
+    </div>
+    <button onclick="gerarRelatorio()">Gerar Relatório</button>
   </div>
 
-  <div id="relatorio" class="card">
-    <h3>🧾 Relatório da sua Carteira</h3>
-    <p><strong>Total estimado:</strong> R$ 123,45</p>
-    <p><strong>Token dominante:</strong> Zizoh (99,7%)</p>
-    <p><strong>Perfil:</strong> Caçador de memes lendário 🦄</p>
-    <p><strong>Top do mercado:</strong> PEPE +17% | SUI -11%</p>
-    <p><strong>Notícia:</strong> Binance delista token sem liquidez</p>
-    <p><em>Obrigado por apoiar o projeto 🙏</em></p>
-  </div>
+  <div class="report" id="relatorio" style="display:none;"></div>
 
   <script>
-    function liberarRelatorio() {
-      localStorage.setItem("relatorioLiberado", "sim");
-      document.getElementById("relatorio").style.display = "block";
-      alert("Relatório liberado com base na confiança Web3 😎");
-    }
+    let userWallet = "";
 
-    // Mostrar relatório se já foi liberado
-    if (localStorage.getItem("relatorioLiberado") === "sim") {
+    document.getElementById("connectWallet").onclick = async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const response = await window.solana.connect();
+          userWallet = response.publicKey.toString();
+          document.getElementById("walletAddress").innerText = "Carteira conectada: " + userWallet;
+          document.getElementById("cryptoInputs").style.display = "block";
+        } catch (err) {
+          alert("Erro ao conectar carteira.");
+        }
+      } else {
+        alert("Instale a carteira Phantom: https://phantom.app/");
+      }
+    };
+
+    function gerarRelatorio() {
+      const t1 = document.getElementById("token1").value;
+      const a1 = document.getElementById("amount1").value;
+      const t2 = document.getElementById("token2").value;
+      const a2 = document.getElementById("amount2").value;
+
+      const html = `
+        <h3>Relatório de Carteira</h3>
+        <p>Carteira: ${userWallet}</p>
+        <ul>
+          <li>${t1 || 'Token 1'}: ${a1 || 0}</li>
+          <li>${t2 || 'Token 2'}: ${a2 || 0}</li>
+        </ul>
+        <p><i>Este é um relatório gerado automaticamente. Obrigado por usar Zizoh Tools!</i></p>
+      `;
+      document.getElementById("relatorio").innerHTML = html;
       document.getElementById("relatorio").style.display = "block";
     }
   </script>
