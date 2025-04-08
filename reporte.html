@@ -162,10 +162,12 @@
 
   <script>
     async function carregarMoedas() {
-      const res = await fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=false');
+      // Fazendo a chamada à API para pegar a lista de criptomoedas
+      const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd');
       const data = await res.json();
       const select = document.getElementById('crypto');
 
+      // Filtrando e ordenando para exibir apenas as criptomoedas
       data.sort((a, b) => a.name.localeCompare(b.name));
 
       data.forEach(moeda => {
@@ -175,11 +177,11 @@
 
         // URL da logo da moeda
         const img = document.createElement('img');
-        img.src = `https://cryptocompare.com/${moeda.id}/image`;
+        img.src = moeda.image;
         img.alt = moeda.name;
 
-        // Nome da moeda e código
-        const text = document.createTextNode(`${moeda.name} (${moeda.id.toUpperCase()})`);
+        // Nome da moeda e código (id)
+        const text = document.createTextNode(`${moeda.name} (${moeda.symbol.toUpperCase()})`);
 
         // Adicionar a logo e nome com código no item de opção
         option.appendChild(img);
