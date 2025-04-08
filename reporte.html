@@ -22,7 +22,7 @@
     }
 
     h1 {
-      color: #ff9800; /* Mudança na cor do título */
+      color: #ffffff; /* Cor branca para o título */
       margin-bottom: 2rem;
       font-size: 2.5rem;
       text-align: center;
@@ -56,6 +56,8 @@
       color: #f0f0f0;
       font-size: 1rem;
       cursor: pointer;
+      display: flex;
+      align-items: center;
     }
 
     input {
@@ -65,7 +67,7 @@
     }
 
     button {
-      background-color: #ff9800; /* Mudança na cor do botão */
+      background-color: #ffffff; /* Cor branca para o botão */
       color: #0b1522;
       font-weight: bold;
       cursor: pointer;
@@ -96,19 +98,27 @@
     .crypto-option {
       display: flex;
       align-items: center;
-      padding: 0.5rem;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      background-color: #1c2c44;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
     .crypto-option img {
-      width: 30px; /* Aumentei o tamanho da logo */
-      height: 30px;
+      width: 40px; /* Ajustei o tamanho da logo */
+      height: 40px;
       margin-right: 10px;
     }
 
     .crypto-option:hover {
       background-color: #333;
-      cursor: pointer;
-      border-radius: 5px;
+    }
+
+    .crypto-option p {
+      margin: 0;
+      color: #fff;
+      font-size: 1.1rem;
     }
 
     .loader {
@@ -147,14 +157,17 @@
     <select id="crypto"></select>
     <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
     <select id="fiat">
+      <!-- Moedas fiduciárias -->
       <option value="brl">Real (BRL)</option>
       <option value="usd">Dólar (USD)</option>
       <option value="eur">Euro (EUR)</option>
       <option value="ars">Peso Argentino (ARS)</option>
       <option value="gbp">Libra Esterlina (GBP)</option>
       <option value="jpy">Iene Japonês (JPY)</option>
-      <option value="btc">Bitcoin (BTC)</option>
-      <option value="eth">Ethereum (ETH)</option>
+      <option value="chf">Franco Suíço (CHF)</option>
+      <option value="aud">Dólar Australiano (AUD)</option>
+      <option value="cad">Dólar Canadense (CAD)</option>
+      <option value="cny">Yuan Chinês (CNY)</option>
     </select>
     <button onclick="converter()">Converter</button>
     <div id="resultado"></div>
@@ -162,32 +175,35 @@
 
   <script>
     async function carregarMoedas() {
-      // Fazendo a chamada à API para pegar a lista de criptomoedas
-      const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd');
+      // Fazendo a chamada à API para pegar a lista de criptomoedas (300 no total)
+      const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=300&page=1');
       const data = await res.json();
       const select = document.getElementById('crypto');
 
-      // Filtrando e ordenando para exibir apenas as criptomoedas
-      data.sort((a, b) => a.name.localeCompare(b.name));
+      // Adiciona uma opção padrão de seleção
+      select.innerHTML = '<option value="" disabled selected>Selecione a Criptomoeda</option>';
 
       data.forEach(moeda => {
         const option = document.createElement('option');
         option.value = moeda.id;
         option.classList.add('crypto-option');
 
-        // URL da logo da moeda
+        // Criação da estrutura com logo e nome da moeda
         const img = document.createElement('img');
         img.src = moeda.image;
         img.alt = moeda.name;
 
-        // Nome da moeda e código (id)
-        const text = document.createTextNode(`${moeda.name} (${moeda.symbol.toUpperCase()})`);
+        const text = document.createElement('p');
+        text.textContent = `${moeda.name} (${moeda.symbol.toUpperCase()})`;
 
-        // Adicionar a logo e nome com código no item de opção
-        option.appendChild(img);
-        option.appendChild(text);
+        // Adicionando logo e texto na opção
+        const container = document.createElement('div');
+        container.classList.add('crypto-option');
+        container.appendChild(img);
+        container.appendChild(text);
 
-        select.appendChild(option);
+        // Adicionando ao select
+        select.appendChild(container);
       });
     }
 
