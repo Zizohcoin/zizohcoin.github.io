@@ -235,31 +235,6 @@
       dropdown.classList.toggle('show'); // Exibe ou esconde o dropdown
     });
 
-    async function obterPrecoZOH() {
-      const url = 'https://www.mexc.com/dex/pumpfun-mexc?ca=22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump&currency=SOL';
-
-      try {
-        const res = await fetch(url);
-        const html = await res.text();
-
-        // Aqui você deve buscar os dados específicos de preço, nome, ou outra informação
-        console.log(html);
-
-        // Exemplo fictício de parsing de HTML para pegar preço
-        const regexPreco = /<span class="price">([\d\.]+)<\/span>/;
-        const matchPreco = html.match(regexPreco);
-        if (matchPreco) {
-          const preco = matchPreco[1];
-          console.log('Preço do ZOH:', preco);
-        } else {
-          console.log('Preço não encontrado.');
-        }
-
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-      }
-    }
-
     async function converter() {
       const quantidade = document.getElementById('quantidade').value;
       const fiat = document.getElementById('fiat').value;
@@ -291,10 +266,7 @@
       }
     }
 
-    window.onload = () => {
-      carregarMoedas();
-      obterPrecoZOH(); // Chama a função para pegar dados do ZOH
-    };
+    window.onload = carregarMoedas;
   </script>
 </body>
 </html>
