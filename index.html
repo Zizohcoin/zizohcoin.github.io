@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #020306;  /* Cor de fundo alterada */
+      background-color: #020306;  /* Cor de fundo */
       color: #fff;
       text-align: center;
     }
@@ -74,19 +74,19 @@
     /* Hero and About Sections */
     #hero, #about {
       padding: 100px 20px;
-      background-image: url('hero.png');  /* Usando a mesma imagem */
-      background-size: cover;  /* Garante que a imagem cubra todo o fundo */
-      background-position: center;  /* Centraliza a imagem */
-      background-attachment: fixed;  /* Mantém a imagem fixa enquanto o usuário rola a página */
+      background-image: url('herod.png');  /* Imagem de fundo corrigida */
+      background-size: cover;  /* A imagem vai cobrir todo o fundo sem distorcer */
+      background-position: center center;  /* Centraliza a imagem */
       color: #fff;
     }
 
     #hero {
-      background-position: top center;  /* Ajusta a posição para a parte superior da imagem na seção Hero */
+      min-height: 100vh; /* A seção Hero ocupará toda a altura da tela */
     }
 
     #about {
-      background-position: bottom center;  /* Ajusta a posição para a parte inferior da imagem na seção About */
+      min-height: 100vh; /* A seção About também ocupará toda a altura da tela */
+      background-position: center center;  /* Garantir que o fundo não seja distorcido */
     }
 
     .cta-button {
