@@ -1,132 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Buy $ZOH Now</title>
-  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TurboSwap - Troca de Zizoh</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      background-color: #0b1522;
       color: #fff;
-      padding: 30px;
+      font-family: Arial, sans-serif;
+      padding: 20px;
       text-align: center;
     }
-    .box {
-      background: #1e40af;
-      border-radius: 20px;
-      padding: 30px;
+
+    .container {
       max-width: 500px;
-      margin: auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      margin: 0 auto;
+      background: #111c30;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
     }
-    select, input {
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      margin: 10px 0;
+
+    select, input, button {
       width: 100%;
-      font-size: 16px;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #fff;
+      background-color: #222;
+      color: #fff;
     }
+
     button {
-      background: #38bdf8;
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 20px;
+      background-color: #00ffff;
+      color: #0b1522;
       font-weight: bold;
       cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
     }
-    .wallets {
-      display: flex;
-      justify-content: space-between;
+
+    button:hover {
+      background-color: #00cfcf;
+    }
+
+    #resultado {
       margin-top: 20px;
-      gap: 10px;
-    }
-    .wallet {
-      background: #0ea5e9;
-      flex: 1;
       padding: 10px;
+      background: #1c2c44;
       border-radius: 10px;
-      cursor: pointer;
+      font-size: 1.2rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Buy $ZOH Now</h1>
-    <p>Select a currency:</p>
-    <select id="currency">
-      <option value="ETH">ETH</option>
-      <option value="SOL">SOL</option>
-      <option value="USDT">USDT</option>
-      <option value="BTC">BTC</option>
+  <h1>TurboSwap - Troque Zizoh por Outros Tokens</h1>
+  <div class="container">
+    <input type="text" id="walletAddress" placeholder="Endereço da Carteira" />
+    <input type="number" id="quantidade" placeholder="Quantidade para Trocar" min="0" />
+    <select id="cryptoFrom">
+      <option value="zizoh">Zizoh (ZIZOH)</option>
+      <option value="eth">Ethereum (ETH)</option>
+      <!-- Mais criptos podem ser adicionadas aqui -->
     </select>
-
-    <p>Enter amount:</p>
-    <input type="number" id="amount" placeholder="e.g. 0.5" />
-
-    <p>You will receive:</p>
-    <h2 id="result">0 ZOH</h2>
-
-    <div class="wallets">
-      <div class="wallet" onclick="connectPhantom()">Phantom</div>
-      <div class="wallet" onclick="connectMetaMask()">MetaMask</div>
-      <div class="wallet" onclick="connectWalletConnect()">WalletConnect</div>
-    </div>
-
-    <button onclick="buyToken()">Buy Now</button>
+    <select id="cryptoTo">
+      <option value="usdt">Tether (USDT)</option>
+      <option value="btc">Bitcoin (BTC)</option>
+      <!-- Mais criptos podem ser adicionadas aqui -->
+    </select>
+    <button onclick="swapCrypto()">Trocar</button>
+    <div id="resultado"></div>
   </div>
 
   <script>
-    const prices = {
-      ETH: 0.000005,
-      SOL: 0.000004,
-      USDT: 0.000005,
-      BTC: 0.000006,
-    };
+    // Conexão com a carteira via Web3.js
+    let web3 = new Web3(window.ethereum);
 
-    const result = document.getElementById("result");
-    const amountInput = document.getElementById("amount");
-    const currencySelect = document.getElementById("currency");
+    // Função de troca de criptomoedas
+    async function swapCrypto() {
+      const walletAddress = document.getElementById('walletAddress').value;
+      const quantidade = document.getElementById('quantidade').value;
+      const cryptoFrom = document.getElementById('cryptoFrom').value;
+      const cryptoTo = document.getElementById('cryptoTo').value;
 
-    function updateResult() {
-      const currency = currencySelect.value;
-      const amount = parseFloat(amountInput.value) || 0;
-      const rate = prices[currency];
-      const zoh = amount / rate;
-      result.innerText = `${zoh.toFixed(0)} ZOH`;
-    }
-
-    amountInput.addEventListener("input", updateResult);
-    currencySelect.addEventListener("change", updateResult);
-
-    // Mock wallet connection
-    function connectPhantom() {
-      alert("Connecting to Phantom...");
-      // Aqui você implementaria a integração com o Solana/Phantom
-    }
-
-    function connectMetaMask() {
-      alert("Connecting to MetaMask...");
-      // Aqui você implementaria a integração com a MetaMask
-    }
-
-    function connectWalletConnect() {
-      alert("Connecting via WalletConnect...");
-      // Aqui você implementaria a integração com WalletConnect
-    }
-
-    function buyToken() {
-      const amount = amountInput.value;
-      if (!amount || amount <= 0) {
-        alert("Enter a valid amount");
+      if (!walletAddress || !quantidade || quantidade <= 0) {
+        alert("Preencha todos os campos.");
         return;
       }
-      alert("Transaction submitted! You’ll receive your ZOH soon!");
-      // Aqui você enviaria a transação para o contrato inteligente
+
+      try {
+        // Conectar com a carteira MetaMask
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        // Exemplo para troca de Zizoh (ERC20) por USDT (ERC20)
+        const zizohAddress = "0xYourZizohTokenAddress";  // Substitua com o contrato do Zizoh
+        const usdtAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7";  // Endereço do USDT (ERC20)
+        
+        // Obter o contrato do token Zizoh
+        const zizohContract = new web3.eth.Contract([
+          {
+            "constant": true,
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [{"name": "", "type": "uint8"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+          },
+          // Adicione o ABI do contrato Zizoh aqui
+        ], zizohAddress);
+
+        // Convertendo a quantidade de Zizoh para Wei (se necessário)
+        const amountIn = web3.utils.toWei(quantidade, 'ether');  // Se o token Zizoh for ERC-20
+
+        // Configuração de um router de DEX (Uniswap, PancakeSwap, etc.)
+        const uniswapRouterAddress = "0x5C69bEe701ef814a2B6a3EDD98b7C02E7B2F56a0";  // Exemplo de Router Uniswap
+        const routerABI = [ /* ABI do contrato do router */ ];
+        const router = new web3.eth.Contract(routerABI, uniswapRouterAddress);
+
+        // Realizando a troca usando o router de Uniswap/PancakeSwap
+        await router.methods.swapExactTokensForTokens(
+          amountIn,
+          0,  // valor mínimo com slippage
+          [zizohAddress, usdtAddress],
+          walletAddress,
+          Math.floor(Date.now() / 1000) + 60 * 10  // 10 minutos de deadline
+        ).send({ from: walletAddress });
+
+        document.getElementById('resultado').innerText = `Troca realizada com sucesso!`;
+      } catch (error) {
+        console.error("Erro ao realizar a troca:", error);
+        document.getElementById('resultado').innerText = `Erro ao realizar a troca: ${error.message}`;
+      }
     }
   </script>
 </body>
