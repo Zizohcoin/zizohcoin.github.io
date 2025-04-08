@@ -170,7 +170,6 @@
     </div>
     <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
     <select id="fiat">
-      <!-- Moedas fiduciárias -->
       <option value="brl">Real (BRL)</option>
       <option value="usd">Dólar (USD)</option>
       <option value="eur">Euro (EUR)</option>
@@ -190,22 +189,21 @@
     let selectedCrypto = null;
 
     async function carregarMoedas() {
-      // Adicionando ZOH diretamente (caso o token seja reconhecido na API)
-      const zoh = {
-        id: 'zoh',
-        name: 'ZOH Token',
-        symbol: 'ZOH',
-        image: 'https://cryptologos.cc/logos/zoh-token-zoh-logo.png' // Logo fictícia
-      };
-
-      // Carregar as 300 criptomoedas mais populares (se estiver disponível na API)
+      // Carregar as 300 criptomoedas mais populares (se disponível)
       const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=300&page=1');
       const data = await res.json();
       const dropdown = document.getElementById('crypto-dropdown');
       const cryptoInput = document.getElementById('crypto-input');
 
-      // Adicionando ZOH à lista
-      data.push(zoh);
+      // Adicionar o ZOH Token diretamente
+      const zoh = {
+        id: 'zoh',
+        name: 'ZOH Token',
+        symbol: 'ZOH',
+        image: 'https://cryptologos.cc/logos/zoh-token-zoh-logo.png' // Imagem fictícia
+      };
+
+      data.push(zoh); // Adicionando ZOH à lista de criptomoedas
 
       data.forEach(moeda => {
         const div = document.createElement('div');
@@ -236,6 +234,31 @@
       const dropdown = document.getElementById('crypto-dropdown');
       dropdown.classList.toggle('show'); // Exibe ou esconde o dropdown
     });
+
+    async function obterPrecoZOH() {
+      const url = 'https://www.mexc.com/dex/pumpfun-mexc?ca=22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump&currency=SOL';
+
+      try {
+        const res = await fetch(url);
+        const html = await res.text();
+
+        // Aqui você deve buscar os dados específicos de preço, nome, ou outra informação
+        console.log(html);
+
+        // Exemplo fictício de parsing de HTML para pegar preço
+        const regexPreco = /<span class="price">([\d\.]+)<\/span>/;
+        const matchPreco = html.match(regexPreco);
+        if (matchPreco) {
+          const preco = matchPreco[1];
+          console.log('Preço do ZOH:', preco);
+        } else {
+          console.log('Preço não encontrado.');
+        }
+
+      } catch (error) {
+        console.error('Erro ao buscar dados:', error);
+      }
+    }
 
     async function converter() {
       const quantidade = document.getElementById('quantidade').value;
@@ -268,7 +291,10 @@
       }
     }
 
-    window.onload = carregarMoedas;
+    window.onload = () => {
+      carregarMoedas();
+      obterPrecoZOH(); // Chama a função para pegar dados do ZOH
+    };
   </script>
 </body>
 </html>
