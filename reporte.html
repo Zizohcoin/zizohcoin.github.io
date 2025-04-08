@@ -100,6 +100,8 @@
       background-color: #1c2c44;
       border-radius: 8px;
       cursor: pointer;
+      max-height: 250px;
+      overflow-y: auto;
     }
 
     .crypto-dropdown div {
@@ -107,12 +109,8 @@
       display: flex;
       align-items: center;
       border-bottom: 1px solid #333;
-    }
-
-    .crypto-dropdown div img {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
+      background-color: #222;
+      transition: background-color 0.3s;
     }
 
     .crypto-dropdown div:hover {
@@ -121,6 +119,12 @@
 
     .crypto-dropdown div.selected {
       background-color: #007b8c;
+    }
+
+    .crypto-dropdown div img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
     }
 
     .loader {
