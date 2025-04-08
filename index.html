@@ -9,21 +9,42 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #020306;
+      background-color: #020306; /* Cor de fundo */
       color: #fff;
       text-align: center;
-      background-image: url('herod.png');
-      background-size: cover;
-      background-position: center center;
-      background-attachment: fixed;
+      background-image: url('herod.png'); /* Imagem de fundo */
+      background-size: cover; /* A imagem vai cobrir todo o fundo sem distorcer */
+      background-position: center center; /* Centraliza a imagem */
+      background-attachment: fixed; /* Fixar o fundo para que ele não role junto com o conteúdo */
     }
 
+    /* Hero e About Sections */
+    #hero {
+      padding: 0; /* Remover o padding para garantir que a imagem comece diretamente no topo */
+      min-height: 100vh; /* A seção Hero ocupará toda a altura da tela */
+      background-color: rgba(2, 3, 6, 0.7); /* Fundo semi-transparente para legibilidade */
+      color: #fff;
+    }
+
+    #about {
+      padding: 100px 20px;
+      background-color: rgba(2, 3, 6, 0.7); /* Fundo semi-transparente para legibilidade */
+      color: #fff;
+    }
+
+    /* Cabeçalho */
     header {
-      background-color: #020306;
+      position: absolute; /* Tornar o cabeçalho absoluto para não interferir no layout */
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10; /* Garantir que o cabeçalho fique acima do fundo */
+      background-color: rgba(2, 3, 6, 0.7); /* Fundo semi-transparente para que a imagem de fundo seja visível */
+      padding: 20px;
     }
 
     nav {
-      background-color: #020306;
+      background-color: transparent; /* Cabeçalho transparente */
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -75,20 +96,6 @@
       padding: 4px;
     }
 
-    #hero, #about {
-      padding: 100px 20px;
-      background-color: rgba(2, 3, 6, 0.7); /* Fundo semi-transparente para legibilidade */
-      color: #fff;
-    }
-
-    #hero {
-      min-height: 100vh; /* Ocupa toda a altura da tela */
-    }
-
-    #about {
-      min-height: 100vh; /* Ocupa toda a altura da tela */
-    }
-
     .cta-button {
       display: inline-block;
       padding: 12px 24px;
@@ -128,7 +135,7 @@
 
     footer {
       padding: 20px;
-      background-color: #020306;
+      background-color: #0a1a2f;
       font-size: 14px;
     }
 
@@ -174,7 +181,7 @@
           <a href="#tokenomics">Tokenomics</a>
           <a href="#meme-gallery">Meme Gallery</a>
           <a href="research.html">Research</a>
-          <a href="reporte.html">Crypto Converter</a>
+          <a href="reporte.html">Crypto Converter</a> <!-- Novo item -->
           <a href="https://zizohcoin.github.io/defi.html" target="_blank">ZOH Analyzer</a>
         </div>
       </div>
