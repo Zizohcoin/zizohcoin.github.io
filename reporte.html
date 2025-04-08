@@ -190,10 +190,22 @@
     let selectedCrypto = null;
 
     async function carregarMoedas() {
+      // Adicionando ZOH diretamente (caso o token seja reconhecido na API)
+      const zoh = {
+        id: 'zoh',
+        name: 'ZOH Token',
+        symbol: 'ZOH',
+        image: 'https://cryptologos.cc/logos/zoh-token-zoh-logo.png' // Logo fictícia
+      };
+
+      // Carregar as 300 criptomoedas mais populares (se estiver disponível na API)
       const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=300&page=1');
       const data = await res.json();
       const dropdown = document.getElementById('crypto-dropdown');
       const cryptoInput = document.getElementById('crypto-input');
+
+      // Adicionando ZOH à lista
+      data.push(zoh);
 
       data.forEach(moeda => {
         const div = document.createElement('div');
@@ -219,9 +231,10 @@
       });
     }
 
+    // Função para alternar a visibilidade do dropdown ao clicar no input
     document.getElementById('crypto-input').addEventListener('click', () => {
       const dropdown = document.getElementById('crypto-dropdown');
-      dropdown.classList.toggle('show'); // Exibe ou esconde o dropdown ao clicar
+      dropdown.classList.toggle('show'); // Exibe ou esconde o dropdown
     });
 
     async function converter() {
