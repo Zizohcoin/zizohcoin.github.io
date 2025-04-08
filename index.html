@@ -71,19 +71,22 @@
       padding: 4px;
     }
 
-    /* Hero Section */
-    #hero {
+    /* Hero and About Sections */
+    #hero, #about {
       padding: 100px 20px;
-      /* No background image here */
+      background-image: url('hero.png');  /* Usando a mesma imagem */
+      background-size: cover;  /* Garante que a imagem cubra todo o fundo */
+      background-position: center;  /* Centraliza a imagem */
+      background-attachment: fixed;  /* Mantém a imagem fixa enquanto o usuário rola a página */
+      color: #fff;
     }
 
-    /* About Section */
+    #hero {
+      background-position: top center;  /* Ajusta a posição para a parte superior da imagem na seção Hero */
+    }
+
     #about {
-      padding: 100px 20px;
-      background-image: url('hero.png');  /* Set the background image for the About section */
-      background-size: cover;
-      background-position: center;
-      color: #fff;
+      background-position: bottom center;  /* Ajusta a posição para a parte inferior da imagem na seção About */
     }
 
     .cta-button {
