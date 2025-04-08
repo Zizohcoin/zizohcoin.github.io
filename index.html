@@ -6,50 +6,35 @@
   <title>Zizohcoin (ZOH)</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Helvetica Neue', Arial, sans-serif; /* Usando uma fonte mais moderna e legível */
       margin: 0;
       padding: 0;
       background-color: #020306; /* Cor de fundo */
       color: #fff;
       text-align: center;
       background-image: url('herod.png'); /* Imagem de fundo */
-      background-size: cover; /* A imagem vai cobrir todo o fundo sem distorcer */
-      background-position: center center; /* Centraliza a imagem */
-      background-attachment: fixed; /* Fixar o fundo para que ele não role junto com o conteúdo */
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
     }
 
-    /* Hero e About Sections */
-    #hero {
-      padding: 0; /* Remover o padding para garantir que a imagem comece diretamente no topo */
-      min-height: 100vh; /* A seção Hero ocupará toda a altura da tela */
-      background-color: rgba(2, 3, 6, 0.7); /* Fundo semi-transparente para legibilidade */
-      color: #fff;
-    }
-
-    #about {
-      padding: 100px 20px;
-      background-color: rgba(2, 3, 6, 0.7); /* Fundo semi-transparente para legibilidade */
-      color: #fff;
-    }
-
-    /* Cabeçalho */
     header {
-      position: absolute; /* Tornar o cabeçalho absoluto para não interferir no layout */
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      z-index: 10; /* Garantir que o cabeçalho fique acima do fundo */
-      background-color: rgba(2, 3, 6, 0.7); /* Fundo semi-transparente para que a imagem de fundo seja visível */
+      z-index: 10;
+      background-color: rgba(2, 3, 6, 0.8); /* Fundo com opacidade para melhorar contraste */
       padding: 20px;
     }
 
     nav {
-      background-color: transparent; /* Cabeçalho transparente */
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       padding: 10px 20px;
+      background-color: transparent;
     }
 
     .logo {
@@ -76,10 +61,12 @@
       color: #fff;
       font-weight: bold;
       padding: 10px;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
     }
 
     .nav-links a:hover {
-      text-decoration: underline;
+      color: #1c4f91; /* Cor de destaque ao passar o mouse */
     }
 
     .social-icons {
@@ -94,6 +81,35 @@
       border-radius: 50%;
       background-color: #fff;
       padding: 4px;
+      transition: transform 0.3s ease;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.1); /* Efeito de zoom suave ao passar o mouse */
+    }
+
+    #hero {
+      padding: 0;
+      min-height: 100vh;
+      background-color: rgba(2, 3, 6, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    #about {
+      padding: 80px 20px;
+      background-color: rgba(2, 3, 6, 0.8); /* Fundo mais escuro para contraste */
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    #about h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
     }
 
     .cta-button {
@@ -105,20 +121,12 @@
       text-decoration: none;
       border-radius: 5px;
       font-size: 16px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     .cta-button:hover {
       background-color: #2176bd;
-    }
-
-    img {
-      display: block;
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      margin: 20px auto;
-      border-radius: 10px;
+      transform: translateY(-2px); /* Leve elevação ao passar o mouse */
     }
 
     .meme-gallery {
@@ -126,11 +134,18 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
+      margin-top: 40px;
     }
 
     .meme-gallery img {
       width: 100%;
       max-width: 400px;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .meme-gallery img:hover {
+      transform: scale(1.05); /* Efeito de zoom suave nas imagens */
     }
 
     footer {
@@ -143,10 +158,11 @@
       color: white;
       text-decoration: none;
       margin: 0 10px;
+      transition: color 0.3s ease;
     }
 
     footer a:hover {
-      text-decoration: underline;
+      color: #1c4f91;
     }
 
     @media (max-width: 768px) {
@@ -167,6 +183,14 @@
       .nav-left {
         margin-bottom: 10px;
       }
+
+      #hero {
+        font-size: 1.5rem;
+      }
+
+      #about h2 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
@@ -181,7 +205,7 @@
           <a href="#tokenomics">Tokenomics</a>
           <a href="#meme-gallery">Meme Gallery</a>
           <a href="research.html">Research</a>
-          <a href="reporte.html">Crypto Converter</a> <!-- Novo item -->
+          <a href="reporte.html">Crypto Converter</a>
           <a href="https://zizohcoin.github.io/defi.html" target="_blank">ZOH Analyzer</a>
         </div>
       </div>
@@ -201,18 +225,18 @@
 
   <!-- Hero Section -->
   <section id="hero">
-    <!-- Removed the Welcome message and introductory text -->
+    <div>
+      <h1>Welcome to Zizohcoin</h1>
+      <p>Your gateway to the decentralized finance revolution.</p>
+    </div>
   </section>
 
   <!-- About Section -->
   <section id="about">
     <h2>About Zizohcoin</h2>
     <p>Zizohcoin (ZOH) is more than just a cryptocurrency – it’s a gateway to a financial revolution in the DeFi universe. Our mission is to build a strong, engaged community where everyone can participate and help shape a more democratic decentralized finance ecosystem.</p>
-    
     <p>The project focuses on transparency and fairness. We use 50% of our revenue from the website, social media, and report sales to buy back ZOH tokens and distribute them to the community via airdrops. This promotes decentralization and ensures everyone benefits from the growth of the project.</p>
-
     <p>Instead of rewarding only the wealthy, we encourage active participation and a well-informed, DeFi-aligned community. We’re committed to ethical and fair distribution practices, avoiding speculation and ensuring long-term growth for those truly invested in ZOH.</p>
-
     <p>Join Zizohcoin and become part of a more inclusive, transparent, and fun DeFi ecosystem, benefiting directly from the collective success of the project.</p>
   </section>
 
