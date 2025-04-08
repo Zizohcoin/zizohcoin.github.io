@@ -68,23 +68,6 @@
       color: #1c4f91;
     }
 
-    .social-icons {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .social-icons img {
-      width: 24px; /* Tamanho reduzido do ícone */
-      height: 24px;
-      filter: brightness(0) invert(1); /* Tornando o ícone branco */
-      transition: transform 0.3s ease;
-    }
-
-    .social-icons img:hover {
-      transform: scale(1.1);
-    }
-
     #hero {
       padding: 0;
       min-height: 100vh;
@@ -176,14 +159,27 @@
       color: #1c4f91;
     }
 
+    .social-icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .social-icons img {
+      width: 24px; /* Tamanho reduzido do ícone */
+      height: 24px;
+      filter: brightness(0) invert(1); /* Tornando o ícone branco */
+      transition: transform 0.3s ease;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.1);
+    }
+
     @media (max-width: 768px) {
       .nav-links {
         flex-direction: column;
         align-items: flex-start;
-      }
-
-      .social-icons {
-        margin-top: 10px;
       }
 
       nav {
@@ -219,12 +215,6 @@
           <a href="reporte.html">Crypto Converter</a>
           <a href="https://zizohcoin.github.io/defi.html" target="_blank">ZOH Analyzer</a>
         </div>
-      </div>
-      <div class="social-icons">
-        <!-- Apenas o ícone do X (Twitter) visível agora -->
-        <a href="https://x.com/zizohcoin" target="_blank">
-          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png" alt="X Logo">
-        </a>
       </div>
     </nav>
   </header>
@@ -267,8 +257,21 @@
   <footer>
     <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
     <p>
-      <a href="https://x.com/zizohcoin" target="_blank">Twitter/X</a>
+      <a href="https://x.com/zizohcoin" target="_blank">Twitter/X</a> |
+      <a href="https://www.instagram.com/zizohsolana/" target="_blank">Instagram</a> |
+      <a href="https://www.tiktok.com/@zizohsolana" target="_blank">TikTok</a>
     </p>
+    <div class="social-icons">
+      <a href="https://x.com/zizohcoin" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png" alt="X Logo">
+      </a>
+      <a href="https://www.instagram.com/zizohsolana/" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram Logo">
+      </a>
+      <a href="https://www.tiktok.com/@zizohsolana" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok Logo">
+      </a>
+    </div>
   </footer>
 
 </body>
