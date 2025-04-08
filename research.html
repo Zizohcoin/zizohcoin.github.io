@@ -21,7 +21,7 @@
 
     header h1 {
       font-size: 2rem;
-      color: #4dabf7;
+      color: white; /* Título em branco */
       margin: 0;
     }
 
@@ -46,7 +46,7 @@
     }
 
     section h2 {
-      color: #4dabf7;
+      color: white; /* Títulos das seções em branco */
       margin-bottom: 0.5rem;
     }
 
@@ -75,6 +75,21 @@
       padding: 2rem 1rem;
       color: #a1b5d8;
       font-size: 0.9rem;
+    }
+
+    /* Melhorando o contraste para a acessibilidade */
+    a, .btn {
+      border: none;
+      outline: none;
+    }
+
+    /* Garantir contraste adequado para leitores de tela e usuários com deficiência visual */
+    .btn {
+      background-color: #2176bd;
+      color: white;
+    }
+    .btn:hover {
+      background-color: #2891db;
     }
   </style>
 </head>
@@ -105,7 +120,7 @@
   </main>
 
   <footer>
-    © 2025 Zizoh Coin (ZOH) — Powered by comunidade cripto independente 🌐
+    © 2025 Zizohcoin (ZOH) — Powered by comunidade cripto independente 🌐
   </footer>
 </body>
 </html>
