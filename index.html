@@ -20,8 +20,11 @@
       left: 0;
       width: 100%;
       z-index: 10;
-      background-color: rgba(2, 3, 6, 0.8); /* Fundo com opacidade para melhorar contraste */
+      background-image: url('herod.png'); /* Imagem de fundo apenas para o cabeçalho */
+      background-size: cover;
+      background-position: center;
       padding: 20px;
+      background-attachment: fixed;
     }
 
     nav {
@@ -94,6 +97,10 @@
       color: #fff;
       text-align: center;
       font-size: 2rem;
+      background-image: url('herod.png'); /* Imagem de fundo apenas para o hero */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
 
     #about {
@@ -103,6 +110,14 @@
       background-position: center;
       color: #fff;
       line-height: 1.6;
+      display: flex;
+      align-items: flex-start; /* Alinha o conteúdo à esquerda */
+      justify-content: flex-start;
+    }
+
+    #about div {
+      max-width: 600px;
+      padding-right: 20px; /* Espaçamento à direita para não colidir com o texto */
     }
 
     #about h2 {
@@ -231,11 +246,13 @@
 
   <!-- About Section -->
   <section id="about">
-    <h2>About Zizohcoin</h2>
-    <p>Zizohcoin (ZOH) is more than just a cryptocurrency – it’s a gateway to a financial revolution in the DeFi universe. Our mission is to build a strong, engaged community where everyone can participate and help shape a more democratic decentralized finance ecosystem.</p>
-    <p>The project focuses on transparency and fairness. We use 50% of our revenue from the website, social media, and report sales to buy back ZOH tokens and distribute them to the community via airdrops. This promotes decentralization and ensures everyone benefits from the growth of the project.</p>
-    <p>Instead of rewarding only the wealthy, we encourage active participation and a well-informed, DeFi-aligned community. We’re committed to ethical and fair distribution practices, avoiding speculation and ensuring long-term growth for those truly invested in ZOH.</p>
-    <p>Join Zizohcoin and become part of a more inclusive, transparent, and fun DeFi ecosystem, benefiting directly from the collective success of the project.</p>
+    <div>
+      <h2>About Zizohcoin</h2>
+      <p>Zizohcoin (ZOH) is more than just a cryptocurrency – it’s a gateway to a financial revolution in the DeFi universe. Our mission is to build a strong, engaged community where everyone can participate and help shape a more democratic decentralized finance ecosystem.</p>
+      <p>The project focuses on transparency and fairness. We use 50% of our revenue from the website, social media, and report sales to buy back ZOH tokens and distribute them to the community via airdrops. This promotes decentralization and ensures everyone benefits from the growth of the project.</p>
+      <p>Instead of rewarding only the wealthy, we encourage active participation and a well-informed, DeFi-aligned community. We’re committed to ethical and fair distribution practices, avoiding speculation and ensuring long-term growth for those truly invested in ZOH.</p>
+      <p>Join Zizohcoin and become part of a more inclusive, transparent, and fun DeFi ecosystem, benefiting directly from the collective success of the project.</p>
+    </div>
   </section>
 
   <section id="tokenomics">
