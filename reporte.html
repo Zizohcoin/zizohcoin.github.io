@@ -58,6 +58,17 @@
       font-size: 1.2rem;
       text-align: center;
     }
+
+    .crypto-option {
+      display: flex;
+      align-items: center;
+    }
+
+    .crypto-option img {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
@@ -88,7 +99,20 @@
       data.forEach(moeda => {
         const option = document.createElement('option');
         option.value = moeda.id;
-        option.textContent = moeda.name;
+        option.classList.add('crypto-option');
+
+        // Criar a imagem da logo
+        const img = document.createElement('img');
+        img.src = `https://cryptocompare.com/${moeda.id}/image`;
+        img.alt = moeda.name;
+
+        // Criar o texto com o nome da moeda
+        const text = document.createTextNode(moeda.name);
+
+        // Adicionar a imagem e o texto no item de opção
+        option.appendChild(img);
+        option.appendChild(text);
+        
         select.appendChild(option);
       });
     }
