@@ -25,6 +25,7 @@
       color: #00ffff;
       margin-bottom: 2rem;
       font-size: 2.5rem;
+      text-align: center;
     }
 
     .container {
@@ -54,6 +55,7 @@
       background-color: #1c2c44;
       color: #f0f0f0;
       font-size: 1rem;
+      cursor: pointer;
     }
 
     input {
@@ -69,11 +71,16 @@
       cursor: pointer;
       transition: background 0.3s ease, transform 0.3s ease;
       font-size: 1.1rem;
+      padding: 1rem;
     }
 
     button:hover {
       background-color: #00cfcf;
       transform: scale(1.05);
+    }
+
+    button:focus {
+      outline: none;
     }
 
     #resultado {
@@ -144,6 +151,8 @@
       <option value="usd">Dólar (USD)</option>
       <option value="eur">Euro (EUR)</option>
       <option value="ars">Peso Argentino (ARS)</option>
+      <option value="gbp">Libra Esterlina (GBP)</option>
+      <option value="jpy">Iene Japonês (JPY)</option>
       <option value="btc">Bitcoin (BTC)</option>
       <option value="eth">Ethereum (ETH)</option>
     </select>
@@ -164,18 +173,18 @@
         option.value = moeda.id;
         option.classList.add('crypto-option');
 
-        // Criar a imagem da logo
+        // URL da logo da moeda
         const img = document.createElement('img');
         img.src = `https://cryptocompare.com/${moeda.id}/image`;
         img.alt = moeda.name;
 
-        // Criar o texto com o nome da moeda
-        const text = document.createTextNode(moeda.name);
+        // Nome da moeda e código
+        const text = document.createTextNode(`${moeda.name} (${moeda.id.toUpperCase()})`);
 
-        // Adicionar a imagem e o texto no item de opção
+        // Adicionar a logo e nome com código no item de opção
         option.appendChild(img);
         option.appendChild(text);
-        
+
         select.appendChild(option);
       });
     }
