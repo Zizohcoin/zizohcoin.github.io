@@ -1,151 +1,94 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Comprar ZOH</title>
+  <meta charset="UTF-8">
+  <title>Buy $ZOH Now</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
+      background-color: #e0f7fa;
+      color: #01579b;
+      text-align: center;
       padding: 20px;
-      color: #333;
     }
-    .card {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .timer {
-      font-size: 24px;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-    }
-    .progress {
-      background: #e0e0e0;
-      height: 14px;
+    .container {
+      background-color: #ffffff;
       border-radius: 10px;
-      margin-bottom: 10px;
-      overflow: hidden;
+      padding: 20px;
+      display: inline-block;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    .progress-bar {
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
-      width: 36%;
-      height: 100%;
-    }
-    .section {
-      margin: 20px 0;
-    }
-    .label {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    .box {
-      background: #f2f2f2;
+    select, input, button {
+      margin: 10px;
       padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-    .btn-group button {
-      padding: 10px 16px;
-      margin: 5px;
-      border: none;
-      background: #007bff;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .btn-group button:hover {
-      background: #0056b3;
-    }
-    .connect-btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      background: #28a745;
-      color: white;
       font-size: 16px;
-      border: none;
-      border-radius: 10px;
+    }
+    #wallet-buttons img {
+      width: 150px;
       cursor: pointer;
-      margin-top: 20px;
+      margin: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Obtenha $ZOH para sobreviver!</h2>
 
-    <div class="timer" id="countdown"></div>
-
-    <div class="section">
-      <div class="label">Criado:</div>
-      <div class="progress"><div class="progress-bar"></div></div>
-      <div class="box">$1.018.445 / $2.800.000</div>
-    </div>
-
-    <div class="section">
-      <div class="label">Preço atual:</div>
-      <div class="box">$0,000008</div>
-      <div class="label">Próximo preço:</div>
-      <div class="box">$0,000001</div>
-      <div class="box">Listagem: +2700%</div>
-    </div>
-
-    <div class="section">
-      <div class="label">Você comprou $ZOH:</div>
-      <div class="box">0</div>
-      <div class="label">Você apostou $ZOH:</div>
-      <div class="box">0</div>
-    </div>
-
-    <div class="section">
-      <div class="label">Você paga (USDC):</div>
-      <div class="btn-group">
-        <button onclick="selectValue(100)">100$</button>
-        <button onclick="selectValue(250)">250$</button>
-        <button onclick="selectValue(1000)">1.000$</button>
-        <button onclick="selectValue(10000)">10.000$</button>
-      </div>
-      <div class="box">Máximo: 0.1</div>
-    </div>
-
-    <div class="section">
-      <div class="label">Você recebe:</div>
-      <div class="box" id="output">0</div>
-    </div>
-
-    <button class="connect-btn">🔗 Conectar carteira</button>
+<div class="container">
+  <h2>Buy $ZOH Now</h2>
+  <label for="crypto-select">Select Cryptocurrency:</label>
+  <select id="crypto-select">
+    <option value="USDT">USDT</option>
+    <option value="SOL">Solana (SOL)</option>
+    <option value="ETH">Ethereum (ETH)</option>
+    <option value="BTC">Bitcoin (BTC)</option>
+  </select>
+  
+  <br>
+  
+  <label for="crypto-amount">Enter Amount:</label>
+  <input type="number" id="crypto-amount" placeholder="e.g., 0.5" step="any">
+  
+  <br>
+  
+  <button onclick="calculateZOH()">Calculate ZOH</button>
+  
+  <h3 id="zoh-amount">You will receive: 0 ZOH</h3>
+  
+  <div id="wallet-buttons">
+    <img src="walletconnect-logo.png" alt="WalletConnect" onclick="connectWallet('walletconnect')">
+    <img src="phantom-logo.png" alt="Phantom" onclick="connectWallet('phantom')">
+    <img src="metamask-logo.png" alt="MetaMask" onclick="connectWallet('metamask')">
   </div>
+</div>
 
-  <script>
-    function updateCountdown() {
-      const now = new Date();
-      const targetDate = new Date(now.getTime() + 23 * 24 * 60 * 60 * 1000); // 23 dias a partir de agora
-      const diff = targetDate - now;
+<script>
+  async function fetchExchangeRate(crypto) {
+    // Placeholder function: Replace with actual API call to fetch exchange rates
+    const rates = {
+      USDT: 0.000008,
+      SOL: 0.00025,
+      ETH: 0.005,
+      BTC: 0.09
+    };
+    return rates[crypto];
+  }
 
-      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diff / (1000 * 60)) % 60);
-      const segundos = Math.floor((diff / 1000) % 60);
-
-      document.getElementById('countdown').innerHTML =
-        `${dias} Dias : ${horas} Horas : ${minutos} Minutos : ${segundos} Segundos`;
+  async function calculateZOH() {
+    const crypto = document.getElementById('crypto-select').value;
+    const amount = parseFloat(document.getElementById('crypto-amount').value);
+    if (isNaN(amount) || amount <= 0) {
+      alert('Please enter a valid amount.');
+      return;
     }
+    const rate = await fetchExchangeRate(crypto);
+    const zohAmount = amount / rate;
+    document.getElementById('zoh-amount').innerText = `You will receive: ${zohAmount.toFixed(2)} ZOH`;
+  }
 
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+  function connectWallet(walletType) {
+    alert(`Connecting to ${walletType}...`);
+    // Placeholder function: Integrate actual wallet connection logic here
+  }
+</script>
 
-    function selectValue(amount) {
-      const tokenPrice = 0.000008;
-      const quantity = amount / tokenPrice;
-      document.getElementById("output").textContent = quantity.toLocaleString("pt-BR");
-    }
-  </script>
 </body>
 </html>
