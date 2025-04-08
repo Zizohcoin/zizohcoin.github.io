@@ -23,10 +23,18 @@
       padding: 10px;
       font-size: 16px;
     }
-    #wallet-buttons img {
-      width: 150px;
-      cursor: pointer;
+    .wallet-button {
+      display: inline-block;
       margin: 10px;
+      padding: 10px 20px;
+      background-color: #0288d1;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .wallet-button:hover {
+      background-color: #0277bd;
     }
   </style>
 </head>
@@ -41,28 +49,27 @@
     <option value="ETH">Ethereum (ETH)</option>
     <option value="BTC">Bitcoin (BTC)</option>
   </select>
-  
+
   <br>
-  
+
   <label for="crypto-amount">Enter Amount:</label>
   <input type="number" id="crypto-amount" placeholder="e.g., 0.5" step="any">
-  
+
   <br>
-  
+
   <button onclick="calculateZOH()">Calculate ZOH</button>
-  
+
   <h3 id="zoh-amount">You will receive: 0 ZOH</h3>
-  
+
   <div id="wallet-buttons">
-    <img src="walletconnect-logo.png" alt="WalletConnect" onclick="connectWallet('walletconnect')">
-    <img src="phantom-logo.png" alt="Phantom" onclick="connectWallet('phantom')">
-    <img src="metamask-logo.png" alt="MetaMask" onclick="connectWallet('metamask')">
+    <div class="wallet-button" onclick="connectWallet('walletconnect')">WalletConnect</div>
+    <div class="wallet-button" onclick="connectWallet('phantom')">Phantom</div>
+    <div class="wallet-button" onclick="connectWallet('metamask')">MetaMask</div>
   </div>
 </div>
 
 <script>
   async function fetchExchangeRate(crypto) {
-    // Placeholder function: Replace with actual API call to fetch exchange rates
     const rates = {
       USDT: 0.000008,
       SOL: 0.00025,
@@ -86,7 +93,7 @@
 
   function connectWallet(walletType) {
     alert(`Connecting to ${walletType}...`);
-    // Placeholder function: Integrate actual wallet connection logic here
+    // Placeholder: Integrate with actual wallet APIs (e.g., web3.js, solana/web3.js, etc.)
   }
 </script>
 
