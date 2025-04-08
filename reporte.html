@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conversor de Cripto</title>
+  <title>Crypto Converter</title>
   <style>
     body {
       background-color: #0b1522;
@@ -61,7 +61,7 @@
   </style>
 </head>
 <body>
-  <h1>Conversor Cripto</h1>
+  <h1>Conversor de Cripto</h1>
   <div class="container">
     <select id="crypto"></select>
     <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
@@ -79,7 +79,7 @@
 
   <script>
     async function carregarMoedas() {
-      const res = await fetch('https://api.coingecko.com/api/v3/coins/list');
+      const res = await fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=false');
       const data = await res.json();
       const select = document.getElementById('crypto');
 
