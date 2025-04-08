@@ -22,7 +22,7 @@
     }
 
     h1 {
-      color: #ffffff; /* Cor branca para o título */
+      color: #ffffff;
       margin-bottom: 2rem;
       font-size: 2.5rem;
       text-align: center;
@@ -65,7 +65,7 @@
     }
 
     button {
-      background-color: #ffffff; /* Cor branca para o botão */
+      background-color: #ffffff;
       color: #0b1522;
       font-weight: bold;
       cursor: pointer;
@@ -75,7 +75,7 @@
     }
 
     button:hover {
-      background-color: #007b8c; /* Azul mais escuro no hover */
+      background-color: #007b8c;
       transform: scale(1.05);
     }
 
@@ -93,30 +93,34 @@
       transition: opacity 0.3s ease;
     }
 
-    .crypto-option {
+    .crypto-dropdown {
       display: flex;
-      align-items: center;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
+      flex-direction: column;
+      width: 100%;
       background-color: #1c2c44;
       border-radius: 8px;
       cursor: pointer;
     }
 
-    .crypto-option img {
-      width: 40px; /* Ajustei o tamanho da logo */
-      height: 40px;
+    .crypto-dropdown div {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
+
+    .crypto-dropdown div img {
+      width: 30px;
+      height: 30px;
       margin-right: 10px;
     }
 
-    .crypto-option:hover {
+    .crypto-dropdown div:hover {
       background-color: #333;
     }
 
-    .crypto-option p {
-      margin: 0;
-      color: #fff;
-      font-size: 1.1rem;
+    .crypto-dropdown div.selected {
+      background-color: #007b8c;
     }
 
     .loader {
@@ -152,7 +156,7 @@
 <body>
   <h1>Conversor de Cripto</h1>
   <div class="container">
-    <select id="crypto"></select>
+    <div class="crypto-dropdown" id="crypto-dropdown"></div>
     <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
     <select id="fiat">
       <!-- Moedas fiduciárias -->
@@ -172,45 +176,45 @@
   </div>
 
   <script>
+    let selectedCrypto = null;
+
     async function carregarMoedas() {
       // Fazendo a chamada à API para pegar a lista de criptomoedas (300 no total)
       const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=300&page=1');
       const data = await res.json();
-      const select = document.getElementById('crypto');
-
-      // Adiciona uma opção padrão de seleção
-      select.innerHTML = '<option value="" disabled selected>Selecione a Criptomoeda</option>';
+      const dropdown = document.getElementById('crypto-dropdown');
 
       data.forEach(moeda => {
-        const option = document.createElement('option');
-        option.value = moeda.id;
-
-        // Criação da estrutura com logo e nome da moeda
+        const div = document.createElement('div');
+        div.classList.add('crypto-option');
+        
         const img = document.createElement('img');
         img.src = moeda.image;
         img.alt = moeda.name;
-
+        
         const text = document.createElement('p');
         text.textContent = `${moeda.name} (${moeda.symbol.toUpperCase()})`;
 
-        // Adicionando logo e texto na opção
-        const container = document.createElement('div');
-        container.classList.add('crypto-option');
-        container.appendChild(img);
-        container.appendChild(text);
+        div.appendChild(img);
+        div.appendChild(text);
+        
+        // Marcar a criptomoeda selecionada
+        div.addEventListener('click', () => {
+          selectedCrypto = moeda.id;
+          document.querySelectorAll('.crypto-dropdown div').forEach(d => d.classList.remove('selected'));
+          div.classList.add('selected');
+        });
 
-        // Adicionando ao select
-        select.appendChild(container);
+        dropdown.appendChild(div);
       });
     }
 
     async function converter() {
       const quantidade = document.getElementById('quantidade').value;
-      const crypto = document.getElementById('crypto').value;
       const fiat = document.getElementById('fiat').value;
 
-      if (!quantidade || quantidade <= 0) {
-        alert("Informe uma quantidade válida.");
+      if (!quantidade || quantidade <= 0 || !selectedCrypto) {
+        alert("Selecione uma criptomoeda e informe uma quantidade válida.");
         return;
       }
 
@@ -218,15 +222,15 @@
       document.getElementById('resultado').innerHTML = '<div class="loader"></div>';
 
       try {
-        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=${fiat}`);
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${selectedCrypto}&vs_currencies=${fiat}`);
         const data = await res.json();
 
-        if (!data[crypto] || !data[crypto][fiat]) {
+        if (!data[selectedCrypto] || !data[selectedCrypto][fiat]) {
           document.getElementById("resultado").innerText = "Moeda não encontrada ou não suportada.";
           return;
         }
 
-        const preco = data[crypto][fiat];
+        const preco = data[selectedCrypto][fiat];
         const valor = (preco * quantidade).toFixed(6);
 
         document.getElementById("resultado").innerHTML = `
