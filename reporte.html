@@ -3,86 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conversor de Criptomoedas</title>
+  <title>Conversor de Cripto</title>
   <style>
     body {
-      background-color: #0b0c0f;
+      background-color: #0b1522;
       color: #f0f0f0;
-      font-family: Arial, sans-serif;
-      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+
     h1 {
-      color: #f1c40f;
+      color: #00ffff;
+      margin-bottom: 2rem;
     }
+
+    .container {
+      background: #111c30;
+      padding: 2rem;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
     select, input, button {
-      padding: 0.5rem;
-      margin: 0.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
       border: none;
-      border-radius: 5px;
       font-size: 1rem;
     }
+
     button {
-      background-color: #f1c40f;
-      color: #000;
+      background-color: #00ffff;
+      color: #0b1522;
+      font-weight: bold;
       cursor: pointer;
+      transition: background 0.3s;
     }
+
+    button:hover {
+      background-color: #00cfcf;
+    }
+
     #resultado {
-      margin-top: 2rem;
-      font-size: 1.2rem;
-      background: #1e1e1e;
+      margin-top: 1.5rem;
+      background-color: #1c2c44;
       padding: 1rem;
       border-radius: 10px;
+      font-size: 1.2rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <h1>Conversor de Cripto</h1>
-  <input type="text" id="moeda" placeholder="Nome da moeda (ex: bitcoin)" />
-  <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
-  <select id="fiat">
-    <option value="brl">Real (BRL)</option>
-    <option value="usd">Dólar (USD)</option>
-    <option value="eur">Euro (EUR)</option>
-    <option value="ars">Peso Argentino (ARS)</option>
-    <option value="btc">Bitcoin (BTC)</option>
-    <option value="eth">Ethereum (ETH)</option>
-  </select>
-  <button onclick="converter()">Converter</button>
-
-  <div id="resultado"></div>
+  <h1>Conversor Cripto</h1>
+  <div class="container">
+    <select id="crypto"></select>
+    <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
+    <select id="fiat">
+      <option value="brl">Real (BRL)</option>
+      <option value="usd">Dólar (USD)</option>
+      <option value="eur">Euro (EUR)</option>
+      <option value="ars">Peso Argentino (ARS)</option>
+      <option value="btc">Bitcoin (BTC)</option>
+      <option value="eth">Ethereum (ETH)</option>
+    </select>
+    <button onclick="converter()">Converter</button>
+    <div id="resultado"></div>
+  </div>
 
   <script>
+    async function carregarMoedas() {
+      const res = await fetch('https://api.coingecko.com/api/v3/coins/list');
+      const data = await res.json();
+      const select = document.getElementById('crypto');
+
+      data.sort((a, b) => a.name.localeCompare(b.name));
+
+      data.forEach(moeda => {
+        const option = document.createElement('option');
+        option.value = moeda.id;
+        option.textContent = moeda.name;
+        select.appendChild(option);
+      });
+    }
+
     async function converter() {
       const quantidade = document.getElementById('quantidade').value;
-      const moeda = document.getElementById('moeda').value.toLowerCase();
+      const crypto = document.getElementById('crypto').value;
       const fiat = document.getElementById('fiat').value;
 
-      if (!quantidade || quantidade <= 0 || !moeda) {
-        alert("Preencha todos os campos corretamente.");
+      if (!quantidade || quantidade <= 0) {
+        alert("Informe uma quantidade válida.");
         return;
       }
 
       try {
-        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${moeda}&vs_currencies=${fiat}`);
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=${fiat}`);
         const data = await res.json();
 
-        if (!data[moeda] || !data[moeda][fiat]) {
+        if (!data[crypto] || !data[crypto][fiat]) {
           document.getElementById("resultado").innerText = "Moeda não encontrada ou não suportada.";
           return;
         }
 
-        const preco = data[moeda][fiat];
+        const preco = data[crypto][fiat];
         const valor = (preco * quantidade).toFixed(6);
 
         document.getElementById("resultado").innerHTML = `
-          <p><b>Valor aproximado:</b></p>
-          <p>${valor} ${fiat.toUpperCase()}</p>
+          <p><strong>Valor:</strong> ${valor} ${fiat.toUpperCase()}</p>
         `;
       } catch (err) {
-        document.getElementById("resultado").innerText = "Erro ao buscar dados. Tente novamente mais tarde.";
+        document.getElementById("resultado").innerText = "Erro ao buscar dados. Tente novamente.";
       }
     }
+
+    window.onload = carregarMoedas;
   </script>
 </body>
 </html>
