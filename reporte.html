@@ -12,7 +12,7 @@
     }
 
     body {
-      background-color: #0b1522;
+      background-color: #0b1522; /* Changed from background-image to background-color */
       color: #f0f0f0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 2rem;
@@ -198,21 +198,19 @@
     let selectedCrypto = null;
 
     async function carregarMoedas() {
-      // Carregar as 300 criptomoedas mais populares (se disponível)
       const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=300&page=1');
       const data = await res.json();
       const dropdown = document.getElementById('crypto-dropdown');
       const cryptoInput = document.getElementById('crypto-input');
 
-      // Adicionar o ZOH Token diretamente
       const zoh = {
         id: 'zoh',
         name: 'ZOH Token',
         symbol: 'ZOH',
-        image: 'https://cryptologos.cc/logos/zoh-token-zoh-logo.png' // Imagem fictícia
+        image: 'https://cryptologos.cc/logos/zoh-token-zoh-logo.png'
       };
 
-      data.push(zoh); // Adicionando ZOH à lista de criptomoedas
+      data.push(zoh);
 
       data.forEach(moeda => {
         const div = document.createElement('div');
@@ -230,18 +228,17 @@
 
         div.addEventListener('click', () => {
           selectedCrypto = moeda.id;
-          cryptoInput.value = `${moeda.name} (${moeda.symbol.toUpperCase()})`; // Atualiza o campo de input
-          dropdown.classList.remove('show'); // Fecha o dropdown
+          cryptoInput.value = `${moeda.name} (${moeda.symbol.toUpperCase()})`;
+          dropdown.classList.remove('show');
         });
 
         dropdown.appendChild(div);
       });
     }
 
-    // Função para alternar a visibilidade do dropdown ao clicar no input
     document.getElementById('crypto-input').addEventListener('click', () => {
       const dropdown = document.getElementById('crypto-dropdown');
-      dropdown.classList.toggle('show'); // Exibe ou esconde o dropdown
+      dropdown.classList.toggle('show');
     });
 
     async function converter() {
