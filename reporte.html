@@ -12,17 +12,13 @@
     }
 
     body {
-      background-image: url('conn.png'); /* Define a imagem de fundo */
-      background-size: cover; /* Garante que a imagem cubra toda a tela */
-      background-repeat: no-repeat;
-      background-position: center center;
+      background-color: #0b1522;
       color: #f0f0f0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
     }
 
     h1 {
@@ -33,7 +29,7 @@
     }
 
     .container {
-      background: #033471; /* Fundo azul para a caixa de conversão */
+      background: #111c30;
       padding: 2rem;
       border-radius: 15px;
       width: 100%;
@@ -190,6 +186,20 @@
       <option value="krw">Won Sul-Coreano (KRW)</option>
       <option value="sek">Coroa Sueca (SEK)</option>
       <option value="nzd">Dólar Neozelandês (NZD)</option>
-      <option value="hkd">D
-::contentReference[oaicite:6]{index=6}
+      <option value="hkd">Dólar de Hong Kong (HKD)</option>
+      <option value="sgd">Dólar de Singapura (SGD)</option>
+      <option value="try">Lira Turca (TRY)</option>
+    </select>
+    <button onclick="converter()">Converter</button>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    let selectedCrypto = null;
+
+    async function carregarMoedas() {
+      // Carregar as 300 criptomoedas mais populares (se disponível)
+      const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=300&page=1');
+      const
+::contentReference[oaicite:0]{index=0}
  
