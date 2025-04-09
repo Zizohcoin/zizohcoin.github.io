@@ -87,24 +87,33 @@
 
     #about {
       padding: 80px 20px;
-      background-image: url('defil.png');
+      background-image: url('futu.png'); /* Alterado para a nova imagem de fundo */
       background-size: cover;
       background-position: center;
       color: #fff;
       line-height: 1.6;
       display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 600px; /* Garante altura suficiente para a centralização */
     }
 
     #about div {
-      max-width: 600px;
-      padding-right: 20px;
+      max-width: 800px;
+      background-color: rgba(0, 0, 0, 0.5); /* Caixa azul semi-transparente */
+      padding: 30px;
+      border-radius: 10px;
     }
 
     #about h2 {
       font-size: 2.5rem;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+    }
+
+    #about p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
     }
 
     .cta-button {
@@ -122,25 +131,6 @@
     .cta-button:hover {
       background-color: #2176bd;
       transform: translateY(-2px);
-    }
-
-    .meme-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 40px;
-    }
-
-    .meme-gallery img {
-      width: 100%;
-      max-width: 400px;
-      border-radius: 8px;
-      transition: transform 0.3s ease;
-    }
-
-    .meme-gallery img:hover {
-      transform: scale(1.05);
     }
 
     footer {
@@ -217,26 +207,9 @@
   <section id="about">
     <div>
       <h2>About Zizohcoin</h2>
-      <p>Zizohcoin (ZOH) is more than just a cryptocurrency – it’s a gateway to a financial revolution in the DeFi universe. Our mission is to build a strong, engaged community where everyone can participate and help shape a more democratic decentralized finance ecosystem.</p>
-      <p>The project focuses on transparency and fairness. We use 50% of our revenue from the website, social media, and report sales to buy back ZOH tokens and distribute them to the community via airdrops. This promotes decentralization and ensures everyone benefits from the growth of the project.</p>
-      <p>Instead of rewarding only the wealthy, we encourage active participation and a well-informed, DeFi-aligned community. We’re committed to ethical and fair distribution practices, avoiding speculation and ensuring long-term growth for those truly invested in ZOH.</p>
-      <p>Join Zizohcoin and become part of a more inclusive, transparent, and fun DeFi ecosystem, benefiting directly from the collective success of the project.</p>
-    </div>
-  </section>
-
-  <section id="tokenomics">
-    <h2>Tokenomics</h2>
-    <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTRsb2hyNGpsN210dm5xczI2Y3A2dmU4NzdtM2Y1bzFjdzFmN2pkNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RszAQS7Cig16VxcaJe/giphy.gif" alt="Tokenomics GIF" />
-    <a href="https://jup.ag/swap/SOL-22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump" class="cta-button" target="_blank">BUY ZIZOH HERE</a>
-  </section>
-
-  <section id="meme-gallery">
-    <h2>Meme Gallery</h2>
-    <p>Check out the latest memes from the Zizohcoin community:</p>
-    <div class="meme-gallery">
-      <img src="https://zizohcoin.github.io/airdrop.png" alt="Airdrop meme" />
-      <img src="https://zizohcoin.github.io/descanso.png" alt="Resting meme" />
-      <img src="https://zizohcoin.github.io/lua.png" alt="Moon meme" />
+      <p>Zizohcoin (ZOH) is a cryptocurrency aimed at revolutionizing the decentralized finance (DeFi) ecosystem. Its mission is to create an inclusive, engaged community where everyone can contribute to a democratic and transparent financial system.</p>
+      <p>The project focuses on fairness by using 50% of its revenue to buy back and distribute ZOH tokens to the community via airdrops. Zizohcoin promotes decentralization, active participation, and ethical distribution, ensuring long-term growth for those genuinely involved.</p>
+      <p>Join the movement and benefit from the project's collective success.</p>
     </div>
   </section>
 
