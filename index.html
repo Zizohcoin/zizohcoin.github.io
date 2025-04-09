@@ -9,10 +9,10 @@
       font-family: 'Helvetica Neue', Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #033471; /* Cor de fundo alterada para #033471 */
+      background-color: #033471; /* Cor de fundo */
       color: #fff;
       text-align: center;
-      overflow-x: hidden; /* Impede a rolagem horizontal */
+      overflow-x: hidden;
     }
 
     header {
@@ -21,7 +21,7 @@
       left: 0;
       width: 100%;
       z-index: 10;
-      background-image: url('space.png'); /* Alterado para a nova imagem de fundo */
+      background-image: url('space.png');
       background-size: cover;
       background-position: center;
       padding: 20px;
@@ -79,7 +79,7 @@
       color: #fff;
       text-align: center;
       font-size: 2rem;
-      background-image: url('space.png'); /* Alterado para a nova imagem de fundo */
+      background-image: url('space.png');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -87,31 +87,33 @@
 
     #about {
       padding: 80px 20px;
-      background-image: url('futu.png'); /* Alterado para a nova imagem de fundo */
+      background-image: url('futur.png'); /* Nova imagem de fundo */
       background-size: cover;
       background-position: center;
       color: #fff;
-      line-height: 1.6;
+      line-height: 1.8;
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
-      min-height: 600px; /* Garante altura suficiente para a centralização */
-      padding-top: 120px; /* Ajuste de espaçamento superior */
+      min-height: 600px;
+      padding-top: 120px;
     }
 
     #about div {
-      max-width: 800px;
+      max-width: 900px;
       background-color: rgba(0, 0, 0, 0.7); /* Caixa azul semi-transparente */
-      padding: 30px;
+      padding: 40px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para destacar a caixa */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Sombra */
       text-align: left; /* Alinha o texto à esquerda */
+      font-size: 1.1rem;
     }
 
     #about h2 {
       font-size: 2.5rem;
       margin-bottom: 20px;
+      font-weight: bold;
     }
 
     #about p {
@@ -134,6 +136,37 @@
     .cta-button:hover {
       background-color: #2176bd;
       transform: translateY(-2px);
+    }
+
+    #tokenomics {
+      padding: 80px 20px;
+      background-color: #1c4f91;
+      color: #fff;
+    }
+
+    #meme-gallery {
+      padding: 80px 20px;
+      background-color: #033471;
+      color: #fff;
+    }
+
+    .meme-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 40px;
+    }
+
+    .meme-gallery img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .meme-gallery img:hover {
+      transform: scale(1.05);
     }
 
     footer {
@@ -213,6 +246,24 @@
       <p>Zizohcoin (ZOH) is a cryptocurrency aimed at revolutionizing the decentralized finance (DeFi) ecosystem. Its mission is to create an inclusive, engaged community where everyone can contribute to a democratic and transparent financial system.</p>
       <p>The project focuses on fairness by using 50% of its revenue to buy back and distribute ZOH tokens to the community via airdrops. Zizohcoin promotes decentralization, active participation, and ethical distribution, ensuring long-term growth for those genuinely involved.</p>
       <p>Join the movement and benefit from the project's collective success.</p>
+    </div>
+  </section>
+
+  <!-- Tokenomics Section -->
+  <section id="tokenomics">
+    <h2>Tokenomics</h2>
+    <p>Learn more about the token distribution, total supply, and more about how Zizohcoin works!</p>
+    <a href="https://jup.ag/swap/SOL-22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump" class="cta-button" target="_blank">BUY ZIZOH HERE</a>
+  </section>
+
+  <!-- Meme Gallery Section -->
+  <section id="meme-gallery">
+    <h2>Meme Gallery</h2>
+    <p>Check out the latest memes from the Zizohcoin community:</p>
+    <div class="meme-gallery">
+      <img src="https://zizohcoin.github.io/airdrop.png" alt="Airdrop meme" />
+      <img src="https://zizohcoin.github.io/descanso.png" alt="Resting meme" />
+      <img src="https://zizohcoin.github.io/lua.png" alt="Moon meme" />
     </div>
   </section>
 
