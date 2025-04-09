@@ -32,7 +32,7 @@
     }
 
     .container {
-      background-color: #033471; /* Fundo azul */
+      background: rgba(3, 52, 113, 0.9); /* Azul com transparência */
       padding: 2rem;
       border-radius: 15px;
       width: 100%;
@@ -45,55 +45,20 @@
       transform: scale(1.02);
     }
 
-    select, input, button {
+    .crypto-selector {
+      position: relative;
+      width: 100%;
+    }
+
+    .crypto-selector input {
       width: 100%;
       padding: 0.75rem;
       margin: 0.5rem 0;
       border-radius: 8px;
       border: none;
       font-size: 1rem;
-    }
-
-    select {
       background-color: #1c2c44;
       color: #f0f0f0;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    input {
-      background-color: #1c2c44;
-      color: #f0f0f0;
-      font-size: 1rem;
-    }
-
-    button {
-      background-color: #ffffff;
-      color: #033471;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
-      font-size: 1.1rem;
-      padding: 1rem;
-    }
-
-    button:hover {
-      background-color: #007b8c;
-      transform: scale(1.05);
-    }
-
-    button:focus {
-      outline: none;
-    }
-
-    #resultado {
-      margin-top: 1.5rem;
-      background-color: #1c2c44;
-      padding: 1rem;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      text-align: center;
-      transition: opacity 0.3s ease;
     }
 
     .crypto-dropdown {
@@ -102,9 +67,10 @@
       width: 100%;
       background-color: #1c2c44;
       border-radius: 8px;
-      cursor: pointer;
-      max-height: 250px;
-      overflow-y: auto;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 10;
     }
 
     .crypto-dropdown div {
@@ -132,6 +98,51 @@
 
     .crypto-dropdown.show {
       display: flex;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    select {
+      background-color: #1c2c44;
+      color: #f0f0f0;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #ffffff;
+      color: #0b1522;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+      font-size: 1.1rem;
+      padding: 1rem;
+    }
+
+    button:hover {
+      background-color: #007b8c;
+      transform: scale(1.05);
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    #resultado {
+      margin-top: 1.5rem;
+      background-color: #1c2c44;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+      transition: opacity 0.3s ease;
     }
 
     .loader {
@@ -174,33 +185,6 @@
     <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
     <select id="fiat">
       <option value="brl">Real (BRL)</option>
-      <option value="usd">Dólar (USD)</option>
-      <option value="eur">Euro (EUR)</option>
-      <option value="ars">Peso Argentino (ARS)</option>
-      <option value="gbp">Libra Esterlina (GBP)</option>
-      <option value="jpy">Iene Japonês (JPY)</option>
-      <option value="chf">Franco Suíço (CHF)</option>
-      <option value="aud">Dólar Australiano (AUD)</option>
-      <option value="cad">Dólar Canadense (CAD)</option>
-      <option value="cny">Yuan Chinês (CNY)</option>
-      <option value="inr">Rúpia Indiana (INR)</option>
-      <option value="mxn">Peso Mexicano (MXN)</option>
-      <option value="zar">Rand Sul-Africano (ZAR)</option>
-      <option value="krw">Won Sul-Coreano (KRW)</option>
-      <option value="sek">Coroa Sueca (SEK)</option>
-      <option value="nzd">Dólar Neozelandês (NZD)</option>
-      <option value="hkd">Dólar de Hong Kong (HKD)</option>
-      <option value="sgd">Dólar de Singapura (SGD)</option>
-      <option value="try">Lira Turca (TRY)</option>
-    </select>
-    <button onclick="converter()">Converter</button>
-    <div id="resultado"></div>
-  </div>
-
-  <script>
-    let selectedCrypto = null;
-
-    async function carregarMoedas() {
-      // Carregar as 300 criptomoedas mais populares (se disponível
-::contentReference[oaicite:0]{index=0}
+      <option value="usd">Dólar
+::contentReference[oaicite:16]{index=16}
  
