@@ -3,115 +3,279 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conversor de Criptomoedas</title>
+  <title>Crypto Converter</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      padding: 20px;
+      background-color: #0b1522;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 2rem;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
     }
+
+    h1 {
+      color: #ffffff;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      text-align: center;
+    }
+
     .container {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
+      background: #111c30;
+      padding: 2rem;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      transition: transform 0.3s ease;
     }
+
+    .container:hover {
+      transform: scale(1.02);
+    }
+
     select, input, button {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      background-color: #28a745;
-      color: #fff;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
       border: none;
+      font-size: 1rem;
+    }
+
+    select {
+      background-color: #1c2c44;
+      color: #f0f0f0;
+      font-size: 1rem;
       cursor: pointer;
+    }
+
+    input {
+      background-color: #1c2c44;
+      color: #f0f0f0;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #ffffff;
+      color: #0b1522;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+      font-size: 1.1rem;
+      padding: 1rem;
+    }
+
+    button:hover {
+      background-color: #007b8c;
+      transform: scale(1.05);
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    #resultado {
+      margin-top: 1.5rem;
+      background-color: #1c2c44;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+      transition: opacity 0.3s ease;
+    }
+
+    .crypto-dropdown {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background-color: #1c2c44;
+      border-radius: 8px;
+      cursor: pointer;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .crypto-dropdown div {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #333;
+      background-color: #222;
       transition: background-color 0.3s;
     }
-    button:hover {
-      background-color: #218838;
+
+    .crypto-dropdown div:hover {
+      background-color: #333;
     }
-    #resultado {
-      margin-top: 20px;
-      padding: 10px;
-      background-color: #f8f9fa;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      text-align: center;
+
+    .crypto-dropdown div.selected {
+      background-color: #007b8c;
+    }
+
+    .crypto-dropdown div img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .crypto-dropdown.show {
+      display: flex;
+    }
+
+    .loader {
+      border: 4px solid transparent;
+      border-top: 4px solid #00ffff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 1rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      select, input, button {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <h1>Crypto Converter</h1>
   <div class="container">
-    <h2>Conversor de Criptomoedas</h2>
-    <select id="criptomoeda">
-      <!-- As opções serão preenchidas pelo JavaScript -->
-    </select>
-    <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any">
-    <select id="moeda">
+    <div class="crypto-selector" id="crypto-selector">
+      <input type="text" id="crypto-input" placeholder="Selecione uma Criptomoeda" readonly />
+      <div class="crypto-dropdown" id="crypto-dropdown"></div>
+    </div>
+    <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
+    <select id="fiat">
       <option value="brl">Real (BRL)</option>
       <option value="usd">Dólar (USD)</option>
       <option value="eur">Euro (EUR)</option>
-      <!-- Adicione outras moedas fiduciárias conforme necessário -->
+      <option value="ars">Peso Argentino (ARS)</option>
+      <option value="gbp">Libra Esterlina (GBP)</option>
+      <option value="jpy">Iene Japonês (JPY)</option>
+      <option value="chf">Franco Suíço (CHF)</option>
+      <option value="aud">Dólar Australiano (AUD)</option>
+      <option value="cad">Dólar Canadense (CAD)</option>
+      <option value="cny">Yuan Chinês (CNY)</option>
+      <option value="inr">Rúpia Indiana (INR)</option>
+      <option value="mxn">Peso Mexicano (MXN)</option>
+      <option value="zar">Rand Sul-Africano (ZAR)</option>
+      <option value="krw">Won Sul-Coreano (KRW)</option>
+      <option value="sek">Coroa Sueca (SEK)</option>
+      <option value="nzd">Dólar Neozelandês (NZD)</option>
+      <option value="hkd">Dólar de Hong Kong (HKD)</option>
+      <option value="sgd">Dólar de Singapura (SGD)</option>
+      <option value="try">Lira Turca (TRY)</option>
     </select>
     <button onclick="converter()">Converter</button>
     <div id="resultado"></div>
   </div>
 
   <script>
-    // Lista de criptomoedas populares
-    const criptomoedas = [
-      { id: 'bitcoin', nome: 'Bitcoin', simbolo: 'BTC' },
-      { id: 'ethereum', nome: 'Ethereum', simbolo: 'ETH' },
-      { id: 'litecoin', nome: 'Litecoin', simbolo: 'LTC' },
-      // Adicione outras criptomoedas conforme necessário
-    ];
+    let selectedCrypto = null;
 
-    // Preencher o select de criptomoedas
-    const selectCripto = document.getElementById('criptomoeda');
-    criptomoedas.forEach(cripto => {
-      const option = document.createElement('option');
-      option.value = cripto.id;
-      option.textContent = `${cripto.nome} (${cripto.simbolo})`;
-      selectCripto.appendChild(option);
+    async function carregarMoedas() {
+      // Carregar as 300 criptomoedas mais populares (se disponível)
+      const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=300&page=1');
+      const data = await res.json();
+      const dropdown = document.getElementById('crypto-dropdown');
+      const cryptoInput = document.getElementById('crypto-input');
+
+      // Adicionar o ZOH Token diretamente
+      const zoh = {
+        id: 'zoh',
+        name: 'ZOH Token',
+        symbol: 'ZOH',
+        image: 'https://cryptologos.cc/logos/zoh-token-zoh-logo.png' // Imagem fictícia
+      };
+
+      data.push(zoh); // Adicionando ZOH à lista de criptomoedas
+
+      data.forEach(moeda => {
+        const div = document.createElement('div');
+        div.classList.add('crypto-option');
+        
+        const img = document.createElement('img');
+        img.src = moeda.image;
+        img.alt = moeda.name;
+        
+        const text = document.createElement('p');
+        text.textContent = `${moeda.name} (${moeda.symbol.toUpperCase()})`;
+
+        div.appendChild(img);
+        div.appendChild(text);
+
+        div.addEventListener('click', () => {
+          selectedCrypto = moeda.id;
+          cryptoInput.value = `${moeda.name} (${moeda.symbol.toUpperCase()})`; // Atualiza o campo de input
+          dropdown.classList.remove('show'); // Fecha o dropdown
+        });
+
+        dropdown.appendChild(div);
+      });
+    }
+
+    // Função para alternar a visibilidade do dropdown ao clicar no input
+    document.getElementById('crypto-input').addEventListener('click', () => {
+      const dropdown = document.getElementById('crypto-dropdown');
+      dropdown.classList.toggle('show'); // Exibe ou esconde o dropdown
     });
 
-    // Função para converter
     async function converter() {
-      const criptoSelecionada = selectCripto.value;
       const quantidade = document.getElementById('quantidade').value;
-      const moeda = document.getElementById('moeda').value;
+      const fiat = document.getElementById('fiat').value;
 
-      if (!quantidade || quantidade <= 0) {
-        alert('Por favor, insira uma quantidade válida.');
+      if (!quantidade || quantidade <= 0 || !selectedCrypto) {
+        alert("Selecione uma criptomoeda e informe uma quantidade válida.");
         return;
       }
 
-      document.getElementById('resultado').textContent = 'Carregando...';
+      document.getElementById('resultado').innerHTML = '<div class="loader"></div>';
 
       try {
-        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${criptoSelecionada}&vs_currencies=${moeda}`);
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${selectedCrypto}&vs_currencies=${fiat}`);
         const data = await res.json();
 
-        if (data[criptoSelecionada] && data[criptoSelecionada][moeda]) {
-          const preco = data[criptoSelecionada][moeda];
-          const valorConvertido = (preco * quantidade).toFixed(2);
-          document.getElementById('resultado').textContent = `Resultado: ${valorConvertido} ${moeda.toUpperCase()}`;
-        } else {
-          document.getElementById('resultado').textContent = 'Erro ao obter dados.';
+        if (!data[selectedCrypto] || !data[selectedCrypto][fiat]) {
+          document.getElementById("resultado").innerText = "Moeda não encontrada ou não suportada.";
+          return;
         }
-      } catch (error) {
-        document.getElementById('resultado').textContent = 'Erro ao realizar a conversão.';
-        console.error(error);
+
+        const preco = data[selectedCrypto][fiat];
+        const valor = (preco * quantidade).toFixed(6);
+
+        document.getElementById("resultado").innerHTML = `
+          <p><strong>Valor:</strong> ${valor} ${fiat.toUpperCase()}</p>
+        `;
+      } catch (err) {
+        document.getElementById("resultado").innerText = "Erro ao buscar dados. Tente novamente.";
       }
     }
+
+    window.onload = carregarMoedas;
   </script>
 </body>
 </html>
