@@ -1,158 +1,281 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Crypto Converter - Zizohcoin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Converter</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background-image: url('con.png'); /* Alterado para con.png */
-      background-size: cover;
-      background-position: center;
-      color: white;
-    }
-
-    header {
-      background-color: #033471; /* Mantivemos o azul */
-      padding: 2rem 1rem;
-      text-align: center;
-      border-bottom: 1px solid #1e3a5f;
-    }
-
-    header h1 {
-      font-size: 2rem;
-      color: white; /* Título em branco */
-      margin: 0;
-    }
-
-    header p {
-      font-size: 1rem;
-      color: #b0c7e1;
-      margin-top: 0.5rem;
-    }
-
-    main {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .converter-box {
-      background-color: rgba(3, 52, 113, 0.8); /* Fundo transparente do mesmo tom de azul */
-      border-radius: 8px;
+      background-color: #0b1522;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 2rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .converter-box h2 {
-      color: white;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
+    h1 {
+      color: #ffffff;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      text-align: center;
     }
 
-    .converter-box p {
-      color: #c4d4e3;
-      line-height: 1.6;
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-      color: white;
-      font-size: 1.1rem;
-    }
-
-    .form-group input,
-    .form-group select {
+    .container {
+      background: #111c30;
+      padding: 2rem;
+      border-radius: 15px;
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
       border: none;
-      border-radius: 6px;
       font-size: 1rem;
     }
 
-    .btn {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 10px 20px;
-      background-color: #2176bd;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: background 0.3s;
+    select {
+      background-color: #1c2c44;
+      color: #f0f0f0;
+      font-size: 1rem;
+      cursor: pointer;
     }
 
-    .btn:hover {
-      background-color: #2891db;
+    input {
+      background-color: #1c2c44;
+      color: #f0f0f0;
+      font-size: 1rem;
     }
 
-    footer {
+    button {
+      background-color: #ffffff;
+      color: #0b1522;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+      font-size: 1.1rem;
+      padding: 1rem;
+    }
+
+    button:hover {
+      background-color: #007b8c;
+      transform: scale(1.05);
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    #resultado {
+      margin-top: 1.5rem;
+      background-color: #1c2c44;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
       text-align: center;
-      padding: 2rem 1rem;
-      color: #a1b5d8;
-      font-size: 0.9rem;
+      transition: opacity 0.3s ease;
     }
 
-    /* Garantir contraste adequado para leitores de tela e usuários com deficiência visual */
-    .btn {
-      background-color: #2176bd;
-      color: white;
+    .crypto-dropdown {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background-color: #1c2c44;
+      border-radius: 8px;
+      cursor: pointer;
+      max-height: 250px;
+      overflow-y: auto;
     }
 
-    .btn:hover {
-      background-color: #2891db;
+    .crypto-dropdown div {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #333;
+      background-color: #222;
+      transition: background-color 0.3s;
+    }
+
+    .crypto-dropdown div:hover {
+      background-color: #333;
+    }
+
+    .crypto-dropdown div.selected {
+      background-color: #007b8c;
+    }
+
+    .crypto-dropdown div img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .crypto-dropdown.show {
+      display: flex;
+    }
+
+    .loader {
+      border: 4px solid transparent;
+      border-top: 4px solid #00ffff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 1rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      select, input, button {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>Crypto Converter - Zizohcoin</h1>
-    <p>Converta suas criptomoedas de maneira fácil e rápida</p>
-  </header>
-
-  <main>
-    <div class="converter-box">
-      <h2>Conversor de Criptomoedas</h2>
-      <p>Escolha a criptomoeda que você deseja converter e insira a quantidade:</p>
-
-      <form>
-        <div class="form-group">
-          <label for="crypto-from">Criptomoeda de origem:</label>
-          <select id="crypto-from">
-            <option value="zoh">ZOH</option>
-            <option value="btc">Bitcoin</option>
-            <option value="eth">Ethereum</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="crypto-to">Criptomoeda de destino:</label>
-          <select id="crypto-to">
-            <option value="btc">Bitcoin</option>
-            <option value="eth">Ethereum</option>
-            <option value="zoh">ZOH</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="amount">Quantidade:</label>
-          <input type="number" id="amount" placeholder="Digite a quantidade" />
-        </div>
-
-        <a href="#" class="btn">Converter</a>
-      </form>
+  <h1>Crypto Converter</h1>
+  <div class="container">
+    <div class="crypto-selector" id="crypto-selector">
+      <input type="text" id="crypto-input" placeholder="Selecione uma Criptomoeda" readonly />
+      <div class="crypto-dropdown" id="crypto-dropdown"></div>
     </div>
-  </main>
+    <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
+    <select id="fiat">
+      <option value="brl">Real (BRL)</option>
+      <option value="usd">Dólar (USD)</option>
+      <option value="eur">Euro (EUR)</option>
+      <option value="ars">Peso Argentino (ARS)</option>
+      <option value="gbp">Libra Esterlina (GBP)</option>
+      <option value="jpy">Iene Japonês (JPY)</option>
+      <option value="chf">Franco Suíço (CHF)</option>
+      <option value="aud">Dólar Australiano (AUD)</option>
+      <option value="cad">Dólar Canadense (CAD)</option>
+      <option value="cny">Yuan Chinês (CNY)</option>
+      <option value="inr">Rúpia Indiana (INR)</option>
+      <option value="mxn">Peso Mexicano (MXN)</option>
+      <option value="zar">Rand Sul-Africano (ZAR)</option>
+      <option value="krw">Won Sul-Coreano (KRW)</option>
+      <option value="sek">Coroa Sueca (SEK)</option>
+      <option value="nzd">Dólar Neozelandês (NZD)</option>
+      <option value="hkd">Dólar de Hong Kong (HKD)</option>
+      <option value="sgd">Dólar de Singapura (SGD)</option>
+      <option value="try">Lira Turca (TRY)</option>
+    </select>
+    <button onclick="converter()">Converter</button>
+    <div id="resultado"></div>
+  </div>
 
-  <footer>
-    © 2025 Zizohcoin. All rights reserved.
-  </footer>
+  <script>
+    let selectedCrypto = null;
 
+    async function carregarMoedas() {
+      // Carregar as 300 criptomoedas mais populares (se disponível)
+      const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=300&page=1');
+      const data = await res.json();
+      const dropdown = document.getElementById('crypto-dropdown');
+      const cryptoInput = document.getElementById('crypto-input');
+
+      // Adicionar o ZOH Token diretamente
+      const zoh = {
+        id: 'zoh',
+        name: 'ZOH Token',
+        symbol: 'ZOH',
+        image: 'https://cryptologos.cc/logos/zoh-token-zoh-logo.png' // Imagem fictícia
+      };
+
+      data.push(zoh); // Adicionando ZOH à lista de criptomoedas
+
+      data.forEach(moeda => {
+        const div = document.createElement('div');
+        div.classList.add('crypto-option');
+        
+        const img = document.createElement('img');
+        img.src = moeda.image;
+        img.alt = moeda.name;
+        
+        const text = document.createElement('p');
+        text.textContent = `${moeda.name} (${moeda.symbol.toUpperCase()})`;
+
+        div.appendChild(img);
+        div.appendChild(text);
+
+        div.addEventListener('click', () => {
+          selectedCrypto = moeda.id;
+          cryptoInput.value = `${moeda.name} (${moeda.symbol.toUpperCase()})`; // Atualiza o campo de input
+          dropdown.classList.remove('show'); // Fecha o dropdown
+        });
+
+        dropdown.appendChild(div);
+      });
+    }
+
+    // Função para alternar a visibilidade do dropdown ao clicar no input
+    document.getElementById('crypto-input').addEventListener('click', () => {
+      const dropdown = document.getElementById('crypto-dropdown');
+      dropdown.classList.toggle('show'); // Exibe ou esconde o dropdown
+    });
+
+    async function converter() {
+      const quantidade = document.getElementById('quantidade').value;
+      const fiat = document.getElementById('fiat').value;
+
+      if (!quantidade || quantidade <= 0 || !selectedCrypto) {
+        alert("Selecione uma criptomoeda e informe uma quantidade válida.");
+        return;
+      }
+
+      document.getElementById('resultado').innerHTML = '<div class="loader"></div>';
+
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${selectedCrypto}&vs_currencies=${fiat}`);
+        const data = await res.json();
+
+        if (!data[selectedCrypto] || !data[selectedCrypto][fiat]) {
+          document.getElementById("resultado").innerText = "Moeda não encontrada ou não suportada.";
+          return;
+        }
+
+        const preco = data[selectedCrypto][fiat];
+        const valor = (preco * quantidade).toFixed(6);
+
+        document.getElementById("resultado").innerHTML = `
+          <p><strong>Valor:</strong> ${valor} ${fiat.toUpperCase()}</p>
+        `;
+      } catch (err) {
+        document.getElementById("resultado").innerText = "Erro ao buscar dados. Tente novamente.";
+      }
+    }
+
+    window.onload = carregarMoedas;
+  </script>
 </body>
 </html>
