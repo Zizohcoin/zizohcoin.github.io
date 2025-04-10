@@ -60,8 +60,15 @@
       color: #333333; /* Ensuring text is visible */
     }
 
+    /* When focus is on select (when selecting a currency) */
     select:focus {
       background-color: #00c2d1; /* Background color when focus is on select */
+      color: #ffffff; /* Make the text white when selecting */
+    }
+
+    /* When the option is selected */
+    select option:checked {
+      background-color: #00c2d1;
       color: #ffffff;
     }
 
