@@ -34,6 +34,7 @@
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
     }
 
+    /* Ensuring all form fields are the same width as the button */
     input, select, button {
       width: 100%;
       padding: 0.75rem;
@@ -51,6 +52,13 @@
 
     select {
       cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.2); /* Fixing background color */
+      color: #333333; /* Ensuring text is visible */
+    }
+
+    select:focus {
+      background-color: #00c2d1; /* Background color when focus is on select */
+      color: #ffffff;
     }
 
     button {
@@ -101,6 +109,26 @@
       <option value="brl">Brazilian Real (BRL)</option>
       <option value="usd">US Dollar (USD)</option>
       <option value="eur">Euro (EUR)</option>
+      <option value="ars">Argentine Peso (ARS)</option>
+      <option value="gbp">British Pound (GBP)</option>
+      <option value="jpy">Japanese Yen (JPY)</option>
+      <option value="chf">Swiss Franc (CHF)</option>
+      <option value="aud">Australian Dollar (AUD)</option>
+      <option value="cad">Canadian Dollar (CAD)</option>
+      <option value="cny">Chinese Yuan (CNY)</option>
+      <option value="inr">Indian Rupee (INR)</option>
+      <option value="mxn">Mexican Peso (MXN)</option>
+      <option value="zar">South African Rand (ZAR)</option>
+      <option value="krw">South Korean Won (KRW)</option>
+      <option value="sek">Swedish Krona (SEK)</option>
+      <option value="nzd">New Zealand Dollar (NZD)</option>
+      <option value="hkd">Hong Kong Dollar (HKD)</option>
+      <option value="sgd">Singapore Dollar (SGD)</option>
+      <option value="try">Turkish Lira (TRY)</option>
+      <option value="bgn">Bulgarian Lev (BGN)</option>
+      <option value="czk">Czech Koruna (CZK)</option>
+      <option value="pln">Polish Zloty (PLN)</option>
+      <option value="rmb">Renminbi (RMB)</option>
     </select>
     <button onclick="convert()">Convert</button>
     <div id="resultado"></div>
