@@ -51,7 +51,7 @@
     input, select {
       background-color: rgba(255, 255, 255, 0.1);
       color: #ffffff;
-      border: 1px solid #00c2d1;
+      border: 1px solid #ffffff; /* White border for the input and select fields */
     }
 
     select {
@@ -70,13 +70,14 @@
       color: #033470;
       font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
+      transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
       font-size: 1.1rem;
+      border: 1px solid #033470; /* Border for button */
     }
 
     button:hover {
       background-color: #00c2d1;
-      color: #000;
+      color: #ffffff; /* Text color changes to white when hovering */
       transform: scale(1.05);
     }
 
