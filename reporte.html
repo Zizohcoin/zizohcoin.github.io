@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Conversor de Criptomoedas</title>
+  <title>Cryptocurrency Converter</title>
   <style>
     body {
       background-image: url('conn.png');
@@ -26,7 +26,7 @@
     }
 
     .container {
-      background: #033470; /* Sua cor escolhida */
+      background: #033470; /* Your selected color */
       padding: 2rem;
       border-radius: 15px;
       width: 100%;
@@ -93,82 +93,90 @@
   </style>
 </head>
 <body>
-  <h1>Conversor de Criptomoedas</h1>
+  <h1>Cryptocurrency Converter</h1>
   <div class="container">
-    <input type="text" id="crypto-input" placeholder="Digite o nome da criptomoeda (ex: bitcoin)" />
-    <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
+    <input type="text" id="crypto-input" placeholder="Enter cryptocurrency name (e.g., bitcoin)" />
+    <input type="number" id="quantidade" placeholder="Amount" min="0" step="any" />
     <select id="fiat">
-      <option value="brl">Real (BRL)</option>
-      <option value="usd">Dólar (USD)</option>
+      <option value="brl">Brazilian Real (BRL)</option>
+      <option value="usd">US Dollar (USD)</option>
       <option value="eur">Euro (EUR)</option>
     </select>
-    <button onclick="converter()">Converter</button>
+    <button onclick="convert()">Convert</button>
     <div id="resultado"></div>
   </div>
 
   <script>
-    const criptomoedas = {
+    const cryptocurrencies = {
       "bitcoin": { brl: 350000, usd: 70000, eur: 64000 },
       "ethereum": { brl: 18000, usd: 3600, eur: 3300 },
       "tether": { brl: 5.5, usd: 1, eur: 0.9 },
       "binance coin": { brl: 1500, usd: 300, eur: 270 },
       "xrp": { brl: 3, usd: 0.6, eur: 0.5 },
-      // Adicione mais conforme necessário
+      // Add more as needed
     };
 
-    // Converte nomes comuns para IDs válidos da API CoinGecko
-    const nomeParaId = {
+    const nameToId = {
       "bitcoin": "bitcoin",
       "ethereum": "ethereum",
       "tether": "tether",
       "binance coin": "binancecoin",
       "xrp": "ripple",
-      // Mapeie os outros corretamente
+      // Map other names accordingly
     };
 
-    async function converter() {
-      const nomeDigitado = document.getElementById('crypto-input').value.toLowerCase().trim();
-      const quantidade = parseFloat(document.getElementById('quantidade').value);
+    async function convert() {
+      const enteredName = document.getElementById('crypto-input').value.toLowerCase().trim();
+      const quantity = parseFloat(document.getElementById('quantidade').value);
       const fiat = document.getElementById('fiat').value;
 
-      if (!nomeDigitado || !quantidade || quantidade <= 0) {
-        alert("Por favor, insira uma criptomoeda válida e uma quantidade positiva.");
+      if (!enteredName || !quantity || quantity <= 0) {
+        alert("Please enter a valid cryptocurrency and a positive amount.");
         return;
       }
 
-      const id = nomeParaId[nomeDigitado];
+      const id = nameToId[enteredName];
 
       try {
-        if (!id) throw new Error("ID inválido");
+        if (!id) throw new Error("Invalid ID");
 
         const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${fiat}`);
         const data = await res.json();
-        let preco = data[id]?.[fiat];
+        let price = data[id]?.[fiat];
 
-        if (!preco) {
-          preco = criptomoedas[nomeDigitado]?.[fiat];
+        if (!price) {
+          price = cryptocurrencies[enteredName]?.[fiat];
         }
 
-        if (!preco) {
-          document.getElementById("resultado").innerText = "Criptomoeda não encontrada ou não suportada.";
+        if (!price) {
+          document.getElementById("resultado").innerText = "Cryptocurrency not found or unsupported.";
           return;
         }
 
-        const valor = (preco * quantidade).toFixed(2);
+        const value = (price * quantity).toFixed(2);
         document.getElementById("resultado").innerHTML = `
-          <p><strong>Valor:</strong> ${valor} ${fiat.toUpperCase()}</p>
+          <p><strong>Value:</strong> ${value} ${fiat.toUpperCase()}</p>
         `;
       } catch (err) {
-        const preco = criptomoedas[nomeDigitado]?.[fiat];
-        if (!preco) {
-          document.getElementById("resultado").innerText = "Criptomoeda não disponível no modo offline.";
-          return;
-        }
+        // If offline data isn't available, attempt online fetch
+        console.log("Error fetching data:", err.message);
+        try {
+          const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${enteredName}&vs_currencies=${fiat}`);
+          const data = await res.json();
+          const price = data[enteredName]?.[fiat];
 
-        const valor = (preco * quantidade).toFixed(2);
-        document.getElementById("resultado").innerHTML = `
-          <p><strong>Valor (offline):</strong> ${valor} ${fiat.toUpperCase()}</p>
-        `;
+          if (!price) {
+            document.getElementById("resultado").innerText = "Cryptocurrency not found or unsupported.";
+            return;
+          }
+
+          const value = (price * quantity).toFixed(2);
+          document.getElementById("resultado").innerHTML = `
+            <p><strong>Value (Online):</strong> ${value} ${fiat.toUpperCase()}</p>
+          `;
+        } catch (onlineError) {
+          document.getElementById("resultado").innerText = "Unable to fetch data online, please try again later.";
+        }
       }
     }
   </script>
