@@ -1,1 +1,19 @@
+title: ZizohCoin Blog
+description: O blog oficial do ZizohCoin
+baseurl: ""
+url: "https://zizohcoin.github.io"
+
+# Permite a exibição de posts com markdown
+markdown: kramdown
+
+theme: jekyll-theme-cayman # Você pode escolher um tema Jekyll para o seu blog
+
+# Definir uma página inicial para o blog
+paginate: 5
+paginate_path: "/page:num/"
+
+# Permitir categorias e tags
+collections:
+  posts:
+    output: true
 
