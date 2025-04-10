@@ -1,35 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Conversor de Criptomoedas</title>
   <style>
-    /* Estilos para a página */
+    /* === Estilização geral com imagem de fundo === */
     body {
-      background-color: #0b1522;
-      color: #f0f0f0;
+      background-image: url('conn.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #f0f0f0;
       padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+
+    /* === Overlay escuro para contraste === */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 21, 34, 0.85);
+      z-index: -1;
+    }
+
     h1 {
-      color: #ffffff;
       margin-bottom: 2rem;
       font-size: 2.5rem;
       text-align: center;
     }
+
     .container {
-      background: #111c30;
+      background: rgba(0, 123, 140, 0.9); /* Azul elegante com transparência */
       padding: 2rem;
       border-radius: 15px;
       width: 100%;
       max-width: 500px;
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
     }
-    select, input, button {
+
+    input, select, button {
       width: 100%;
       padding: 0.75rem;
       margin: 0.5rem 0;
@@ -37,17 +55,17 @@
       border: none;
       font-size: 1rem;
     }
+
+    input, select {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid #00c2d1;
+    }
+
     select {
-      background-color: #1c2c44;
-      color: #f0f0f0;
-      font-size: 1rem;
       cursor: pointer;
     }
-    input {
-      background-color: #1c2c44;
-      color: #f0f0f0;
-      font-size: 1rem;
-    }
+
     button {
       background-color: #ffffff;
       color: #0b1522;
@@ -55,53 +73,68 @@
       cursor: pointer;
       transition: background 0.3s ease, transform 0.3s ease;
       font-size: 1.1rem;
-      padding: 1rem;
     }
+
     button:hover {
-      background-color: #007b8c;
+      background-color: #00c2d1;
+      color: #000;
       transform: scale(1.05);
     }
+
     button:focus {
       outline: none;
     }
+
     #resultado {
       margin-top: 1.5rem;
-      background-color: #1c2c44;
+      background-color: rgba(255, 255, 255, 0.1);
       padding: 1rem;
       border-radius: 10px;
       font-size: 1.2rem;
       text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      input, select, button {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Conversor de Criptomoedas</h1>
   <div class="container">
-    <input type="text" id="crypto-input" placeholder="Digite o nome da criptomoeda (e.g., bitcoin)" />
+    <input type="text" id="crypto-input" placeholder="Digite o nome da criptomoeda (ex: bitcoin)" />
     <input type="number" id="quantidade" placeholder="Quantidade" min="0" step="any" />
     <select id="fiat">
       <option value="brl">Real (BRL)</option>
       <option value="usd">Dólar (USD)</option>
       <option value="eur">Euro (EUR)</option>
-      <!-- Adicione outras opções de moedas fiat conforme necessário -->
     </select>
     <button onclick="converter()">Converter</button>
     <div id="resultado"></div>
   </div>
 
   <script>
-    // Objeto contendo dados locais das 300 principais criptomoedas
+    // Valores locais para fallback (modo offline)
     const criptomoedas = {
       "bitcoin": { brl: 350000, usd: 70000, eur: 64000 },
       "ethereum": { brl: 18000, usd: 3600, eur: 3300 },
       "tether": { brl: 5.5, usd: 1, eur: 0.9 },
       "binance coin": { brl: 1500, usd: 300, eur: 270 },
       "xrp": { brl: 3, usd: 0.6, eur: 0.5 },
-      // Adicione os dados das outras 295 criptomoedas aqui
+      // Adicione mais moedas conforme necessário
     };
 
-    // Função para converter valores
-    function converter() {
+    async function converter() {
       const cryptoInput = document.getElementById('crypto-input').value.toLowerCase().trim();
       const quantidade = parseFloat(document.getElementById('quantidade').value);
       const fiat = document.getElementById('fiat').value;
@@ -111,14 +144,40 @@
         return;
       }
 
-      const preco = criptomoedas[cryptoInput]?.[fiat];
-      if (preco !== undefined) {
+      // Tenta buscar o preço da API CoinGecko
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptoInput}&vs_currencies=${fiat}`);
+        const data = await res.json();
+
+        let preco = data[cryptoInput]?.[fiat];
+
+        // Se a API não retornou ou falhou
+        if (!preco) {
+          preco = criptomoedas[cryptoInput]?.[fiat];
+        }
+
+        if (!preco) {
+          document.getElementById("resultado").innerText = "Criptomoeda não encontrada ou não suportada.";
+          return;
+        }
+
         const valor = (preco * quantidade).toFixed(2);
-        document.getElementById('resultado').innerHTML = `
+        document.getElementById("resultado").innerHTML = `
           <p><strong>Valor:</strong> ${valor} ${fiat.toUpperCase()}</p>
         `;
-      } else {
-        document.getElementById('resultado').innerText = "Criptomoeda não encontrada ou não suportada.";
+      } catch (err) {
+        console.warn("Erro ao acessar API, usando valores locais...", err);
+
+        const preco = criptomoedas[cryptoInput]?.[fiat];
+        if (!preco) {
+          document.getElementById("resultado").innerText = "Criptomoeda não disponível no modo offline.";
+          return;
+        }
+
+        const valor = (preco * quantidade).toFixed(2);
+        document.getElementById("resultado").innerHTML = `
+          <p><strong>Valor (offline):</strong> ${valor} ${fiat.toUpperCase()}</p>
+        `;
       }
     }
   </script>
