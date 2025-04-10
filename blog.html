@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - ZizohCoin</title>
+  <style>
+    /* Estilo geral da página */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Estilo do header */
+    header {
+      background-color: #033470;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Estilo do conteúdo principal */
+    main {
+      padding: 20px;
+    }
+
+    h2 {
+      color: #033470;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    /* Estilo dos posts */
+    article {
+      background-color: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h3 {
+      color: #033470;
+      font-size: 1.8rem;
+    }
+
+    a {
+      color: #033470;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    footer {
+      background-color: #033470;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      main {
+        padding: 10px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      article {
+        padding: 15px;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Blog ZizohCoin</h1>
+  </header>
+
+  <main>
+    <h2>Últimos Posts</h2>
+
+    <!-- Exibindo os posts -->
+    {% for post in site.posts %}
+      <article>
+        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        <p>{{ post.excerpt }}</p>
+        <a href="{{ post.url }}">Leia mais...</a>
+      </article>
+    {% endfor %}
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ZizohCoin. Todos os direitos reservados.</p>
+  </footer>
+
+</body>
+</html>
