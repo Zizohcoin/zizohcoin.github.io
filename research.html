@@ -4,18 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ZOH Research</title>
+
+  <!-- Google tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TKR6EW0KW2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-TKR6EW0KW2');
+  </script>
+
   <style>
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background-image: url('bit.png'); /* Alterado para bit.png */
+      background-image: url('bit.png');
       background-size: cover;
       background-position: center;
       color: white;
     }
 
     header {
-      background-color: #033471; /* Alterado para #033471 */
+      background-color: #033471;
       padding: 2rem 1rem;
       text-align: center;
       border-bottom: 1px solid #1e3a5f;
@@ -23,7 +34,7 @@
 
     header h1 {
       font-size: 2rem;
-      color: white; /* Título em branco */
+      color: white;
       margin: 0;
     }
 
@@ -44,11 +55,11 @@
       padding: 1.5rem;
       border: 1px solid #1e3a5f;
       border-radius: 8px;
-      background-color: #033471; /* Alterado para #033471 */
+      background-color: #033471;
     }
 
     section h2 {
-      color: white; /* Títulos das seções em branco */
+      color: white;
       margin-bottom: 0.5rem;
     }
 
@@ -79,17 +90,16 @@
       font-size: 0.9rem;
     }
 
-    /* Melhorando o contraste para a acessibilidade */
     a, .btn {
       border: none;
       outline: none;
     }
 
-    /* Garantir contraste adequado para leitores de tela e usuários com deficiência visual */
     .btn {
       background-color: #2176bd;
       color: white;
     }
+
     .btn:hover {
       background-color: #2891db;
     }
