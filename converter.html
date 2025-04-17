@@ -3,7 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cryptocurrency Converter</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Convert your favorite cryptocurrencies like Bitcoin, Ethereum, Tether, and more to global fiat currencies using our easy-to-use crypto converter.">
+  <meta name="keywords" content="cryptocurrency, crypto converter, bitcoin to usd, eth to brl, crypto prices, digital currency, crypto exchange">
+  <meta name="author" content="Zizohcoin">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Cryptocurrency Converter | Zizohcoin">
+  <meta property="og:description" content="Real-time crypto converter for Bitcoin, Ethereum, and more.">
+  <meta property="og:image" content="https://zizoh.xyz/assets/preview.jpg">
+  <meta property="og:url" content="https://zizoh.xyz/reporte.html">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cryptocurrency Converter | Zizohcoin">
+  <meta name="twitter:description" content="Convert cryptocurrency to fiat currencies instantly with our crypto calculator.">
+  <meta name="twitter:image" content="https://zizoh.xyz/assets/preview.jpg">
+
+  <title>Cryptocurrency Converter - Real-Time Crypto to Fiat</title>
+  <link rel="canonical" href="https://zizoh.xyz/reporte.html" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
   <style>
     body {
       background-image: url('conn.png');
@@ -26,7 +48,7 @@
     }
 
     .container {
-      background: #033470; /* Your selected color */
+      background: #033470;
       padding: 2rem;
       border-radius: 15px;
       width: 100%;
@@ -37,10 +59,9 @@
       align-items: center;
     }
 
-    /* Set a max-width for input, select, and button */
     input, select, button {
-      width: 90%; /* Set to 90% of the container's width */
-      max-width: 400px; /* Limit to a max width */
+      width: 90%;
+      max-width: 400px;
       padding: 0.75rem;
       margin: 0.5rem 0;
       border-radius: 8px;
@@ -51,22 +72,20 @@
     input, select {
       background-color: rgba(255, 255, 255, 0.1);
       color: #ffffff;
-      border: 1px solid #ffffff; /* White border for the input and select fields */
+      border: 1px solid #ffffff;
     }
 
     select {
       cursor: pointer;
-      background-color: rgba(255, 255, 255, 0.2); /* Fixing background color */
-      color: #333333; /* Ensuring text is visible */
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #333333;
     }
 
-    /* When focus is on select (when selecting a currency) */
     select:focus {
-      background-color: #00c2d1; /* Background color when focus is on select */
-      color: #ffffff; /* Make the text white when selecting */
+      background-color: #00c2d1;
+      color: #ffffff;
     }
 
-    /* When the option is selected */
     select option:checked {
       background-color: #00c2d1;
       color: #ffffff;
@@ -79,12 +98,12 @@
       cursor: pointer;
       transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
       font-size: 1.1rem;
-      border: 1px solid #033470; /* Border for button */
+      border: 1px solid #033470;
     }
 
     button:hover {
       background-color: #00c2d1;
-      color: #ffffff; /* Text color changes to white when hovering */
+      color: #ffffff;
       transform: scale(1.05);
     }
 
@@ -118,9 +137,9 @@
     <input type="text" id="crypto-input" placeholder="Enter cryptocurrency name (e.g., bitcoin)" />
     <input type="number" id="quantidade" placeholder="Amount" min="0" step="any" />
     <select id="fiat">
-      <option value="brl">Brazilian Real (BRL)</option>
       <option value="usd">US Dollar (USD)</option>
       <option value="eur">Euro (EUR)</option>
+      <option value="brl">Brazilian Real (BRL)</option>
       <option value="ars">Argentine Peso (ARS)</option>
       <option value="gbp">British Pound (GBP)</option>
       <option value="jpy">Japanese Yen (JPY)</option>
@@ -152,8 +171,7 @@
       "ethereum": { brl: 18000, usd: 3600, eur: 3300 },
       "tether": { brl: 5.5, usd: 1, eur: 0.9 },
       "binance coin": { brl: 1500, usd: 300, eur: 270 },
-      "xrp": { brl: 3, usd: 0.6, eur: 0.5 },
-      // Add more as needed
+      "xrp": { brl: 3, usd: 0.6, eur: 0.5 }
     };
 
     const nameToId = {
@@ -161,8 +179,7 @@
       "ethereum": "ethereum",
       "tether": "tether",
       "binance coin": "binancecoin",
-      "xrp": "ripple",
-      // Map other names accordingly
+      "xrp": "ripple"
     };
 
     async function convert() {
@@ -198,25 +215,8 @@
           <p><strong>Value:</strong> ${value} ${fiat.toUpperCase()}</p>
         `;
       } catch (err) {
-        // If offline data isn't available, attempt online fetch
-        console.log("Error fetching data:", err.message);
-        try {
-          const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${enteredName}&vs_currencies=${fiat}`);
-          const data = await res.json();
-          const price = data[enteredName]?.[fiat];
-
-          if (!price) {
-            document.getElementById("resultado").innerText = "Cryptocurrency not found or unsupported.";
-            return;
-          }
-
-          const value = (price * quantity).toFixed(2);
-          document.getElementById("resultado").innerHTML = `
-            <p><strong>Value (Online):</strong> ${value} ${fiat.toUpperCase()}</p>
-          `;
-        } catch (onlineError) {
-          document.getElementById("resultado").innerText = "Unable to fetch data online, please try again later.";
-        }
+        console.error("Error fetching data:", err.message);
+        document.getElementById("resultado").innerText = "Unable to fetch data. Please try again later.";
       }
     }
   </script>
