@@ -128,8 +128,8 @@
       display: inline-block;
       padding: 12px 24px;
       margin: 20px 0;
-      background-color: #ffd700;  /* Amarelo ouro */
-      color: #000;                /* Texto preto para contraste */
+      background-color: #1c4f91;  /* Azul que combina com o site */
+      color: #fff;                 /* Texto branco */
       text-decoration: none;
       border-radius: 5px;
       font-size: 16px;
@@ -137,7 +137,7 @@
     }
 
     .cta-button:hover {
-      background-color: #ffcc00;
+      background-color: #3275d1;
       transform: translateY(-2px);
     }
 
@@ -180,7 +180,10 @@
 
     footer {
       padding: 20px;
-      background-color: transparent; /* Transparente para combinar com fundo da galeria */
+      background-color: transparent;
+      background-image: url('piw.png');  /* mesmo fundo do meme-gallery */
+      background-size: cover;
+      background-position: center;
       font-size: 14px;
       color: white;
       text-align: center;
@@ -258,8 +261,8 @@
     <h2>Tokenomics</h2>
     <p>Learn more about token distribution, total supply, and how Zizohcoin works!</p>
 
-    <!-- Video below the text -->
-    <video width="100%" height="auto" controls autoplay muted loop style="max-width: 720px; margin: 20px auto; display: block; border-radius: 10px;">
+    <!-- Video lin.mp4 em 350x350px -->
+    <video width="350" height="350" controls autoplay muted loop style="border-radius: 10px; margin: 20px auto; display: block;">
       <source src="lin.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -278,5 +281,15 @@
     </div>
   </section>
 
+  <!-- Footer (com fundo estendido da Meme Gallery) -->
   <footer>
-    <
+    <p>© 2025 Zizohcoin. All rights reserved.</p>
+    <p>
+      <a href="https://x.com/zizohcoin" target="_blank">Twitter/X</a> |
+      <a href="https://www.instagram.com/zizohsolana/" target="_blank">Instagram</a> |
+      <a href="https://www.tiktok.com/@zizohsolana" target="_blank">TikTok</a>
+    </p>
+  </footer>
+
+</body>
+</html>
