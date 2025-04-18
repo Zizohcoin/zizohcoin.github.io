@@ -1,127 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zizohcoin</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #111;
-      color: #fff;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Zizohcoin</title>
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header" id="header">
+      <nav class="nav container">
+        <a href="#" class="nav__logo">Zizohcoin</a>
 
-    header {
-      background-color: #000;
-      padding: 20px;
-      text-align: center;
-    }
+        <div class="nav__menu" id="nav-menu">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="#home" class="nav__link">Home</a>
+            </li>
+            <li class="nav__item">
+              <a href="#about" class="nav__link">About</a>
+            </li>
+            <li class="nav__item">
+              <a href="#tokenomics" class="nav__link">Tokenomics</a>
+            </li>
+            <li class="nav__item">
+              <a href="#roadmap" class="nav__link">Roadmap</a>
+            </li>
+            <li class="nav__item">
+              <a href="#contact" class="nav__link">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5em;
-      color: #00ffcc;
-    }
+    <!-- Main -->
+    <main class="main">
+      <!-- Home -->
+      <section class="home section" id="home">
+        <div class="container">
+          <div class="home__content">
+            <h1 class="home__title">Welcome to Zizohcoin</h1>
+            <p class="home__description">
+              A new decentralized crypto project focused on transparency and community.
+            </p>
+            <a href="#about" class="button">Learn More</a>
+          </div>
+        </div>
+      </section>
 
-    nav {
-      margin-top: 10px;
-    }
+      <!-- About -->
+      <section class="about section" id="about">
+        <div class="container">
+          <div class="section__header">
+            <h2 class="section__title">About Zizohcoin</h2>
+            <span class="section__subtitle">Why Choose Us</span>
+          </div>
 
-    nav a {
-      color: #00ffcc;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+          <div class="about__container grid">
+            <div class="about__data">
+              <p class="about__description">
+                Zizohcoin (ZOH) is a crypto project building a transparent, inclusive DeFi community. Join the movement and grow with us.
+              </p>
 
-    section {
-      padding: 60px 20px;
-      text-align: center;
-    }
+              <a href="https://zizolandia.gitbook.io/zizoh-zoh" target="_blank" class="button button--flex">
+                WHITEPAPER
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    #about {
-      background-color: #1a1a1a;
-    }
+      <!-- Tokenomics -->
+      <section class="tokenomics section" id="tokenomics">
+        <div class="container">
+          <div class="section__header">
+            <h2 class="section__title">Tokenomics</h2>
+            <span class="section__subtitle">Our Token Distribution</span>
+          </div>
 
-    #tokenomics {
-      background-color: #141414;
-    }
+          <div class="tokenomics__content">
+            <!-- Tokenomics content goes here -->
+          </div>
+        </div>
+      </section>
 
-    #roadmap {
-      background-color: #1a1a1a;
-    }
+      <!-- Roadmap -->
+      <section class="roadmap section" id="roadmap">
+        <div class="container">
+          <div class="section__header">
+            <h2 class="section__title">Roadmap</h2>
+            <span class="section__subtitle">Project Timeline</span>
+          </div>
 
-    footer {
-      background-color: #000;
-      padding: 20px;
-      text-align: center;
-      color: #666;
-    }
+          <div class="roadmap__content">
+            <!-- Roadmap content goes here -->
+          </div>
+        </div>
+      </section>
 
-    .cta-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 30px;
-      background-color: #00ffcc;
-      color: #000;
-      border: none;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
+      <!-- Contact -->
+      <section class="contact section" id="contact">
+        <div class="container">
+          <div class="section__header">
+            <h2 class="section__title">Contact</h2>
+            <span class="section__subtitle">Get in Touch</span>
+          </div>
 
-    .cta-button:hover {
-      background-color: #00ccb3;
-    }
-  </style>
-</head>
-<body>
+          <div class="contact__content">
+            <!-- Contact form or social links go here -->
+          </div>
+        </div>
+      </section>
+    </main>
 
-  <header>
-    <h1>Zizohcoin</h1>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#tokenomics">Tokenomics</a>
-      <a href="#roadmap">Roadmap</a>
-    </nav>
-  </header>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p class="footer__copy">&copy; 2025 Zizohcoin. All rights reserved.</p>
+      </div>
+    </footer>
 
-  <!-- About Section -->
-  <section id="about">
-    <div>
-      <h2>About Zizohcoin</h2>
-      <p>Zizohcoin (ZOH) is a crypto project building a transparent, inclusive DeFi community. Join the movement and grow with us.</p>
-      <a href="https://zizolandia.gitbook.io/zizoh-zoh" target="_blank" class="cta-button">WHITEPAPER</a>
-    </div>
-  </section>
-
-  <!-- Tokenomics Section -->
-  <section id="tokenomics">
-    <div>
-      <h2>Tokenomics</h2>
-      <p>Max Supply: 1,000,000,000 ZOH</p>
-      <p>Burn Mechanism: Yes 🔥</p>
-      <p>Fair Launch: 100%</p>
-    </div>
-  </section>
-
-  <!-- Roadmap Section -->
-  <section id="roadmap">
-    <div>
-      <h2>Roadmap</h2>
-      <p>✅ Website Launch</p>
-      <p>✅ Token Deployment</p>
-      <p>🔜 Community Building</p>
-      <p>🔜 Listings & Partnerships</p>
-    </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
-  </footer>
-
-</body>
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>
