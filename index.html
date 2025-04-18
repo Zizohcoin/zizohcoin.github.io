@@ -2,321 +2,112 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <!-- ✅ Google Analytics (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TKR6EW0KW2"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TKR6EW0KW2');
-  </script>
-
-  <!-- ✅ SEO Meta Tags -->
-  <meta name="description" content="Zizohcoin (ZOH) is an innovative cryptocurrency focused on decentralized finance. Join the DeFi revolution today!">
-  <meta name="keywords" content="Zizohcoin, ZOH, cryptocurrency, DeFi, decentralized finance, blockchain, altcoin, Web3">
-  <meta name="author" content="Zizohcoin">
-  <meta property="og:title" content="Zizohcoin (ZOH) - Revolutionizing Decentralized Finance">
-  <meta property="og:description" content="Join the Zizohcoin movement and discover how ZOH is transforming the future of finance.">
-  <meta property="og:image" content="logo.png">
-  <meta property="og:url" content="https://zizoh.xyz">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Zizohcoin (ZOH)">
-  <meta name="twitter:description" content="Zizohcoin is a decentralized finance token built for the future of Web3.">
-  <meta name="twitter:image" content="logo.png">
-
-  <link rel="icon" href="logo.png" type="image/png" />
-  <title>Zizohcoin (ZOH)</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zizohcoin - Official Page</title>
   <style>
     body {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #033471;
-      color: #fff;
-      text-align: center;
-      overflow-x: hidden;
+      background: #0d0d0d;
+      color: #f5f5f5;
     }
-
     header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 10;
-      background-image: url('space.png');
-      background-size: cover;
-      background-position: center;
-      padding: 20px;
-      background-attachment: fixed;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      padding: 10px 20px;
-      background-color: transparent;
-    }
-
-    .logo {
-      height: 60px;
-      width: 60px;
-      margin-right: 15px;
-      border-radius: 10px;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-left: 10px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: bold;
-      padding: 10px;
-      font-size: 1.1rem;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      color: #1c4f91;
-    }
-
-    #hero {
-      padding: 0;
-      min-height: 100vh;
-      background-color: rgba(2, 3, 6, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
+      background: linear-gradient(to right, #8e2de2, #4a00e0);
+      padding: 60px 20px;
       text-align: center;
-      font-size: 2rem;
-      background-image: url('space.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
     }
-
-    #about {
-      padding: 80px 20px;
-      background-image: url('futuri.png');
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-      line-height: 1.8;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      text-align: left;
-      min-height: 600px;
-      padding-top: 120px;
-    }
-
-    #about div {
-      max-width: 800px;
-      padding: 40px;
-      text-align: left;
-      font-size: 1.1rem;
-      background-color: #033471;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      margin-left: 50px;
-    }
-
-    #about h2 {
+    header h1 {
+      margin: 0;
       font-size: 2.5rem;
-      margin-bottom: 20px;
-      font-weight: bold;
-      color: #fff;
     }
-
-    #about p {
+    header p {
+      margin-top: 10px;
       font-size: 1.2rem;
-      margin-bottom: 20px;
-      color: #fff;
+      opacity: 0.9;
     }
-
     .cta-button {
       display: inline-block;
+      margin-top: 20px;
       padding: 12px 24px;
-      margin: 20px 0;
-      background-color: #1c4f91;
-      color: #fff;
+      background: #ffffff;
+      color: #4a00e0;
       text-decoration: none;
-      border-radius: 5px;
-      font-size: 16px;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .cta-button:hover {
-      background-color: #3275d1;
-      transform: translateY(-2px);
-    }
-
-    #tokenomics {
-      padding: 80px 20px;
-      background-image: url('pow.png');
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-      background-attachment: fixed;
-    }
-
-    #meme-gallery {
-      padding: 80px 20px 0 20px;
-      background-image: url('piw.png');
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-      background-attachment: fixed;
-    }
-
-    .meme-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 40px;
-    }
-
-    .meme-gallery img {
-      width: 100%;
-      max-width: 400px;
       border-radius: 8px;
-      transition: transform 0.3s ease;
+      font-weight: bold;
+      transition: background 0.3s ease;
     }
-
-    .meme-gallery img:hover {
-      transform: scale(1.05);
+    .cta-button:hover {
+      background: #e0e0e0;
     }
-
+    section {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+    section p {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
     footer {
-      padding: 20px;
-      background-color: transparent;
-      background-image: url('piw.png');
-      background-size: cover;
-      background-position: center;
-      font-size: 14px;
-      color: white;
+      background: #111;
       text-align: center;
-    }
-
-    footer a {
-      text-decoration: none;
-      color: white;
-      margin: 0 10px;
-      transition: color 0.3s ease;
-    }
-
-    footer a:hover {
-      color: #1c4f91;
-    }
-
-    @media (max-width: 768px) {
-      .nav-links {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .nav-left {
-        margin-bottom: 10px;
-      }
-      #hero {
-        font-size: 1.5rem;
-      }
-      #about h2 {
-        font-size: 2rem;
-      }
+      padding: 30px 20px;
+      font-size: 0.9rem;
+      color: #777;
     }
   </style>
 </head>
-
 <body>
-
+  <!-- Header -->
   <header>
-    <nav>
-      <div class="nav-left">
-        <img src="logo.png" alt="Zizohcoin Logo" class="logo" />
-        <div class="nav-links">
-          <a href="#about">About Zizohcoin</a>
-          <a href="#tokenomics">Tokenomics</a>
-          <a href="#meme-gallery">Meme Gallery</a>
-          <a href="research.html">Research</a>
-          <a href="converter.html">Crypto Converter</a>
-          <a href="https://blog.zizoh.xyz/" target="_blank">Blog</a>
-        </div>
-      </div>
-    </nav>
+    <h1>Zizohcoin (ZOH)</h1>
+    <p>Empowering a decentralized and inclusive crypto community.</p>
+    <a href="#about" class="cta-button">Learn More</a>
   </header>
-
-  <!-- Hero Section -->
-  <section id="hero">
-    <div>
-      <h1>Welcome to Zizohcoin</h1>
-      <p>Your gateway to the decentralized finance revolution.</p>
-    </div>
-  </section>
 
   <!-- About Section -->
   <section id="about">
     <div>
       <h2>About Zizohcoin</h2>
-            <p>Zizohcoin (ZOH) is a cryptocurrency aiming to revolutionize the decentralized finance (DeFi) ecosystem. Its mission is to create an inclusive and engaged community where everyone can contribute to a democratic and transparent financial system.</p>
-      <p>Join the movement and benefit from the collective success of the project.</p>
+      <p>Zizohcoin (ZOH) is a crypto project building a transparent, inclusive DeFi community. Join the movement and grow with us.</p>
+      <a href="https://zizolandia.gitbook.io/zizoh-zoh" class="cta-button" target="_blank">WHITEPAPER</a>
     </div>
   </section>
 
   <!-- Tokenomics Section -->
   <section id="tokenomics">
-    <h2>Tokenomics</h2>
-    <p>Learn more about token distribution, total supply, and how Zizohcoin works!</p>
-
-    <!-- Video acting like a gif -->
-    <video width="350" height="350" autoplay muted loop style="border-radius: 10px; margin: 20px auto; display: block; background: transparent; border: none;">
-      <source src="lin.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-
-    <a href="https://jup.ag/swap/SOL-22qVsVm2dyFg5WC72hQTdh92GgFqwboAQ7TMAHhfpump" class="cta-button" target="_blank">BUY ZIZOH HERE</a>
+    <div>
+      <h2>Tokenomics</h2>
+      <p>Fair launch with community-focused distribution. No private sales or early insiders. 100% of tokens are for the people.</p>
+    </div>
   </section>
 
-  <!-- Meme Gallery Section -->
-  <section id="meme-gallery">
-    <h2>Meme Gallery</h2>
-    <p>Check out the latest memes from the Zizohcoin community:</p>
-    <div class="meme-gallery">
-      <img src="https://zizohcoin.github.io/airdrop.png" alt="Airdrop Meme" />
-      <img src="https://zizohcoin.github.io/descanso.png" alt="Rest Meme" />
-      <img src="https://zizohcoin.github.io/lua.png" alt="Moon Meme" />
+  <!-- Roadmap Section -->
+  <section id="roadmap">
+    <div>
+      <h2>Roadmap</h2>
+      <p>From fair launch to DeFi partnerships and ecosystem expansion — we’re just getting started.</p>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section id="team">
+    <div>
+      <h2>Team</h2>
+      <p>Built by a decentralized collective of developers, builders, and believers. Transparency is our foundation.</p>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>© 2025 Zizohcoin. All rights reserved.</p>
-    <p>
-      <a href="https://x.com/zizohcoin" target="_blank">Twitter/X</a> |
-      <a href="https://www.instagram.com/zizohsolana/" target="_blank">Instagram</a> |
-      <a href="https://www.tiktok.com/@zizohsolana" target="_blank">TikTok</a>
-    </p>
+    <p>&copy; 2025 Zizohcoin. All rights reserved.</p>
   </footer>
-
 </body>
 </html>
