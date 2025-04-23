@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ZOH Research</title>
-  <meta name="description" content="Accessible crypto reports for everyone. Strategic insights into Zizoh Coin (ZOH) and the broader crypto market." />
-  <meta name="keywords" content="Zizoh Coin, ZOH, crypto reports, bitcoin analysis, crypto insights, market trends, blockchain research" />
-  <meta name="author" content="ZOH Research Team" />
 
   <!-- Google tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TKR6EW0KW2"></script>
@@ -14,6 +11,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
+
     gtag('config', 'G-TKR6EW0KW2');
   </script>
 
@@ -52,41 +50,43 @@
       padding: 0 1rem;
     }
 
-    .grid {
+    .reports-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+      gap: 2rem;
+      justify-content: center;
     }
 
     .report-card {
+      width: 100%;
+      height: 900px;
       background-color: #033471;
       border: 1px solid #1e3a5f;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      text-align: center;
-      transition: transform 0.3s;
-    }
-
-    .report-card:hover {
-      transform: translateY(-5px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .report-card img {
       width: 100%;
-      height: 200px;
+      height: 60%;
       object-fit: cover;
-      border-bottom: 1px solid #1e3a5f;
     }
 
-    .report-card h3 {
-      margin: 1rem;
-      font-size: 1.1rem;
-      color: white;
+    .report-content {
+      padding: 1rem;
     }
 
-    .report-card a {
+    .report-content h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn {
       display: inline-block;
-      margin-bottom: 1rem;
+      margin-top: 1rem;
       padding: 10px 20px;
       background-color: #2176bd;
       color: white;
@@ -95,7 +95,7 @@
       transition: background 0.3s;
     }
 
-    .report-card a:hover {
+    .btn:hover {
       background-color: #2891db;
     }
 
@@ -109,16 +109,18 @@
 </head>
 <body>
   <header>
-    <h1>Zizoh Research</h1>
+    <h1>ZOH Research</h1>
     <p>Accessible crypto reports for everyone</p>
   </header>
 
   <main>
-    <div class="grid">
+    <div class="reports-grid">
       <div class="report-card">
-        <img src="zizoh1.png" alt="Dynamic Report on the Impact of Bitcoin’s Price in Q1 2025">
-        <h3>Dynamic Report on the Impact of Bitcoin’s Price in Q1 2025</h3>
-        <a href="https://gumroad.com/l/relatorio-fake01" target="_blank">Buy for $0.99</a>
+        <img src="zizoh1.png" alt="Dynamic Report on Bitcoin Q1 2025" />
+        <div class="report-content">
+          <h2>Dynamic Report on the Impact of Bitcoin’s Price in Q1 2025</h2>
+          <a href="https://gumroad.com/l/relatorio-fake01" target="_blank" class="btn">Buy for $0.99</a>
+        </div>
       </div>
     </div>
   </main>
