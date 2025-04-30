@@ -1,144 +1,187 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Jogo das Palavras</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Check current ETH gas fees, crypto gas fees, and Gwei price right now. Stay updated with the latest prices for Ethereum, Solana, and more." />
+  <meta name="keywords" content="eth gas fees right now, crypto gas fees, gwei price, gas tracker, cryptocurrency gas, ethereum fees, solana fees, polygon gas fees" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Crypto Gas Fees Tracker - ETH, Gwei, and More" />
+  <meta property="og:description" content="Monitor real-time gas fees for Ethereum, Solana, and other cryptocurrencies. Find the current Gwei price and crypto transaction costs." />
+  <meta property="og:url" content="https://www.yoursite.com/gas-fees-tracker" />
+  <meta property="og:image" content="https://www.yoursite.com/images/gas-fees-banner.png" />
+  <title>Crypto Gas Fees Tracker - ETH, Gwei, and More</title>
   <style>
+    /* Existing styles */
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('piw.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      color: white;
+    }
+    header {
+      padding: 1rem;
       text-align: center;
-      background-color: #f4f4f4;
     }
-    .letras, .opcoes, .resposta {
-      margin: 20px;
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: white;
     }
-    .letras button, .opcoes button {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 18px;
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
     }
-    .resposta {
-      font-size: 24px;
+    .card {
+      background-color: #033470;
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+    .value {
+      font-size: 2rem;
       font-weight: bold;
-      min-height: 30px;
+      color: #ffffff;
     }
-    .mensagem {
-      font-size: 20px;
-      color: green;
-      margin: 20px;
+    .small {
+      font-size: 0.9rem;
+      color: #cccccc;
     }
-    .artigo {
-      text-align: left;
-      margin: 40px auto;
-      max-width: 600px;
-      background: #fff;
-      padding: 20px;
+    .faq-section {
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      margin-top: 3rem;
+    }
+    .faq-section h2 {
+      color: #ffffff;
+      font-size: 1.5rem;
+    }
+    .faq {
+      margin-bottom: 1rem;
+    }
+    .faq h3 {
+      color: #f2f2f2;
+    }
+    .faq p {
+      color: #cccccc;
+      font-size: 0.9rem;
+    }
+    .article {
+      margin-top: 2rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
       border-radius: 10px;
     }
-    #botaoReiniciar {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    .article h2 {
+      color: #ffffff;
+      font-size: 1.5rem;
     }
-    #botaoReiniciar:hover {
-      background-color: #0056b3;
+    .article p {
+      color: #cccccc;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Crypto Gas Fees Tracker</h1>
+    <p>Stay up-to-date with the current Ethereum, Solana, and other crypto gas fees. See the Gwei price and transaction costs right now.</p>
+  </header>
+  <div class="dashboard">
+    <div class="card" id="eth">
+      <h2>Ethereum (ETH) Gas Fees</h2>
+      <div class="value" id="ethGas">Loading...</div>
+      <div class="small" id="ethUSD">Loading...</div>
+    </div>
+    <div class="card" id="polygon">
+      <h2>Polygon Gas Fees</h2>
+      <div class="value" id="polygonGas">Loading...</div>
+      <div class="small" id="polygonUSD">Loading...</div>
+    </div>
+    <div class="card" id="solana">
+      <h2>Solana Gas Fees</h2>
+      <div class="value" id="solanaLamports">Loading...</div>
+      <div class="small" id="solanaUSD">Loading...</div>
+    </div>
+    <div class="card" id="uniswap">
+      <h2>Uniswap (ETH Simulated)</h2>
+      <div class="value" id="uniswapGas">Loading...</div>
+      <div class="small" id="uniswapUSD">Loading...</div>
+    </div>
+  </div>
 
-  <h1>Monte a Palavra Correta</h1>
-  <div class="letras"></div>
-  <div class="resposta"></div>
-  <div class="opcoes"></div>
-  <div class="mensagem"></div>
+  <!-- FAQ Section -->
+  <div class="faq-section">
+    <h2>Frequently Asked Questions (FAQ)</h2>
+    <div class="faq">
+      <h3>What are ETH gas fees right now?</h3>
+      <p>ETH gas fees are transaction fees that you pay when interacting with the Ethereum network. They vary depending on network congestion and transaction complexity.</p>
+    </div>
+    <div class="faq">
+      <h3>What are crypto gas fees?</h3>
+      <p>Crypto gas fees are the costs required to conduct transactions or interact with smart contracts on blockchain networks. These fees are paid to miners or validators who process transactions.</p>
+    </div>
+    <div class="faq">
+      <h3>What is the current Gwei price?</h3>
+      <p>Gwei is a unit of measurement for gas fees on the Ethereum network. It represents a fraction of 1 ETH and is used to price transactions and smart contract executions.</p>
+    </div>
+    <div class="faq">
+      <h3>Why do Gwei prices fluctuate?</h3>
+      <p>Gwei prices fluctuate based on the network's demand. When more people use the network, the Gwei price increases due to higher competition for block space.</p>
+    </div>
+  </div>
+
+  <!-- Article Section -->
+  <div class="article">
+    <h2>What Are Gas Fees?</h2>
+    <p>At its core, 'gas' is defined as the unit that measures the computational effort required to execute different types of actions while interacting with a blockchain. It can be thought of as the "fuel" needed to power operations on the network. Public blockchains, being open networks accessible to anyone with an internet connection, require a mechanism to control activity. This is where gas fees come in: a fee is charged using cryptocurrency for operations performed on the blockchain.</p>
+    <p>Gas fees are essentially transaction fees paid by users to compensate the network participants – typically miners or validators – for the computational resources needed to process and validate transactions, smart contracts, and other operations. On decentralized networks, transactions and smart contract executions are handled by multiple nodes across the network, not a single entity. Gas fees incentivize these participants to process transactions and maintain the network's security and functionality.</p>
+    <p>Besides compensating validators, gas fees serve a vital role in preventing network abuse. Without a cost attached to operations, malicious actors could easily spam the network with a massive number of transactions, potentially clogging it and disrupting service. By requiring a payment for each operation, gas creates a real cost to attempting to disrupt the network, similar to how charging for email would combat spam email. This mechanism helps ensure that the network remains functional and accessible for legitimate users.</p>
+    <p><strong>Ethereum Gas Fees Explained</strong></p>
+    <p>Ethereum is the most popular smart contract platform and where the concept of gas fees is most widely recognized. On Ethereum, the transaction fee is specifically referred to as the gas fee or gas price. Every action on the Ethereum network, from simple transactions to deploying smart contracts, requires computational resources and thus uses gas. The fee for this computational work is paid using ETH, the native token of the Ethereum network. Even if a transaction fails, the gas spent to attempt the execution is still lost.</p>
+    <p>Gas prices on Ethereum are quoted in Gwei. Gwei is a smaller denomination of Ether, specifically one billionth of an ETH (1 Gwei = 0.000000001 ETH). Using Gwei simplifies the calculation and expression of gas fees for users compared to using the full unit of Ether. The term 'Gwei' is a contraction of 'giga-wei', inspired by Wei Dai, a computational scientist, with 'Wei' being the smallest denomination of Ether.</p>
+    <p><strong>How Are Gas Fees Calculated on Ethereum?</strong></p>
+    <p>The calculation of gas fees on Ethereum is based on two primary factors: the Gas Limit and the Gas Price.</p>
+    <p><strong>1. Gas Limit:</strong> The Gas Limit refers to the maximum amount of gas a user is willing to pay for a transaction. Different operations on the blockchain require varying amounts of computational resources, measured in units of gas. More complex operations consume more gas units. For example, a simple ETH transfer may cost 21,000 units of gas, whereas a smart contract execution might cost much more.</p>
+    <p><strong>2. Gas Price:</strong> The Gas Price is the amount of Gwei the user is willing to pay per unit of gas. The higher the gas price, the more attractive the transaction is to miners (or validators in proof-of-stake systems). This is why gas prices tend to rise during network congestion, as users compete to get their transactions processed quickly.</p>
+    <p>The total transaction fee is calculated as:</p>
+    <p><strong>Transaction Fee = Gas Limit × Gas Price</strong></p>
+  </div>
 
   <script>
-    const palavras = [
-      { palavra: "casa", artigo: "A casa é o local onde moramos e vivemos com a nossa família." },
-      { palavra: "bola", artigo: "A bola é um brinquedo muito comum usado em diversos esportes." },
-      { palavra: "livro", artigo: "O livro é uma fonte de conhecimento e diversão." },
-      { palavra: "flor", artigo: "A flor é uma das partes mais bonitas das plantas." },
-    ];
+    // Corrected fetchGasData function
+    const ETHERSCAN_API_KEY = 'HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X';
+    const ETH_URL = `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`;
+    const POLYGON_URL = `https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`;
+    const SOLANA_URL = `https://api.solana.com`;
+    const UNISWAP_URL = `https://api.uniswap.org/v1/gas`;
 
-    let palavraAtual = "";
-    let respostaUsuario = "";
+    async function fetchGasData() {
+      const ethResponse = await fetch(ETH_URL);
+      const ethData = await ethResponse.json();
+      const polygonResponse = await fetch(POLYGON_URL);
+      const polygonData = await polygonResponse.json();
+      const solanaResponse = await fetch(SOLANA_URL);
+      const solanaData = await solanaResponse.json();
 
-    function embaralhar(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
+      document.getElementById('ethGas').innerText = ethData.result.SafeGasPrice + ' Gwei';
+      document.getElementById('ethUSD').innerText = '$' + (ethData.result.SafeGasPrice * 0.000000001 * 1800).toFixed(2); // Adjust with ETH price
+      document.getElementById('polygonGas').innerText = polygonData.result.SafeGasPrice + ' Gwei';
+      document.getElementById('polygonUSD').innerText = '$' + (polygonData.result.SafeGasPrice * 0.000000001 * 1.3).toFixed(2); // Adjust with MATIC price
     }
-
-    function novaPalavra() {
-      const indice = Math.floor(Math.random() * palavras.length);
-      palavraAtual = palavras[indice].palavra;
-      const artigo = palavras[indice].artigo;
-
-      const letrasEmbaralhadas = embaralhar(palavraAtual.split(""));
-      const letrasDiv = document.querySelector(".letras");
-      const opcoesDiv = document.querySelector(".opcoes");
-      const respostaDiv = document.querySelector(".resposta");
-      const mensagemDiv = document.querySelector(".mensagem");
-
-      letrasDiv.innerHTML = "";
-      opcoesDiv.innerHTML = "";
-      respostaDiv.textContent = "";
-      mensagemDiv.textContent = "";
-      respostaUsuario = "";
-
-      letrasEmbaralhadas.forEach((letra, i) => {
-        const btn = document.createElement("button");
-        btn.textContent = letra;
-        btn.dataset.index = i;
-        letrasDiv.appendChild(btn);
-      });
-
-      // Armazenar o artigo na div de opções (oculto até acerto)
-      opcoesDiv.dataset.artigo = artigo;
-    }
-
-    function verificarResposta() {
-      if (respostaUsuario === palavraAtual) {
-        const artigo = document.querySelector(".opcoes").dataset.artigo;
-        document.querySelector(".mensagem").textContent = "Parabéns! Você acertou!";
-        document.querySelector(".opcoes").innerHTML = `
-          <div class="artigo">
-            <p>${artigo}</p>
-            <button id="botaoReiniciar">Tentar outra palavra</button>
-          </div>
-        `;
-      }
-    }
-
-    // Delegação de eventos
-    document.addEventListener("click", function(event) {
-      const target = event.target;
-
-      if (target.closest(".letras button")) {
-        const letra = target.textContent;
-        respostaUsuario += letra;
-        document.querySelector(".resposta").textContent = respostaUsuario;
-        target.disabled = true;
-        verificarResposta();
-      }
-
-      if (target.id === "botaoReiniciar") {
-        novaPalavra();
-      }
-    });
-
-    // Iniciar o jogo
-    document.addEventListener("DOMContentLoaded", novaPalavra);
+    fetchGasData();
   </script>
-
 </body>
 </html>
