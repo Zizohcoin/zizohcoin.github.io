@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Monitor real-time gas fees, Uniswap V3 swaps, and OpenSea sales. Stay updated on blockchain data across multiple platforms.">
-  <meta name="keywords" content="gas fees, Ethereum gas, Uniswap V3, OpenSea sales, blockchain, NFT sales, crypto transaction fees">
+  <meta name="keywords" content="gas fees, Ethereum gas, Solana gas, Uniswap V3, OpenSea sales, blockchain, NFT sales, crypto transaction fees">
   <meta name="author" content="ZIZOH">
   <meta property="og:title" content="🌐 Gas Now — Real-Time Gas Fee Tracker, Uniswap V3 Swaps & OpenSea Sales">
   <meta property="og:description" content="Track real-time gas fees, Uniswap V3 swaps, and OpenSea NFT sales. Compare the best times for cheaper transactions and stay updated on the latest NFT trends.">
@@ -31,7 +31,7 @@
 
     .container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 20px;
       padding: 20px;
     }
@@ -125,6 +125,11 @@
       <div class="gas-price" id="bsc-gas">Loading...</div>
       <div class="usd-price" id="bsc-usd">Loading...</div>
     </div>
+    <div class="card" id="solana-card">
+      <div class="blockchain-title">Solana (SOL)</div>
+      <div class="gas-price" id="solana-gas">Loading...</div>
+      <div class="usd-price" id="solana-usd">Loading...</div>
+    </div>
   </div>
 
   <div class="faq-section">
@@ -157,6 +162,7 @@
     const ethereumApiUrl = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
     const polygonApiUrl = "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
     const bscApiUrl = "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
+    const solanaApiUrl = "https://api.solana.com/v1/fees";  // Solana API placeholder (make sure to replace it with an actual API if available)
 
     async function fetchData() {
       try {
@@ -189,6 +195,16 @@
         // Update BSC
         document.getElementById("bsc-gas").innerText = `${bscGasPrice} Gwei`;
         document.getElementById("bsc-usd").innerText = `$${bscGasPriceUsd.toFixed(2)} USD`;
+
+        // Fetch Solana gas data
+        const solanaRes = await fetch(solanaApiUrl);
+        const solanaData = await solanaRes.json();
+        const solanaGasPrice = solanaData.gas_price;
+        const solanaGasPriceUsd = solanaGasPrice * 0.000000001 * 100; // Adjust for Solana's typical fee structure
+
+        // Update Solana
+        document.getElementById("solana-gas").innerText = `${solanaGasPrice} Lamports`;
+        document.getElementById("solana-usd").innerText = `$${solanaGasPriceUsd.toFixed(2)} USD`;
 
       } catch (err) {
         console.error("Error loading data:", err);
