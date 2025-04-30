@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌐 Gas Now — Taxas em Tempo Real</title>
+  <title>🌐 Gas Now — Monitor de Taxas de Transação</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Estilos básicos */
     body {
       background-color: #0c0c1c;
       color: white;
@@ -25,18 +25,9 @@
       font-size: 2rem;
     }
 
-    .rates-container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .card {
-      background-color: #1b1b2f;
-      padding: 15px;
-      border-radius: 10px;
-      width: 200px;
+    #gasChart {
+      max-width: 800px;
+      margin: auto;
     }
 
     footer {
@@ -54,75 +45,103 @@
 <body>
   <div class="container">
     <h1>🌐 Gas Now — Taxas em Tempo Real</h1>
-    <div id="loading">Carregando dados...</div>
-    <div id="rates" class="rates-container"></div>
+    <canvas id="gasChart"></canvas>
+    <footer>
+      Powered by <a href="https://zizoh.xyz">ZIZOH</a>
+    </footer>
   </div>
 
-  <footer>
-    Powered by <a href="https://zizoh.xyz">ZIZOH</a>
-  </footer>
-
   <script>
-    // Definição das chains e URLs para API
     const chains = [
       {
         name: "Ethereum",
         symbol: "ETH",
         fetchUrl: "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
-        parse: (data) => ({
-          low: data.result.SafeGasPrice,
-          average: data.result.ProposeGasPrice,
-          high: data.result.FastGasPrice
-        })
+        parse: (data) => data.result.ProposeGasPrice
       },
       {
         name: "Polygon",
         symbol: "MATIC",
         fetchUrl: "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
-        parse: (data) => ({
-          low: data.result.SafeGasPrice,
-          average: data.result.ProposeGasPrice,
-          high: data.result.FastGasPrice
-        })
+        parse: (data) => data.result.ProposeGasPrice
+      },
+      {
+        name: "Binance Smart Chain",
+        symbol: "BNB",
+        fetchUrl: "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
+        parse: (data) => data.result.ProposeGasPrice
+      },
+      {
+        name: "Solana",
+        symbol: "SOL",
+        fetchUrl: "https://api.solanabeach.io/solana/gas",
+        parse: (data) => data.gas_price
       }
     ];
 
-    // Função para buscar as taxas em tempo real
+    const labels = [];
+    const data = {
+      labels: labels,
+      datasets: chains.map(chain => ({
+        label: chain.symbol,
+        data: [],
+        borderColor: getRandomColor(),
+        backgroundColor: 'transparent',
+        borderWidth: 2
+      }))
+    };
+
+    const config = {
+      type: 'line',
+      data: data,
+      options: {
+        scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom'
+          }
+        }
+      }
+    };
+
+    const ctx = document.getElementById('gasChart').getContext('2d');
+    const gasChart = new Chart(ctx, config);
+
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
     async function fetchGasData() {
       try {
         const results = await Promise.all(
           chains.map(async (chain) => {
             const res = await fetch(chain.fetchUrl);
             const data = await res.json();
-            return { symbol: chain.symbol, data: chain.parse(data) };
+            return chain.parse(data);
           })
         );
 
-        const ratesContainer = document.getElementById('rates');
-        ratesContainer.innerHTML = '';
+        const now = Date.now();
+        labels.push(now);
 
-        results.forEach(({ symbol, data }) => {
-          const card = document.createElement('div');
-          card.classList.add('card');
-          card.innerHTML = `
-            <h2>${symbol}</h2>
-            <p>🚶‍♂️ Baixa: ${data.low} gwei</p>
-            <p>🚗 Média: ${data.average} gwei</p>
-            <p>🚀 Alta: ${data.high} gwei</p>
-          `;
-          ratesContainer.appendChild(card);
+        chains.forEach((chain, index) => {
+          data.datasets[index].data.push(results[index]);
         });
 
-        document.getElementById('loading').style.display = 'none';
-
+        gasChart.update();
       } catch (err) {
-        console.error("Erro ao carregar os dados de gas:", err);
-        document.getElementById('loading').innerHTML = "Erro ao carregar dados.";
+        console.error("Erro ao carregar dados de gas:", err);
       }
     }
 
-    // Executa a função quando a página carrega
-    window.onload = fetchGasData;
+    // Atualizar a cada 60 segundos
+    setInterval(fetchGasData, 60000);
+    fetchGasData(); // Inicializar com o primeiro conjunto de dados
   </script>
 </body>
 
