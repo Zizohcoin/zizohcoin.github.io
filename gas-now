@@ -1,67 +1,129 @@
-// src/App.jsx
-import React, { useEffect, useState } from 'react';
-import './App.css';
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-const chains = [
-  {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    fetchUrl: `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken`,
-    parse: (data) => ({
-      low: data.result.SafeGasPrice,
-      average: data.result.ProposeGasPrice,
-      high: data.result.FastGasPrice,
-    })
-  },
-  {
-    name: 'Polygon',
-    symbol: 'MATIC',
-    fetchUrl: `https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken`,
-    parse: (data) => ({
-      low: data.result.SafeGasPrice,
-      average: data.result.ProposeGasPrice,
-      high: data.result.FastGasPrice,
-    })
-  }
-  // Adicione BNB e Solana depois, conforme disponibilidade da API
-];
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌐 Gas Now — Taxas em Tempo Real</title>
+  <style>
+    /* Estilos básicos */
+    body {
+      background-color: #0c0c1c;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-function App() {
-  const [gasData, setGasData] = useState({});
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
 
-  useEffect(() => {
-    chains.forEach(async (chain) => {
-      try {
-        const res = await fetch(chain.fetchUrl);
-        const data = await res.json();
-        setGasData((prev) => ({
-          ...prev,
-          [chain.symbol]: chain.parse(data)
-        }));
-      } catch (err) {
-        console.error(`Erro ao carregar dados da ${chain.name}`);
+    h1 {
+      color: #00f59b;
+      font-size: 2rem;
+    }
+
+    .rates-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background-color: #1b1b2f;
+      padding: 15px;
+      border-radius: 10px;
+      width: 200px;
+    }
+
+    footer {
+      margin-top: 20px;
+      color: #ccc;
+    }
+
+    footer a {
+      color: #00f59b;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🌐 Gas Now — Taxas em Tempo Real</h1>
+    <div id="loading">Carregando dados...</div>
+    <div id="rates" class="rates-container"></div>
+  </div>
+
+  <footer>
+    Powered by <a href="https://zizoh.xyz">ZIZOH</a>
+  </footer>
+
+  <script>
+    // Definição das chains e URLs para API
+    const chains = [
+      {
+        name: "Ethereum",
+        symbol: "ETH",
+        fetchUrl: "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
+        parse: (data) => ({
+          low: data.result.SafeGasPrice,
+          average: data.result.ProposeGasPrice,
+          high: data.result.FastGasPrice
+        })
+      },
+      {
+        name: "Polygon",
+        symbol: "MATIC",
+        fetchUrl: "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
+        parse: (data) => ({
+          low: data.result.SafeGasPrice,
+          average: data.result.ProposeGasPrice,
+          high: data.result.FastGasPrice
+        })
       }
-    });
-  }, []);
+    ];
 
-  return (
-    <div className="min-h-screen bg-gray-900 text-white p-4">
-      <h1 className="text-3xl font-bold mb-6 text-center">🌐 Gas Now — Taxas em Tempo Real</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {Object.entries(gasData).map(([symbol, data]) => (
-          <div key={symbol} className="bg-gray-800 p-4 rounded-xl shadow-md">
-            <h2 className="text-xl font-semibold mb-2">{symbol}</h2>
-            <p>🚶‍♂️ Baixa: {data.low} gwei</p>
-            <p>🚗 Média: {data.average} gwei</p>
-            <p>🚀 Alta: {data.high} gwei</p>
-          </div>
-        ))}
-      </div>
-      <footer className="text-sm text-center text-gray-400 mt-10">
-        Powered by <a href="https://zizoh.xyz" className="underline text-green-400">ZIZOH</a>
-      </footer>
-    </div>
-  );
-}
+    // Função para buscar as taxas em tempo real
+    async function fetchGasData() {
+      try {
+        const results = await Promise.all(
+          chains.map(async (chain) => {
+            const res = await fetch(chain.fetchUrl);
+            const data = await res.json();
+            return { symbol: chain.symbol, data: chain.parse(data) };
+          })
+        );
 
-export default App;
+        const ratesContainer = document.getElementById('rates');
+        ratesContainer.innerHTML = '';
+
+        results.forEach(({ symbol, data }) => {
+          const card = document.createElement('div');
+          card.classList.add('card');
+          card.innerHTML = `
+            <h2>${symbol}</h2>
+            <p>🚶‍♂️ Baixa: ${data.low} gwei</p>
+            <p>🚗 Média: ${data.average} gwei</p>
+            <p>🚀 Alta: ${data.high} gwei</p>
+          `;
+          ratesContainer.appendChild(card);
+        });
+
+        document.getElementById('loading').style.display = 'none';
+
+      } catch (err) {
+        console.error("Erro ao carregar os dados de gas:", err);
+        document.getElementById('loading').innerHTML = "Erro ao carregar dados.";
+      }
+    }
+
+    // Executa a função quando a página carrega
+    window.onload = fetchGasData;
+  </script>
+</body>
+
+</html>
