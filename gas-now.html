@@ -1,156 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Live Gas Fees</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rastreamento de Taxas de Gas</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #f4f4f4;
-      color: #333;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #033470;
+      color: white;
     }
-
-    .container {
+    header {
+      padding: 1rem;
+      text-align: center;
+      background-color: #011d3a;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      padding: 40px 20px;
-      max-width: 1200px;
-      margin: auto;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
     }
-
     .card {
-      background-color: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      transition: transform 0.2s;
+      background-color: #1f2d3d;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
-
-    .card:hover {
-      transform: scale(1.02);
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #cccccc;
     }
-
-    .title {
-      font-size: 1.3em;
-      margin-bottom: 16px;
-      font-weight: bold;
-    }
-
     .value {
-      font-size: 2em;
-      color: #008080;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffffff;
     }
-
-    .faq-section {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 20px 60px;
-    }
-
-    .faq-section h2 {
-      font-size: 1.8em;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .faq-item {
-      margin-bottom: 20px;
-    }
-
-    .faq-item strong {
-      display: block;
-      font-size: 1.1em;
-      margin-bottom: 6px;
-    }
-
-    .faq-item p {
-      margin: 0;
-      line-height: 1.6;
+    .small {
+      font-size: 0.9rem;
+      color: #999999;
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
-    <div class="card">
-      <div class="title">Ethereum (ETH)</div>
-      <div class="value" id="eth-fee">Loading...</div>
+  <header>
+    <h1>Monitor de Taxas de Gas e Custos</h1>
+  </header>
+  <div class="dashboard">
+    <div class="card" id="eth">
+      <h2>Ethereum</h2>
+      <div class="value" id="ethGas">Carregando...</div>
+      <div class="small" id="ethUSD"></div>
     </div>
-    <div class="card">
-      <div class="title">Polygon (MATIC)</div>
-      <div class="value" id="polygon-fee">Loading...</div>
+    <div class="card" id="polygon">
+      <h2>Polygon</h2>
+      <div class="value" id="polygonGas">Carregando...</div>
+      <div class="small" id="polygonUSD"></div>
     </div>
-    <div class="card">
-      <div class="title">Binance Smart Chain (BNB)</div>
-      <div class="value" id="bsc-fee">Loading...</div>
+    <div class="card" id="solana">
+      <h2>Solana</h2>
+      <div class="value" id="solanaFee">Carregando...</div>
+      <div class="small">Taxa média por transação</div>
     </div>
-  </div>
-
-  <div class="faq-section">
-    <h2>Frequently Asked Questions About Gas Fees</h2>
-
-    <div class="faq-item">
-      <strong>What are gas fees?</strong>
-      <p>Gas fees are costs paid to process transactions or execute smart contracts on blockchains like Ethereum. They act as a fee to use the network.</p>
-    </div>
-
-    <div class="faq-item">
-      <strong>Why do gas fees increase?</strong>
-      <p>Fees rise when network demand is high. The more congested the blockchain, the more users have to pay to get their transactions confirmed faster.</p>
-    </div>
-
-    <div class="faq-item">
-      <strong>What’s the difference between Gwei and USD?</strong>
-      <p>Gwei is a unit used to measure gas on Ethereum. The USD value represents an estimate of the gas cost in U.S. dollars based on current crypto prices.</p>
-    </div>
-
-    <div class="faq-item">
-      <strong>How can I save on gas fees?</strong>
-      <p>You can save by transacting during off-peak times, manually setting lower gas limits, or using Layer 2 solutions like Polygon.</p>
-    </div>
-
-    <div class="faq-item">
-      <strong>Do other blockchains charge gas fees?</strong>
-      <p>Yes. Networks like Binance Smart Chain (BNB) and Polygon (MATIC) also charge fees, usually lower than those on Ethereum.</p>
+    <div class="card" id="uniswap">
+      <h2>Uniswap (simulação)</h2>
+      <div class="value" id="uniswapGas">Carregando...</div>
+      <div class="small">Base Ethereum</div>
     </div>
   </div>
 
   <script>
-    async function fetchGasFees() {
-      try {
-        // Fetch Ethereum gas data from Etherscan
-        const ethResponse = await fetch('https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken');
-        const ethData = await ethResponse.json();
-        const ethGasPrice = ethData.result.ProposeGasPrice; // in Gwei
-        const ethGasPriceUsd = ethGasPrice * 0.000000001 * 3000; // Assuming ETH price is $3000
+    const ETHERSCAN_API_KEY = 'HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X';
+    const POLYGONSCAN_API_KEY = '6KVS1JS863D5AWC2Y1SQF8T7MSTMF8IQX4';
+    const HELIUS_KEY = 'f7bd5799-804e-4b03-97d6-0a36718ac40d';
 
-        document.getElementById('eth-fee').textContent = `${ethGasPrice} Gwei (~$${ethGasPriceUsd.toFixed(2)} USD)`;
+    async function fetchGasData() {
+      // Ethereum Gas
+      const ethRes = await fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`);
+      const ethData = await ethRes.json();
+      const ethGas = ethData.result.ProposeGasPrice;
+      const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4); // suposição ETH = $3000
+      document.getElementById('ethGas').textContent = `${ethGas} GWEI`;
+      document.getElementById('ethUSD').textContent = `~ $${ethCostUSD} USD por transação`;
 
-        // Simulated gas fees for Polygon and BSC
-        const polygonGasPrice = 30; // in Gwei
-        const polygonGasPriceUsd = polygonGasPrice * 0.000000001 * 1.2; // Assuming MATIC price is $1.2
+      // Polygon Gas
+      const polyRes = await fetch(`https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${POLYGONSCAN_API_KEY}`);
+      const polyData = await polyRes.json();
+      const polyGas = polyData.result.ProposeGasPrice;
+      const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4); // suposição MATIC = $0.8
+      document.getElementById('polygonGas').textContent = `${polyGas} GWEI`;
+      document.getElementById('polygonUSD').textContent = `~ $${polyCostUSD} USD por transação`;
 
-        const bscGasPrice = 5; // in Gwei
-        const bscGasPriceUsd = bscGasPrice * 0.000000001 * 350; // Assuming BNB price is $350
+      // Solana Fee
+      const solanaFeeUSD = (0.000005 * 140).toFixed(4); // suposição SOL = $140
+      document.getElementById('solanaFee').textContent = `~ $${solanaFeeUSD} USD`;
 
-        document.getElementById('polygon-fee').textContent = `${polygonGasPrice} Gwei (~$${polygonGasPriceUsd.toFixed(4)} USD)`;
-        document.getElementById('bsc-fee').textContent = `${bscGasPrice} Gwei (~$${bscGasPriceUsd.toFixed(4)} USD)`;
-
-      } catch (error) {
-        console.error('Error fetching gas fees:', error);
-        document.getElementById('eth-fee').textContent = 'Error';
-        document.getElementById('polygon-fee').textContent = 'Error';
-        document.getElementById('bsc-fee').textContent = 'Error';
-      }
+      // Uniswap (exibe mesma gas da Ethereum como base simplificada)
+      document.getElementById('uniswapGas').textContent = `${ethGas} GWEI (~ $${ethCostUSD})`;
     }
 
-    fetchGasFees();
-    setInterval(fetchGasFees, 60000); // Update every 60 seconds
+    fetchGasData();
   </script>
-
 </body>
 </html>
