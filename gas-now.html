@@ -1,41 +1,48 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rastreamento de Taxas de Gas</title>
+  <title>Gas & Fee Tracker</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #033470;
-      color: white;
+      background: url('piw.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
     }
     header {
-      padding: 1rem;
+      padding: 2rem 1rem;
       text-align: center;
-      background-color: #011d3a;
+      background: rgba(0, 0, 0, 0.5);
     }
     h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 2.5rem;
+      color: #ffffff;
     }
     .dashboard {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+      gap: 1.5rem;
+      padding: 2rem;
     }
     .card {
-      background-color: #1f2d3d;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      background-color: rgba(3, 52, 112, 0.85);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
     }
     .card h2 {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       margin-bottom: 0.5rem;
-      color: #cccccc;
+      color: #ffffff;
     }
     .value {
       font-size: 2rem;
@@ -43,66 +50,71 @@
       color: #ffffff;
     }
     .small {
-      font-size: 0.9rem;
-      color: #999999;
+      font-size: 0.95rem;
+      color: #d0d0d0;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Monitor de Taxas de Gas e Custos</h1>
+    <h1>Gas & Transaction Fee Monitor</h1>
   </header>
   <div class="dashboard">
     <div class="card" id="eth">
       <h2>Ethereum</h2>
-      <div class="value" id="ethGas">Carregando...</div>
+      <div class="value" id="ethGas">Loading...</div>
       <div class="small" id="ethUSD"></div>
     </div>
     <div class="card" id="polygon">
       <h2>Polygon</h2>
-      <div class="value" id="polygonGas">Carregando...</div>
+      <div class="value" id="polygonGas">Loading...</div>
       <div class="small" id="polygonUSD"></div>
     </div>
     <div class="card" id="solana">
       <h2>Solana</h2>
-      <div class="value" id="solanaFee">Carregando...</div>
-      <div class="small">Taxa média por transação</div>
+      <div class="value" id="solanaFee">Loading...</div>
+      <div class="small">Average transaction fee</div>
     </div>
     <div class="card" id="uniswap">
-      <h2>Uniswap (simulação)</h2>
-      <div class="value" id="uniswapGas">Carregando...</div>
-      <div class="small">Base Ethereum</div>
+      <h2>Uniswap (simulated)</h2>
+      <div class="value" id="uniswapGas">Loading...</div>
+      <div class="small">Based on Ethereum fees</div>
     </div>
   </div>
 
   <script>
     const ETHERSCAN_API_KEY = 'HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X';
     const POLYGONSCAN_API_KEY = '6KVS1JS863D5AWC2Y1SQF8T7MSTMF8IQX4';
-    const HELIUS_KEY = 'f7bd5799-804e-4b03-97d6-0a36718ac40d';
 
     async function fetchGasData() {
-      // Ethereum Gas
-      const ethRes = await fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`);
-      const ethData = await ethRes.json();
-      const ethGas = ethData.result.ProposeGasPrice;
-      const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4); // suposição ETH = $3000
-      document.getElementById('ethGas').textContent = `${ethGas} GWEI`;
-      document.getElementById('ethUSD').textContent = `~ $${ethCostUSD} USD por transação`;
+      try {
+        // Ethereum
+        const ethRes = await fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`);
+        const ethData = await ethRes.json();
+        const ethGas = ethData.result.ProposeGasPrice;
+        const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4);
+        document.getElementById('ethGas').textContent = `${ethGas} GWEI`;
+        document.getElementById('ethUSD').textContent = `~ $${ethCostUSD} per transaction`;
 
-      // Polygon Gas
-      const polyRes = await fetch(`https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${POLYGONSCAN_API_KEY}`);
-      const polyData = await polyRes.json();
-      const polyGas = polyData.result.ProposeGasPrice;
-      const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4); // suposição MATIC = $0.8
-      document.getElementById('polygonGas').textContent = `${polyGas} GWEI`;
-      document.getElementById('polygonUSD').textContent = `~ $${polyCostUSD} USD por transação`;
+        // Polygon
+        const polyRes = await fetch(`https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${POLYGONSCAN_API_KEY}`);
+        const polyData = await polyRes.json();
+        const polyGas = polyData.result.ProposeGasPrice;
+        const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4);
+        document.getElementById('polygonGas').textContent = `${polyGas} GWEI`;
+        document.getElementById('polygonUSD').textContent = `~ $${polyCostUSD} per transaction`;
 
-      // Solana Fee
-      const solanaFeeUSD = (0.000005 * 140).toFixed(4); // suposição SOL = $140
-      document.getElementById('solanaFee').textContent = `~ $${solanaFeeUSD} USD`;
+        // Solana
+        const solUSD = 140;
+        const solFee = 5000 / 1000000000; // 5000 lamports
+        const solanaFeeUSD = (solFee * solUSD).toFixed(4);
+        document.getElementById('solanaFee').textContent = `~ $${solanaFeeUSD} USD`;
 
-      // Uniswap (exibe mesma gas da Ethereum como base simplificada)
-      document.getElementById('uniswapGas').textContent = `${ethGas} GWEI (~ $${ethCostUSD})`;
+        // Uniswap
+        document.getElementById('uniswapGas').textContent = `${ethGas} GWEI (~ $${ethCostUSD})`;
+      } catch (err) {
+        console.error("Error fetching gas data", err);
+      }
     }
 
     fetchGasData();
