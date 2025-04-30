@@ -1,127 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gas Fees Tracker</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blockchain Gas Fees</title>
   <style>
-    /* Body and Background */
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-image: url('piw.png');
+      font-family: Arial, sans-serif;
+      background: url('piw.png') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
-      color: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
-    
-    /* Header */
-    header {
-      background-color: rgba(3, 52, 112, 0.8); /* Blue #033470 with transparency */
-      padding: 20px;
-      width: 100%;
-      color: white;
-    }
-    h1 {
-      margin: 0;
-      font-size: 2.5rem;
+      color: #e0e0e0;
     }
 
-    /* Dashboard Styling */
-    .dashboard {
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
       padding: 2rem;
       max-width: 1200px;
-      width: 100%;
+      margin: auto;
     }
 
     .card {
-      background-color: #033470; /* Blue #033470 */
+      background-color: #033470cc;
       border-radius: 12px;
       padding: 1.5rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      color: #f5f5f5;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
     }
 
     .card h2 {
-      font-size: 1.4rem;
-      color: #e0e0e0; /* Light grey for titles */
-      margin-bottom: 0.8rem;
+      margin-top: 0;
+      color: #f1f1f1;
+      font-size: 1.2rem;
     }
 
-    .value {
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: #ffffff;
-      margin-bottom: 0.5rem;
-    }
-
-    .small {
-      font-size: 1rem;
-      color: #cccccc; /* Light gray for supplementary text */
-    }
-
-    /* Responsive design for smaller screens */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .card {
-        padding: 1.2rem;
-      }
-
-      .value {
-        font-size: 1.3rem;
-      }
-
-      .small {
-        font-size: 0.9rem;
-      }
+    .card p {
+      margin: 0.5rem 0;
+      color: #dcdcdc;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Gas Fees Tracker</h1>
-  </header>
-  
-  <div class="dashboard">
-    <div class="card" id="eth">
+
+  <header>Blockchain Gas Fees in Real-Time</header>
+
+  <div class="container">
+    <div class="card">
       <h2>Ethereum</h2>
-      <div class="value" id="ethGas">Loading...</div>
-      <div class="small" id="ethUSD">Loading...</div>
+      <p id="ethGas">Loading...</p>
+      <p id="ethUSD">Loading...</p>
     </div>
-    <div class="card" id="polygon">
+    <div class="card">
       <h2>Polygon</h2>
-      <div class="value" id="polygonGas">Loading...</div>
-      <div class="small" id="polygonUSD">Loading...</div>
+      <p id="polygonGas">Loading...</p>
+      <p id="polygonUSD">Loading...</p>
     </div>
-    <div class="card" id="solana">
+    <div class="card">
       <h2>Solana</h2>
-      <div class="value" id="solanaFee">Loading...</div>
-      <div class="small">USD per transaction</div>
+      <p id="solanaFee">Loading...</p>
     </div>
-    <div class="card" id="uniswap">
+    <div class="card">
       <h2>Uniswap</h2>
-      <div class="value" id="uniswapGas">Loading...</div>
-      <div class="small">Base Ethereum</div>
+      <p id="uniswapGas">Loading...</p>
     </div>
   </div>
 
   <script>
     const ETHERSCAN_API_KEY = 'HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X';
     const POLYGONSCAN_API_KEY = '6KVS1JS863D5AWC2Y1SQF8T7MSTMF8IQX4';
-    const HELIUS_KEY = 'f7bd5799-804e-4b03-97d6-0a36718ac40d';
-    const COIN_GECKO_API = 'https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd';
+    const HELIUS_API_KEY = 'f7bd5799-804e-4b03-97d6-0a36718ac40d';
 
     async function fetchGasData() {
       try {
@@ -129,7 +90,7 @@
         const ethRes = await fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`);
         const ethData = await ethRes.json();
         const ethGas = ethData.result.ProposeGasPrice;
-        const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4); // suposição ETH = $3000
+        const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4); // assuming ETH = $3000
         document.getElementById('ethGas').textContent = `${ethGas} GWEI`;
         document.getElementById('ethUSD').textContent = `~ $${ethCostUSD} USD per transaction`;
 
@@ -137,31 +98,36 @@
         const polyRes = await fetch(`https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${POLYGONSCAN_API_KEY}`);
         const polyData = await polyRes.json();
         const polyGas = polyData.result.ProposeGasPrice;
-        const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4); // suposição MATIC = $0.8
+        const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4); // assuming MATIC = $0.8
         document.getElementById('polygonGas').textContent = `${polyGas} GWEI`;
         document.getElementById('polygonUSD').textContent = `~ $${polyCostUSD} USD per transaction`;
 
-        // Solana Fee (usando CoinGecko)
-        const solRes = await fetch(COIN_GECKO_API);
-        const solData = await solRes.json();
-        const solPriceUSD = solData.solana.usd;
-        const solanaFeeUSD = (0.000005 * solPriceUSD).toFixed(4); // ajusta de acordo com o preço atual do SOL
-        document.getElementById('solanaFee').textContent = `~ $${solanaFeeUSD} USD`;
+        // Solana Fee from Helius
+        const solanaRes = await fetch(`https://api.helius.xyz/v0/transactions/recent-performance?api-key=${HELIUS_API_KEY}`);
+        const solanaData = await solanaRes.json();
+        if (solanaData.length > 0) {
+          const avgFeeLamports = solanaData[0].feeAvg;
+          const feeInSOL = avgFeeLamports / 1e9;
+          // Fetch SOL price
+          const priceRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+          const priceData = await priceRes.json();
+          const solPriceUSD = priceData.solana.usd;
+          const feeUSD = (feeInSOL * solPriceUSD).toFixed(4);
+          document.getElementById('solanaFee').textContent = `${(feeInSOL * 1e9).toFixed(0)} Lamports (~ $${feeUSD} USD)`;
+        } else {
+          document.getElementById('solanaFee').textContent = 'No recent fee data.';
+        }
 
-        // Uniswap Gas (exibe a mesma gas da Ethereum como base)
-        document.getElementById('uniswapGas').textContent = `${ethGas} GWEI (~ $${ethCostUSD})`;
+        // Uniswap (assume same as Ethereum)
+        document.getElementById('uniswapGas').textContent = `${ethGas} GWEI (~ $${ethCostUSD} USD per transaction)`;
 
       } catch (error) {
         console.error("Error loading gas data: ", error);
-        // Error handling
-        document.getElementById('ethGas').textContent = 'Error loading data';
-        document.getElementById('polygonGas').textContent = 'Error loading data';
-        document.getElementById('solanaFee').textContent = 'Error loading data';
-        document.getElementById('uniswapGas').textContent = 'Error loading data';
       }
     }
 
     fetchGasData();
   </script>
+
 </body>
 </html>
