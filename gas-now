@@ -1,0 +1,67 @@
+// src/App.jsx
+import React, { useEffect, useState } from 'react';
+import './App.css';
+
+const chains = [
+  {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    fetchUrl: `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken`,
+    parse: (data) => ({
+      low: data.result.SafeGasPrice,
+      average: data.result.ProposeGasPrice,
+      high: data.result.FastGasPrice,
+    })
+  },
+  {
+    name: 'Polygon',
+    symbol: 'MATIC',
+    fetchUrl: `https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken`,
+    parse: (data) => ({
+      low: data.result.SafeGasPrice,
+      average: data.result.ProposeGasPrice,
+      high: data.result.FastGasPrice,
+    })
+  }
+  // Adicione BNB e Solana depois, conforme disponibilidade da API
+];
+
+function App() {
+  const [gasData, setGasData] = useState({});
+
+  useEffect(() => {
+    chains.forEach(async (chain) => {
+      try {
+        const res = await fetch(chain.fetchUrl);
+        const data = await res.json();
+        setGasData((prev) => ({
+          ...prev,
+          [chain.symbol]: chain.parse(data)
+        }));
+      } catch (err) {
+        console.error(`Erro ao carregar dados da ${chain.name}`);
+      }
+    });
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-4">
+      <h1 className="text-3xl font-bold mb-6 text-center">🌐 Gas Now — Taxas em Tempo Real</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {Object.entries(gasData).map(([symbol, data]) => (
+          <div key={symbol} className="bg-gray-800 p-4 rounded-xl shadow-md">
+            <h2 className="text-xl font-semibold mb-2">{symbol}</h2>
+            <p>🚶‍♂️ Baixa: {data.low} gwei</p>
+            <p>🚗 Média: {data.average} gwei</p>
+            <p>🚀 Alta: {data.high} gwei</p>
+          </div>
+        ))}
+      </div>
+      <footer className="text-sm text-center text-gray-400 mt-10">
+        Powered by <a href="https://zizoh.xyz" className="underline text-green-400">ZIZOH</a>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
