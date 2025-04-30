@@ -12,7 +12,6 @@
   <meta property="og:image" content="https://www.yoursite.com/images/gas-fees-banner.png" />
   <title>Crypto Gas Fees Tracker - ETH, Gwei, and More</title>
   <style>
-    /* Existing styles */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -153,7 +152,6 @@
   </div>
 
   <script>
-    // Existing JavaScript for fetching gas fee data (unchanged)
     const ETHERSCAN_API_KEY = 'HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X';
     const POLYGONSCAN_API_KEY = '6KVS1JS863D5AWC2Y1SQF8T7MSTMF8IQX4';
 
@@ -163,7 +161,7 @@
         const ethRes = await fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`);
         const ethData = await ethRes.json();
         const ethGas = ethData.result.ProposeGasPrice;
-        const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4); // ETH ~ $3000
+        const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4);
         document.getElementById('ethGas').textContent = `${ethGas} GWEI`;
         document.getElementById('ethUSD').textContent = `~ $${ethCostUSD} USD per tx`;
 
@@ -171,17 +169,17 @@
         const polyRes = await fetch(`https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${POLYGONSCAN_API_KEY}`);
         const polyData = await polyRes.json();
         const polyGas = polyData.result.ProposeGasPrice;
-        const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4); // MATIC ~ $0.8
+        const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4);
         document.getElementById('polygonGas').textContent = `${polyGas} GWEI`;
         document.getElementById('polygonUSD').textContent = `~ $${polyCostUSD} USD per tx`;
 
         // SOLANA
         const lamports = 5000;
-        const solanaFeeUSD = (0.000005 * 140).toFixed(4); // SOL ~ $140
+        const solanaFeeUSD = (0.000005 * 140).toFixed(4);
         document.getElementById('solanaLamports').textContent = `${lamports} lamports`;
         document.getElementById('solanaUSD').textContent = `~ $${solanaFeeUSD} USD per tx`;
 
-        // UNISWAP (simulated, same as ETH)
+        // UNISWAP (simulated)
         document.getElementById('uniswapGas').textContent = `${ethGas} GWEI`;
         document.getElementById('uniswapUSD').textContent = `~ $${ethCostUSD} USD per tx`;
 
