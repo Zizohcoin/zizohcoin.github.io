@@ -1,288 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Check current ETH gas fees, crypto gas fees, and Gwei price right now. Stay updated with the latest prices for Ethereum, Solana, and more." />
-  <meta name="keywords" content="eth gas fees right now, crypto gas fees, gwei price, gas tracker, cryptocurrency gas, ethereum fees, solana fees, polygon gas fees" />
-  <meta name="robots" content="index, follow" />
-  <meta property="og:title" content="Crypto Gas Fees Tracker - ETH, Gwei, and More" />
-  <meta property="og:description" content="Monitor real-time gas fees for Ethereum, Solana, and other cryptocurrencies. Find the current Gwei price and crypto transaction costs." />
-  <meta property="og:url" content="https://www.yoursite.com/gas-fees-tracker" />
-  <meta property="og:image" content="https://www.yoursite.com/images/gas-fees-banner.png" />
-  <title>Crypto Gas Fees Tracker - ETH, Gwei, and More</title>
+  <meta charset="UTF-8">
+  <title>Jogo das Palavras</title>
   <style>
-    /* Existing styles */
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-image: url('piw.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-attachment: fixed;
-      color: white;
-    }
-    header {
-      padding: 1rem;
+      font-family: Arial, sans-serif;
       text-align: center;
+      background-color: #f4f4f4;
     }
-    h1 {
-      margin: 0;
-      font-size: 2rem;
-      color: white;
+    .letras, .opcoes, .resposta {
+      margin: 20px;
     }
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+    .letras button, .opcoes button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 18px;
     }
-    .card {
-      background-color: #033470;
-      border-radius: 12px;
-      padding: 1.5rem;
-      backdrop-filter: blur(4px);
-    }
-    .card h2 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: #ffffff;
-    }
-    .value {
-      font-size: 2rem;
+    .resposta {
+      font-size: 24px;
       font-weight: bold;
-      color: #ffffff;
+      min-height: 30px;
     }
-    .small {
-      font-size: 0.9rem;
-      color: #cccccc;
+    .mensagem {
+      font-size: 20px;
+      color: green;
+      margin: 20px;
     }
-    .faq-section {
-      padding: 2rem;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-      margin-top: 3rem;
-    }
-    .faq-section h2 {
-      color: #ffffff;
-      font-size: 1.5rem;
-    }
-    .faq {
-      margin-bottom: 1rem;
-    }
-    .faq h3 {
-      color: #f2f2f2;
-    }
-    .faq p {
-      color: #cccccc;
-      font-size: 0.9rem;
-    }
-    .article {
-      margin-top: 2rem;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 2rem;
+    .artigo {
+      text-align: left;
+      margin: 40px auto;
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
       border-radius: 10px;
     }
-    .article h2 {
-      color: #ffffff;
-      font-size: 1.5rem;
+    #botaoReiniciar {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .article p {
-      color: #cccccc;
-      line-height: 1.6;
+    #botaoReiniciar:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Crypto Gas Fees Tracker</h1>
-    <p>Stay up-to-date with the current Ethereum, Solana, and other crypto gas fees. See the Gwei price and transaction costs right now.</p>
-  </header>
-  <div class="dashboard">
-    <div class="card" id="eth">
-      <h2>Ethereum (ETH) Gas Fees</h2>
-      <div class="value" id="ethGas">Loading...</div>
-      <div class="small" id="ethUSD">Loading...</div>
-    </div>
-    <div class="card" id="polygon">
-      <h2>Polygon Gas Fees</h2>
-      <div class="value" id="polygonGas">Loading...</div>
-      <div class="small" id="polygonUSD">Loading...</div>
-    </div>
-    <div class="card" id="solana">
-      <h2>Solana Gas Fees</h2>
-      <div class="value" id="solanaLamports">Loading...</div>
-      <div class="small" id="solanaUSD">Loading...</div>
-    </div>
-    <div class="card" id="uniswap">
-      <h2>Uniswap (ETH Simulated)</h2>
-      <div class="value" id="uniswapGas">Loading...</div>
-      <div class="small" id="uniswapUSD">Loading...</div>
-    </div>
-  </div>
 
-  <!-- FAQ Section -->
-  <div class="faq-section">
-    <h2>Frequently Asked Questions (FAQ)</h2>
-    <div class="faq">
-      <h3>What are ETH gas fees right now?</h3>
-      <p>ETH gas fees are transaction fees that you pay when interacting with the Ethereum network. They vary depending on network congestion and transaction complexity.</p>
-    </div>
-    <div class="faq">
-      <h3>What are crypto gas fees?</h3>
-      <p>Crypto gas fees are the costs required to conduct transactions or interact with smart contracts on blockchain networks. These fees are paid to miners or validators who process transactions.</p>
-    </div>
-    <div class="faq">
-      <h3>What is the current Gwei price?</h3>
-      <p>Gwei is a unit of measurement for gas fees on the Ethereum network. It represents a fraction of 1 ETH and is used to price transactions and smart contract executions.</p>
-    </div>
-    <div class="faq">
-      <h3>Why do Gwei prices fluctuate?</h3>
-      <p>Gwei prices fluctuate based on the network's demand. When more people use the network, the Gwei price increases due to higher competition for block space.</p>
-    </div>
-  </div>
-
-  <!-- Article Section -->
-  <div class="article">
-    <h2>What Are Gas Fees?</h2>
-
-<p>At its core, 'gas' is defined as the unit that measures the computational effort required to execute different types of actions while interacting with a blockchain. It can be thought of as the "fuel" needed to power operations on the network. Public blockchains, being open networks accessible to anyone with an internet connection, require a mechanism to control activity. This is where gas fees come in: a fee is charged using cryptocurrency for operations performed on the blockchain.</p>
-
-<p>Gas fees are essentially transaction fees paid by users to compensate the network participants – typically miners or validators – for the computational resources needed to process and validate transactions, smart contracts, and other operations. On decentralized networks, transactions and smart contract executions are handled by multiple nodes across the network, not a single entity. Gas fees incentivize these participants to process transactions and maintain the network's security and functionality.</p>
-
-<p>Besides compensating validators, gas fees serve a vital role in preventing network abuse. Without a cost attached to operations, malicious actors could easily spam the network with a massive number of transactions, potentially clogging it and disrupting service. By requiring a payment for each operation, gas creates a real cost to attempting to disrupt the network, similar to how charging for email would combat spam email. This mechanism helps ensure that the network remains functional and accessible for legitimate users.</p>
-
-<p><strong>Ethereum Gas Fees Explained</strong></p>
-
-<p>Ethereum is the most popular smart contract platform and where the concept of gas fees is most widely recognized. On Ethereum, the transaction fee is specifically referred to as the gas fee or gas price. Every action on the Ethereum network, from simple transactions to deploying smart contracts, requires computational resources and thus uses gas. The fee for this computational work is paid using ETH, the native token of the Ethereum network. Even if a transaction fails, the gas spent to attempt the execution is still lost.</p>
-
-<p>Gas prices on Ethereum are quoted in Gwei. Gwei is a smaller denomination of Ether, specifically one billionth of an ETH (1 Gwei = 0.000000001 ETH). Using Gwei simplifies the calculation and expression of gas fees for users compared to using the full unit of Ether. The term 'Gwei' is a contraction of 'giga-wei', inspired by Wei Dai, a computational scientist, with 'Wei' being the smallest denomination of Ether.</p>
-
-<p><strong>How Are Gas Fees Calculated on Ethereum?</strong></p>
-
-<p>The calculation of gas fees on Ethereum is based on two primary factors: the Gas Limit and the Gas Price.</p>
-
-<p><strong>1. Gas Limit:</strong> The Gas Limit refers to the maximum amount of gas a user is willing to pay for a transaction. Different operations on the blockchain require varying amounts of computational resources, measured in units of gas. More complex operations consume more gas units. For example, a simple transfer of ETH or a token typically requires 21,000 units of gas. Executing a complex smart contract, however, could require millions of gas units. The gas limit defines the total computational cost associated with a transaction. MetaMask, a popular wallet, automatically sets the gas limit for most transactions, and in the vast majority of cases, this is sufficient. Users generally do not need to edit the gas limit, though advanced controls exist for specific use cases.</p>
-
-<p><strong>2. Gas Price:</strong> The Gas Price is the amount a user is willing to pay per unit of gas. As mentioned, this price is usually denominated in Gwei. The gas price is determined by the supply and demand for network resources, meaning it fluctuates based on network congestion. When the network is busy, gas prices tend to rise as users compete to have their transactions included quickly. Conversely, when network activity is low, gas prices are typically lower. Users can influence the speed of their transaction by adjusting the gas price they are willing to pay. Paying a higher gas price may result in quicker transaction completion, as validators are incentivized to prioritize transactions offering higher fees.</p>
-
-<p>The total Gas Fee paid for a transaction is calculated using a simple formula: Gas Fee = Gas Used × Gas Price.</p>
-
-<p>For instance, if a transaction uses 21,000 units of gas and the user sets the gas price at 100 Gwei, the total gas fee would be 21,000 * 100 Gwei = 2,100,000 Gwei, which equals 0.0021 ETH.</p>
-
-<p>Ethereum's fee mechanism became more complex and nuanced with the implementation of Ethereum Improvement Protocol (EIP) 1559 in August 2021 (also known as the London Upgrade). This update introduced a new fee structure designed to make gas fees more predictable and efficient. Under EIP-1559, the total gas fee calculation includes a Base Fee and an optional Priority Fee.</p>
-
-<p><strong>Base Fee:</strong> The Base Fee is the minimum fee required for a transaction to be included in a block. This fee is set automatically by the protocol based on network demand and block size relative to a target size. If the previous block was larger than the target, the base fee for the next block increases by 12.5%. This mechanism provides users with certainty about the minimum base fee for the upcoming block. A key feature of EIP-1559 is that the base fee is burned (removed from circulation) rather than going to validators. This burning mechanism contributes to ETH's deflationary aspects over time.</p>
-
-<p><strong>Priority Fee (Tip):</strong> The Priority Fee, also known as the "miner tip" or "tip fee", is an optional extra fee that users can add to incentivize miners or validators to prioritize their transaction. While the base fee is burned, the priority fee goes to the validators who process the transaction. A higher priority fee signals to validators that the user is willing to pay more for faster inclusion in a block.</p>
-
-<p>With EIP-1559, users specify a Max Fee they are willing to pay per unit of gas. This Max Fee must be at least equal to the sum of the base fee and the priority fee. The transaction cost is then calculated as (Base Fee + Priority Fee) x Gas Used. If the Max Fee set by the user exceeds the calculated (Base Fee + Priority Fee), the difference is refunded to the user. This system aims to prevent users from overpaying while still allowing them to pay a tip for faster processing.</p>
-
-<p>For example, under EIP-1559, sending ETH with a base fee of 75 Gwei, a priority fee of 5 Gwei, and a gas limit of 30,000 units would result in a total transaction fee of (75 Gwei + 5 Gwei) * 30,000 = 80 Gwei * 30,000 = 2,400,000 Gwei, which is 0.0024 ETH.</p>
-
-<p><strong>Why Do ETH Gas Fees Vary?</strong></p>
-
-<p>Eth gas fees right now can vary significantly, and understanding the factors influencing this variation is crucial.</p>
-
-<p><strong>1. Network Congestion:</strong> The primary driver of fluctuating gas fees is network demand and congestion. When many users are trying to complete transactions simultaneously, competition for limited block space increases. This increased demand drives up the gas price as users offer higher fees to ensure their transactions are processed quickly.</p>
-
-<p><strong>2. Transaction Complexity:</strong> As noted earlier, different operations require different amounts of gas units. Simple transfers consume less gas than complex smart contract interactions, minting NFTs, or running dApps. Therefore, performing more complex actions will inherently result in higher total gas fees, assuming the gas price remains constant.</p>
-
-<p><strong>3. Gas Price Market:</strong> Users can manually adjust the gas price they are willing to pay (or the priority fee under EIP-1559). This creates a market where users can bid higher to prioritize their transactions, especially during periods of high network activity. Validators are incentivized by higher fees, so transactions with higher priority fees are more likely to be picked up quickly.</p>
-
-<p>Periods of particularly high activity in the crypto ecosystem can lead to significant spikes in eth gas fees right now. Historical examples include the surge during the Initial Coin Offering (ICO) craze, the DeFi Summer of 2020, and the congestion caused by popular NFT projects like CryptoKitties. These spikes highlight the challenges Ethereum has faced with scalability.</p>
-
-<p><strong>Who Receives Gas Fees on Ethereum?</strong></p>
-
-<p>Prior to Ethereum's transition to Proof of Stake (PoS), which culminated with The Merge in September 2022, gas fees were primarily paid to miners. Miners would earn gas fees as rewards for validating and processing transactions. With The Merge, Ethereum transitioned from a Proof-of-Work (PoW) consensus mechanism to PoS. Now, the network participants who support and secure the network are called validators, and they stake ETH to perform this role.</p>
-
-<p>Under the EIP-1559 model implemented before The Merge, the base fee part of the transaction was burned, while the priority fee (or tip) went to the miners. Following The Merge, the priority fee is distributed to the validators who secure the network. The base fee continues to be burned. This system incentivizes validators to include transactions in the blocks they propose, thus keeping the network running.</p>
-
-<p><strong>Gas Fees Across Different Blockchains</strong></p>
-
-<p>While gas fees are most associated with Ethereum, many other blockchain platforms have adopted similar fee structures, although the specific pricing models and native currencies used can differ. This applies to both public and private/permissioned networks.</p>
-
-<p><strong>Private and Permissioned Networks:</strong> These networks typically use gas to control access or manage resources, similar to public networks. However, because access is restricted either physically (private) or by controlling currency access (permissioned), gas restrictions are not always strictly necessary in the same way they are on truly open public networks.</p>
-
-<p><strong>Other Public Blockchains:</strong></p>
-
-<p><strong>Binance Smart Chain (BSC):</strong> Compatible with Ethereum's Virtual Machine (EVM), BSC has lower gas fees due to differences in transaction confirmation times and its consensus mechanism. It is popular for DeFi applications. Like Ethereum, it uses its native token (BNB) for gas fees.</p>
-
-<p><strong>Solana:</strong> Designed for high speed and low cost, Solana boasts relatively low gas fees. Its fast transaction speeds make it suitable for high-frequency trading.</p>
-
-<p><strong>Polygon (Matic):</strong> As a Layer 2 scaling solution for Ethereum, Polygon aims to increase transaction throughput and reduce costs. Its fees are significantly lower than those on Ethereum mainnet, and it uses its native token (POL, formerly MATIC) for fees. Polygon has adopted a fee model similar to Ethereum's EIP-1559.</p>
-
-<p><strong>Avalanche:</strong> Another EVM-compatible network, Avalanche's C-Chain also utilizes a fee model similar to EIP-1559, though it burns both the base fee and the priority fee.</p>
-
-<p>Across these networks, whether EVM-compatible or not, a system of charging for computational work using the network's native currency has become a standard method for calculating transaction costs.</p>
-
-<p><strong>Optimizing Gas Fees</strong></p>
-
-<p>Given that crypto gas fees can fluctuate significantly, especially eth gas fees right now, users are keen to find ways to minimize costs without sacrificing transaction speed or reliability.</p>
-
-<p><strong>1. Timing Transactions:</strong> Gas fees on Ethereum fluctuate based on network activity. Fees are typically lower during off-peak hours or on weekends when there are fewer users transacting. Timing transactions for periods of lower network congestion can significantly reduce costs.</p>
-
-<p><strong>2. Using Gas Price Tools:</strong> Many tools, websites, and wallets (like MetaMask) provide real-time information and predictions about current gas prices on Ethereum. These gas trackers help users determine the optimal time to transact and understand what the gas fee might be. Some wallets also allow users to manually adjust the gas price they are willing to pay. Setting a lower price can save money but risks a slower transaction or potentially getting stuck during high traffic. It's important to balance cost savings with the need for timely transaction processing.</p>
-
-<p><strong>3. Leveraging Layer-2 Solutions:</strong> One of the most effective ways to combat high eth gas fees right now and improve transaction speed is by using Layer-2 scaling solutions built on top of Ethereum, such as Polygon, Optimism, and Arbitrum. These secondary layers process transactions off-chain, often in batches, and then settle them more efficiently on the main Ethereum chain, drastically reducing the cost and increasing speed. Many decentralized applications and protocols now operate on or are accessible via Layer-2 networks, offering a lower-cost alternative for users.</p>
-
-<p><strong>4. Managing Gas Limit and Price:</strong> While MetaMask usually sets the gas limit appropriately, understanding the minimum gas required for a specific transaction type can help avoid setting an unnecessarily high limit that could lead to overpaying. Additionally, actively using gas price tools to adjust the price based on real-time network conditions (or setting an appropriate priority fee under EIP-1559) is a key optimization strategy.</p>
-
-<p>It's important to note that setting the gas price too low can lead to a transaction getting "stuck" or failing to process, especially during busy periods. Validators may prioritize transactions with higher fees, leaving low-fee transactions pending indefinitely. If a transaction fails, the gas fees spent are still consumed and cannot be refunded. Therefore, finding the right balance between cost and speed is essential.</p>
-
-<p><strong>The Importance and Future of Gas Fees</strong></p>
-
-<p>Crypto gas fees are not just an inconvenience; they are a fundamental component that enables blockchain networks, particularly decentralized ones like Ethereum, to function securely and efficiently. They ensure that computational resources are adequately compensated, prevent spam, and incentivize network participants.</p>
-
-<p>While gas fees, especially eth gas fees right now during peak times, can be a barrier for some users, the industry is continuously evolving to address these challenges. Ethereum's transition to Proof of Stake with The Merge was a significant step aimed at improving scalability, which in turn helps reduce transaction costs over time. Furthermore, the increasing adoption and development of Layer-2 scaling solutions are making blockchain transactions more accessible and affordable for a wider range of users and applications.</p>
-
-<p>Tools like blockchain explorers (such as Chainlens Block Explorer), which show gas information for individual transactions, provide transparency into how gas is used and the fees incurred. Wallets like MetaMask integrate features to help users manage and estimate gas fees.</p>
-
-<p>In conclusion, gas fees are the essential cost of performing operations on blockchain networks, acting as payment for computational work and a mechanism to secure the network from spam. While the calculation and impact of gas fees can seem complex, particularly on Ethereum with its EIP-1559 model, understanding concepts like Gas Limit, Gas Price, Gwei, Base Fee, and Priority Fee is vital. By employing strategies such as timing transactions, using gas price tools, and leveraging Layer-2 solutions, users can effectively manage and optimize their crypto gas fees, making their blockchain interactions more efficient and cost-effective. As the crypto space matures, innovations continue to strive for cheaper and faster transaction costs, ultimately making blockchain technology more accessible for everyone.</p>
-  </div>
+  <h1>Monte a Palavra Correta</h1>
+  <div class="letras"></div>
+  <div class="resposta"></div>
+  <div class="opcoes"></div>
+  <div class="mensagem"></div>
 
   <script>
-    // Existing JavaScript for fetching gas fee data (unchanged)
-    const ETHERSCAN_API_KEY = 'HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X';
-    const POLYGONSCAN_API_KEY = '6KVS1JS863D5AWC2Y1SQF8T7MSTMF8IQX4';
+    const palavras = [
+      { palavra: "casa", artigo: "A casa é o local onde moramos e vivemos com a nossa família." },
+      { palavra: "bola", artigo: "A bola é um brinquedo muito comum usado em diversos esportes." },
+      { palavra: "livro", artigo: "O livro é uma fonte de conhecimento e diversão." },
+      { palavra: "flor", artigo: "A flor é uma das partes mais bonitas das plantas." },
+    ];
 
-    async function fetchGasData() {
-      try {
-        // ETH
-        const ethRes = await fetch(https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY});
-        const ethData = await ethRes.json();
-        const ethGas = ethData.result.ProposeGasPrice;
-        const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4); // ETH ~ $3000
-        document.getElementById('ethGas').textContent = ${ethGas} GWEI;
-        document.getElementById('ethUSD').textContent = ~ $${ethCostUSD} USD per tx;
+    let palavraAtual = "";
+    let respostaUsuario = "";
 
-        // POLYGON
-        const polyRes = await fetch(https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${POLYGONSCAN_API_KEY});
-        const polyData = await polyRes.json();
-        const polyGas = polyData.result.ProposeGasPrice;
-        const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4); // MATIC ~ $0.8
-        document.getElementById('polygonGas').textContent = ${polyGas} GWEI;
-        document.getElementById('polygonUSD').textContent = ~ $${polyCostUSD} USD per tx;
+    function embaralhar(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
 
-        // SOLANA
-        const lamports = 5000;
-        const solanaFeeUSD = (0.000005 * 140).toFixed(4); // SOL ~ $140
-        document.getElementById('solanaLamports').textContent = ${lamports} lamports;
-        document.getElementById('solanaUSD').textContent = ~ $${solanaFeeUSD} USD per tx;
+    function novaPalavra() {
+      const indice = Math.floor(Math.random() * palavras.length);
+      palavraAtual = palavras[indice].palavra;
+      const artigo = palavras[indice].artigo;
 
-        // UNISWAP (simulated, same as ETH)
-        document.getElementById('uniswapGas').textContent = ${ethGas} GWEI;
-        document.getElementById('uniswapUSD').textContent = ~ $${ethCostUSD} USD per tx;
+      const letrasEmbaralhadas = embaralhar(palavraAtual.split(""));
+      const letrasDiv = document.querySelector(".letras");
+      const opcoesDiv = document.querySelector(".opcoes");
+      const respostaDiv = document.querySelector(".resposta");
+      const mensagemDiv = document.querySelector(".mensagem");
 
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      letrasDiv.innerHTML = "";
+      opcoesDiv.innerHTML = "";
+      respostaDiv.textContent = "";
+      mensagemDiv.textContent = "";
+      respostaUsuario = "";
+
+      letrasEmbaralhadas.forEach((letra, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = letra;
+        btn.dataset.index = i;
+        letrasDiv.appendChild(btn);
+      });
+
+      // Armazenar o artigo na div de opções (oculto até acerto)
+      opcoesDiv.dataset.artigo = artigo;
+    }
+
+    function verificarResposta() {
+      if (respostaUsuario === palavraAtual) {
+        const artigo = document.querySelector(".opcoes").dataset.artigo;
+        document.querySelector(".mensagem").textContent = "Parabéns! Você acertou!";
+        document.querySelector(".opcoes").innerHTML = `
+          <div class="artigo">
+            <p>${artigo}</p>
+            <button id="botaoReiniciar">Tentar outra palavra</button>
+          </div>
+        `;
       }
     }
 
-    fetchGasData();
+    // Delegação de eventos
+    document.addEventListener("click", function(event) {
+      const target = event.target;
+
+      if (target.closest(".letras button")) {
+        const letra = target.textContent;
+        respostaUsuario += letra;
+        document.querySelector(".resposta").textContent = respostaUsuario;
+        target.disabled = true;
+        verificarResposta();
+      }
+
+      if (target.id === "botaoReiniciar") {
+        novaPalavra();
+      }
+    });
+
+    // Iniciar o jogo
+    document.addEventListener("DOMContentLoaded", novaPalavra);
   </script>
+
 </body>
 </html>
-
-
