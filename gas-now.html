@@ -15,7 +15,6 @@
     header {
       padding: 2rem 1rem;
       text-align: center;
-      background: rgba(0, 0, 0, 0.5);
     }
     h1 {
       margin: 0;
@@ -73,7 +72,7 @@
     <div class="card" id="solana">
       <h2>Solana</h2>
       <div class="value" id="solanaFee">Loading...</div>
-      <div class="small">Average transaction fee</div>
+      <div class="small">~ in lamports and USD</div>
     </div>
     <div class="card" id="uniswap">
       <h2>Uniswap (simulated)</h2>
@@ -106,9 +105,10 @@
 
         // Solana
         const solUSD = 140;
-        const solFee = 5000 / 1000000000; // 5000 lamports
+        const lamports = 5000;
+        const solFee = lamports / 1000000000;
         const solanaFeeUSD = (solFee * solUSD).toFixed(4);
-        document.getElementById('solanaFee').textContent = `~ $${solanaFeeUSD} USD`;
+        document.getElementById('solanaFee').textContent = `${lamports} lamports (~ $${solanaFeeUSD})`;
 
         // Uniswap
         document.getElementById('uniswapGas').textContent = `${ethGas} GWEI (~ $${ethCostUSD})`;
