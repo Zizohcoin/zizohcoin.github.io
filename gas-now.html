@@ -1,133 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blockchain Gas Fees</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blockchain Gas Tracker</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background: url('piw.png') no-repeat center center fixed;
       background-size: cover;
-      color: #e0e0e0;
+      color: #ccc;
     }
 
     header {
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 2rem 1rem 1rem;
+    }
+
+    header h1 {
       color: white;
-      font-size: 2rem;
-      font-weight: bold;
+      font-size: 2.5rem;
+      margin: 0;
     }
 
     .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
     }
 
     .card {
-      background-color: #033470cc;
+      background-color: #033470;
       border-radius: 12px;
       padding: 1.5rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-      transition: transform 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
+      width: 280px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: #e0e0e0;
     }
 
     .card h2 {
-      margin-top: 0;
-      color: #f1f1f1;
-      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
     }
 
-    .card p {
-      margin: 0.5rem 0;
-      color: #dcdcdc;
+    .value {
+      font-size: 1.2rem;
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        width: 90%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>Blockchain Gas Fees in Real-Time</header>
+<header>
+  <h1>Real-Time Gas Fees</h1>
+</header>
 
-  <div class="container">
-    <div class="card">
-      <h2>Ethereum</h2>
-      <p id="ethGas">Loading...</p>
-      <p id="ethUSD">Loading...</p>
-    </div>
-    <div class="card">
-      <h2>Polygon</h2>
-      <p id="polygonGas">Loading...</p>
-      <p id="polygonUSD">Loading...</p>
-    </div>
-    <div class="card">
-      <h2>Solana</h2>
-      <p id="solanaFee">Loading...</p>
-    </div>
-    <div class="card">
-      <h2>Uniswap</h2>
-      <p id="uniswapGas">Loading...</p>
-    </div>
+<div class="container">
+  <div class="card" id="ethereum">
+    <h2>Ethereum</h2>
+    <p>GWEI: <span class="value" id="eth-gwei">...</span></p>
+    <p>USD: <span class="value" id="eth-usd">...</span></p>
   </div>
 
-  <script>
-    const ETHERSCAN_API_KEY = 'HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X';
-    const POLYGONSCAN_API_KEY = '6KVS1JS863D5AWC2Y1SQF8T7MSTMF8IQX4';
-    const HELIUS_API_KEY = 'f7bd5799-804e-4b03-97d6-0a36718ac40d';
+  <div class="card" id="polygon">
+    <h2>Polygon</h2>
+    <p>GWEI: <span class="value" id="polygon-gwei">...</span></p>
+    <p>USD: <span class="value" id="polygon-usd">...</span></p>
+  </div>
 
-    async function fetchGasData() {
-      try {
-        // Ethereum Gas
-        const ethRes = await fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`);
-        const ethData = await ethRes.json();
-        const ethGas = ethData.result.ProposeGasPrice;
-        const ethCostUSD = (ethGas * 21000 * 0.000000001 * 3000).toFixed(4); // assuming ETH = $3000
-        document.getElementById('ethGas').textContent = `${ethGas} GWEI`;
-        document.getElementById('ethUSD').textContent = `~ $${ethCostUSD} USD per transaction`;
+  <div class="card" id="solana">
+    <h2>Solana</h2>
+    <p>Fee: <span class="value" id="sol-fee-sol">...</span> SOL</p>
+    <p>USD: <span class="value" id="sol-fee-usd">...</span></p>
+  </div>
 
-        // Polygon Gas
-        const polyRes = await fetch(`https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${POLYGONSCAN_API_KEY}`);
-        const polyData = await polyRes.json();
-        const polyGas = polyData.result.ProposeGasPrice;
-        const polyCostUSD = (polyGas * 21000 * 0.000000001 * 0.8).toFixed(4); // assuming MATIC = $0.8
-        document.getElementById('polygonGas').textContent = `${polyGas} GWEI`;
-        document.getElementById('polygonUSD').textContent = `~ $${polyCostUSD} USD per transaction`;
+  <div class="card" id="uniswap">
+    <h2>Uniswap</h2>
+    <p>Estimated GWEI: <span class="value" id="uni-gwei">...</span></p>
+    <p>USD: <span class="value" id="uni-usd">...</span></p>
+  </div>
+</div>
 
-        // Solana Fee from Helius
-        const solanaRes = await fetch(`https://api.helius.xyz/v0/transactions/recent-performance?api-key=${HELIUS_API_KEY}`);
-        const solanaData = await solanaRes.json();
-        if (solanaData.length > 0) {
-          const avgFeeLamports = solanaData[0].feeAvg;
-          const feeInSOL = avgFeeLamports / 1e9;
-          // Fetch SOL price
-          const priceRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
-          const priceData = await priceRes.json();
-          const solPriceUSD = priceData.solana.usd;
-          const feeUSD = (feeInSOL * solPriceUSD).toFixed(4);
-          document.getElementById('solanaFee').textContent = `${(feeInSOL * 1e9).toFixed(0)} Lamports (~ $${feeUSD} USD)`;
-        } else {
-          document.getElementById('solanaFee').textContent = 'No recent fee data.';
-        }
+<script>
+  const etherscanKey = "HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X";
+  const polygonscanKey = "6KVS1JS863D5AWC2Y1SQF8T7MSTMF8IQX4";
+  const heliusKey = "f7bd5799-804e-4b03-97d6-0a36718ac40d";
 
-        // Uniswap (assume same as Ethereum)
-        document.getElementById('uniswapGas').textContent = `${ethGas} GWEI (~ $${ethCostUSD} USD per transaction)`;
+  async function fetchEthereum() {
+    const res = await fetch(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${etherscanKey}`);
+    const data = await res.json();
+    const gwei = data.result.ProposeGasPrice;
+    const usd = (gwei * 0.000000001 * 1450).toFixed(4); // simulado
+    document.getElementById("eth-gwei").innerText = gwei;
+    document.getElementById("eth-usd").innerText = `$${usd}`;
+  }
 
-      } catch (error) {
-        console.error("Error loading gas data: ", error);
-      }
-    }
+  async function fetchPolygon() {
+    const res = await fetch(`https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=${polygonscanKey}`);
+    const data = await res.json();
+    const gwei = data.result.ProposeGasPrice;
+    const usd = (gwei * 0.000000001 * 1).toFixed(6); // simulado com MATIC a 1 USD
+    document.getElementById("polygon-gwei").innerText = gwei;
+    document.getElementById("polygon-usd").innerText = `$${usd}`;
+  }
 
-    fetchGasData();
-  </script>
+  async function fetchSolana() {
+    const res = await fetch(`https://api.helius.xyz/v0/transactions?api-key=${heliusKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ limit: 1, account: "11111111111111111111111111111111" }) // Simulado
+    });
+
+    const heliusData = await res.json();
+    const avgLamports = 5000; // Simulado
+    const solFee = avgLamports / 1e9;
+
+    const priceRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
+    const priceData = await priceRes.json();
+    const usd = (solFee * priceData.solana.usd).toFixed(6);
+
+    document.getElementById("sol-fee-sol").innerText = solFee.toFixed(8);
+    document.getElementById("sol-fee-usd").innerText = `$${usd}`;
+  }
+
+  async function fetchUniswap() {
+    const gwei = 30; // valor estimado (pode ser refinado)
+    const usd = (gwei * 0.000000001 * 1450).toFixed(4); // simulado
+    document.getElementById("uni-gwei").innerText = gwei;
+    document.getElementById("uni-usd").innerText = `$${usd}`;
+  }
+
+  fetchEthereum();
+  fetchPolygon();
+  fetchSolana();
+  fetchUniswap();
+</script>
 
 </body>
 </html>
