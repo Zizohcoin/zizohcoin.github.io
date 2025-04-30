@@ -79,6 +79,7 @@
     const ETHERSCAN_API_KEY = 'HNZZ5HSN4JNNS9BXY72EMV4HBRCDVK4E5X';
     const POLYGONSCAN_API_KEY = '6KVS1JS863D5AWC2Y1SQF8T7MSTMF8IQX4';
     const HELIUS_KEY = 'f7bd5799-804e-4b03-97d6-0a36718ac40d';
+    const COIN_GECKO_API = 'https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd';
 
     async function fetchGasData() {
       // Ethereum Gas
@@ -97,8 +98,11 @@
       document.getElementById('polygonGas').textContent = `${polyGas} GWEI`;
       document.getElementById('polygonUSD').textContent = `~ $${polyCostUSD} USD por transação`;
 
-      // Solana Fee
-      const solanaFeeUSD = (0.000005 * 140).toFixed(4); // suposição SOL = $140
+      // Solana Fee (usando CoinGecko)
+      const solRes = await fetch(COIN_GECKO_API);
+      const solData = await solRes.json();
+      const solPriceUSD = solData.solana.usd;
+      const solanaFeeUSD = (0.000005 * solPriceUSD).toFixed(4); // ajusta de acordo com o preço atual do SOL
       document.getElementById('solanaFee').textContent = `~ $${solanaFeeUSD} USD`;
 
       // Uniswap (exibe mesma gas da Ethereum como base simplificada)
