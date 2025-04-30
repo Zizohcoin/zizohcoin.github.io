@@ -4,18 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Monitor real-time gas fees for Ethereum, Polygon, Binance Smart Chain, and Solana. Stay updated on the best times to make transactions with lower fees.">
-  <meta name="keywords" content="gas fees, Ethereum gas, Polygon gas, Binance Smart Chain gas, Solana gas, blockchain fees, crypto transaction fees, real-time monitoring">
+  <meta name="description" content="Monitor real-time gas fees, Uniswap V3 swaps, and OpenSea sales. Stay updated on blockchain data across multiple platforms.">
+  <meta name="keywords" content="gas fees, Ethereum gas, Uniswap V3, OpenSea sales, blockchain, NFT sales, crypto transaction fees">
   <meta name="author" content="ZIZOH">
-  <meta property="og:title" content="🌐 Gas Now — Real-Time Gas Fee Monitor">
-  <meta property="og:description" content="Track real-time gas fees for various blockchains including Ethereum, Polygon, Binance Smart Chain, and Solana. Compare the best times for cheaper transactions.">
+  <meta property="og:title" content="🌐 Gas Now — Real-Time Gas Fee Tracker, Uniswap V3 Swaps & OpenSea Sales">
+  <meta property="og:description" content="Track real-time gas fees, Uniswap V3 swaps, and OpenSea NFT sales. Compare the best times for cheaper transactions and stay updated on the latest NFT trends.">
   <meta property="og:image" content="https://zizoh.xyz/logo.png">
   <meta property="og:url" content="https://zizoh.xyz/gas-now">
-  <title>🌐 Gas Now — Real-Time Gas Fee Monitor</title>
+  <title>🌐 Gas Now — Real-Time Gas Fee Tracker, Uniswap V3 Swaps & OpenSea Sales</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      background-color: #1a2532; /* Navy blue background */
+      background-color: #033471;
       color: white;
       font-family: Arial, sans-serif;
       margin: 0;
@@ -24,13 +24,14 @@
 
     .container {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
       padding: 20px;
     }
 
     .card {
-      background-color: #222f3e; /* Darker blue for the cards */
+      background-color: white;
+      color: #333;
       padding: 20px;
       border-radius: 10px;
       text-align: center;
@@ -65,6 +66,37 @@
       color: #00f59b;
       text-decoration: none;
     }
+
+    .faq-section {
+      background-color: #1a2532;
+      color: white;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    .faq-section h2 {
+      color: #00f59b;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .faq-item {
+      margin-bottom: 10px;
+    }
+
+    .article-section {
+      background-color: #222f3e;
+      color: white;
+      padding: 20px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .article-section h3 {
+      color: #00f59b;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 
@@ -82,10 +114,36 @@
       <div class="blockchain-title">Binance Smart Chain (BNB)</div>
       <div class="gas-price" id="bsc-gas">Loading...</div>
     </div>
-    <div class="card" id="solana-card">
-      <div class="blockchain-title">Solana (SOL)</div>
-      <div class="gas-price" id="solana-gas">Loading...</div>
+    <div class="card" id="uniswap-card">
+      <div class="blockchain-title">Uniswap V3 (ETH)</div>
+      <div class="gas-price" id="uniswap-swaps">Loading...</div>
     </div>
+    <div class="card" id="opensea-card">
+      <div class="blockchain-title">OpenSea Sales</div>
+      <div class="gas-price" id="opensea-sales">Loading...</div>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2>Frequently Asked Questions (FAQ)</h2>
+    <div class="faq-item">
+      <strong>What are gas fees?</strong>
+      <p>Gas fees are transaction fees required to complete transactions on a blockchain. They vary depending on the network's traffic and the complexity of the transaction.</p>
+    </div>
+    <div class="faq-item">
+      <strong>Why do gas fees vary?</strong>
+      <p>Gas fees fluctuate based on the supply and demand of the blockchain network. When more people are transacting, the gas fees tend to rise.</p>
+    </div>
+    <div class="faq-item">
+      <strong>How can I reduce my gas fees?</strong>
+      <p>You can reduce gas fees by making transactions during less busy times, optimizing your transactions, or using Layer 2 solutions like Polygon.</p>
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h3>Complete Guide to Understanding Gas Fees in Crypto</h3>
+    <p>Gas fees are an essential part of the blockchain ecosystem, but understanding how they work can help you save money and optimize your transactions. This article will break down the key factors that affect gas fees, how to track them in real-time, and how to manage your transaction costs effectively. Stay informed and make smarter decisions when interacting with blockchain networks like Ethereum, Solana, Binance Smart Chain, and more.</p>
+    <a href="https://zizoh.xyz/article" style="color: #00f59b;">Read full article</a>
   </div>
 
   <footer>
@@ -116,32 +174,39 @@
         elementId: "bsc-gas"
       },
       {
-        name: "Solana",
-        symbol: "SOL",
-        fetchUrl: "https://api.solanabeach.io/solana/gas",
-        parse: (data) => data.gas_price,
-        elementId: "solana-gas"
+        name: "Uniswap V3",
+        symbol: "ETH",
+        fetchUrl: "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
+        parse: (data) => data.data.swaps[0].amount0,
+        elementId: "uniswap-swaps"
+      },
+      {
+        name: "OpenSea Sales",
+        symbol: "NFT",
+        fetchUrl: "https://api.opensea.io/api/v1/assets?order_direction=desc&order_by=price&order_direction=desc&limit=5",
+        parse: (data) => `${data.assets.length} NFTs sold`,
+        elementId: "opensea-sales"
       }
     ];
 
-    async function fetchGasData() {
+    async function fetchData() {
       try {
         const results = await Promise.all(
           chains.map(async (chain) => {
             const res = await fetch(chain.fetchUrl);
             const data = await res.json();
-            const gasPrice = chain.parse(data);
-            document.getElementById(chain.elementId).innerText = `${gasPrice} Gwei`;
+            const result = chain.parse(data);
+            document.getElementById(chain.elementId).innerText = result;
           })
         );
       } catch (err) {
-        console.error("Error loading gas data:", err);
+        console.error("Error loading data:", err);
       }
     }
 
     // Update every 60 seconds
-    setInterval(fetchGasData, 60000);
-    fetchGasData(); // Initialize with the first set of data
+    setInterval(fetchData, 60000);
+    fetchData(); // Initialize with the first set of data
   </script>
 </body>
 
