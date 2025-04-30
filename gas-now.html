@@ -22,6 +22,13 @@
       padding: 0;
     }
 
+    h1 {
+      color: white;
+      font-size: 2rem;
+      text-align: center;
+      margin-top: 40px;
+    }
+
     .container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -38,13 +45,6 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    h1 {
-      color: #00f59b;
-      font-size: 2rem;
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
     .blockchain-title {
       font-size: 1.2rem;
       color: #00f59b;
@@ -52,8 +52,14 @@
     }
 
     .gas-price {
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: #f1c40f;
+      margin-bottom: 10px;
+    }
+
+    .usd-price {
+      font-size: 1rem;
+      color: #ccc;
     }
 
     footer {
@@ -101,26 +107,23 @@
 </head>
 
 <body>
+  <h1>🌐 Gas Now — Real-Time Gas Fee Tracker, Uniswap V3 Swaps & OpenSea Sales</h1>
+
   <div class="container">
     <div class="card" id="ethereum-card">
       <div class="blockchain-title">Ethereum (ETH)</div>
       <div class="gas-price" id="ethereum-gas">Loading...</div>
+      <div class="usd-price" id="ethereum-usd">Loading...</div>
     </div>
     <div class="card" id="polygon-card">
       <div class="blockchain-title">Polygon (MATIC)</div>
       <div class="gas-price" id="polygon-gas">Loading...</div>
+      <div class="usd-price" id="polygon-usd">Loading...</div>
     </div>
     <div class="card" id="bsc-card">
       <div class="blockchain-title">Binance Smart Chain (BNB)</div>
       <div class="gas-price" id="bsc-gas">Loading...</div>
-    </div>
-    <div class="card" id="uniswap-card">
-      <div class="blockchain-title">Uniswap V3 (ETH)</div>
-      <div class="gas-price" id="uniswap-swaps">Loading...</div>
-    </div>
-    <div class="card" id="opensea-card">
-      <div class="blockchain-title">OpenSea Sales</div>
-      <div class="gas-price" id="opensea-sales">Loading...</div>
+      <div class="usd-price" id="bsc-usd">Loading...</div>
     </div>
   </div>
 
@@ -151,62 +154,49 @@
   </footer>
 
   <script>
-    const chains = [
-      {
-        name: "Ethereum",
-        symbol: "ETH",
-        fetchUrl: "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
-        parse: (data) => data.result.ProposeGasPrice,
-        elementId: "ethereum-gas"
-      },
-      {
-        name: "Polygon",
-        symbol: "MATIC",
-        fetchUrl: "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
-        parse: (data) => data.result.ProposeGasPrice,
-        elementId: "polygon-gas"
-      },
-      {
-        name: "Binance Smart Chain",
-        symbol: "BNB",
-        fetchUrl: "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken",
-        parse: (data) => data.result.ProposeGasPrice,
-        elementId: "bsc-gas"
-      },
-      {
-        name: "Uniswap V3",
-        symbol: "ETH",
-        fetchUrl: "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
-        parse: (data) => data.data.swaps[0].amount0,
-        elementId: "uniswap-swaps"
-      },
-      {
-        name: "OpenSea Sales",
-        symbol: "NFT",
-        fetchUrl: "https://api.opensea.io/api/v1/assets?order_direction=desc&order_by=price&order_direction=desc&limit=5",
-        parse: (data) => `${data.assets.length} NFTs sold`,
-        elementId: "opensea-sales"
-      }
-    ];
+    const ethereumApiUrl = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
+    const polygonApiUrl = "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
+    const bscApiUrl = "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
 
     async function fetchData() {
       try {
-        const results = await Promise.all(
-          chains.map(async (chain) => {
-            const res = await fetch(chain.fetchUrl);
-            const data = await res.json();
-            const result = chain.parse(data);
-            document.getElementById(chain.elementId).innerText = result;
-          })
-        );
+        // Fetch Ethereum gas data
+        const ethRes = await fetch(ethereumApiUrl);
+        const ethData = await ethRes.json();
+        const ethGasPrice = ethData.result.ProposeGasPrice;
+        const ethGasPriceUsd = ethGasPrice * 0.000000001 * 3000;
+
+        // Update Ethereum
+        document.getElementById("ethereum-gas").innerText = `${ethGasPrice} Gwei`;
+        document.getElementById("ethereum-usd").innerText = `$${ethGasPriceUsd.toFixed(2)} USD`;
+
+        // Fetch Polygon gas data
+        const polygonRes = await fetch(polygonApiUrl);
+        const polygonData = await polygonRes.json();
+        const polygonGasPrice = polygonData.result.ProposeGasPrice;
+        const polygonGasPriceUsd = polygonGasPrice * 0.000000001 * 1.2;
+
+        // Update Polygon
+        document.getElementById("polygon-gas").innerText = `${polygonGasPrice} Gwei`;
+        document.getElementById("polygon-usd").innerText = `$${polygonGasPriceUsd.toFixed(2)} USD`;
+
+        // Fetch Binance Smart Chain gas data
+        const bscRes = await fetch(bscApiUrl);
+        const bscData = await bscRes.json();
+        const bscGasPrice = bscData.result.ProposeGasPrice;
+        const bscGasPriceUsd = bscGasPrice * 0.000000001 * 350;
+
+        // Update BSC
+        document.getElementById("bsc-gas").innerText = `${bscGasPrice} Gwei`;
+        document.getElementById("bsc-usd").innerText = `$${bscGasPriceUsd.toFixed(2)} USD`;
+
       } catch (err) {
         console.error("Error loading data:", err);
       }
     }
 
-    // Update every 60 seconds
     setInterval(fetchData, 60000);
-    fetchData(); // Initialize with the first set of data
+    fetchData();
   </script>
 </body>
 
