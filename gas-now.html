@@ -2,17 +2,9 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Monitor real-time gas fees, Uniswap V3 swaps, and OpenSea sales. Stay updated on blockchain data across multiple platforms.">
-  <meta name="keywords" content="gas fees, Ethereum gas, Solana gas, Uniswap V3, OpenSea sales, blockchain, NFT sales, crypto transaction fees">
-  <meta name="author" content="ZIZOH">
-  <meta property="og:title" content="🌐 Gas Now — Real-Time Gas Fee Tracker, Uniswap V3 Swaps & OpenSea Sales">
-  <meta property="og:description" content="Track real-time gas fees, Uniswap V3 swaps, and OpenSea NFT sales. Compare the best times for cheaper transactions and stay updated on the latest NFT trends.">
-  <meta property="og:image" content="https://zizoh.xyz/logo.png">
-  <meta property="og:url" content="https://zizoh.xyz/gas-now">
-  <title>🌐 Gas Now — Real-Time Gas Fee Tracker, Uniswap V3 Swaps & OpenSea Sales</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌐 Gas Now — Real-Time Gas Fee Tracker</title>
   <style>
     body {
       background-color: #033471;
@@ -31,14 +23,14 @@
 
     .container {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
       padding: 20px;
     }
 
     .card {
       background-color: white;
-      color: #333;
+      color: #1a1a1a;
       padding: 20px;
       border-radius: 10px;
       text-align: center;
@@ -47,67 +39,34 @@
 
     .blockchain-title {
       font-size: 1.2rem;
-      color: #00f59b;
-      margin-bottom: 15px;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
     .gas-price {
-      font-size: 1.5rem;
-      color: #f1c40f;
-      margin-bottom: 10px;
+      font-size: 1.4rem;
+      margin-bottom: 5px;
     }
 
     .usd-price {
       font-size: 1rem;
-      color: #ccc;
     }
 
     footer {
       margin-top: 40px;
       text-align: center;
-      color: #ccc;
-    }
-
-    footer a {
-      color: #00f59b;
-      text-decoration: none;
-    }
-
-    .faq-section {
-      background-color: #1a2532;
       color: white;
-      padding: 20px;
-      margin-top: 40px;
     }
 
-    .faq-section h2 {
-      color: #00f59b;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-
-    .faq-item {
-      margin-bottom: 10px;
-    }
-
-    .article-section {
-      background-color: #222f3e;
+    a {
       color: white;
-      padding: 20px;
-      margin-top: 40px;
-      text-align: center;
-    }
-
-    .article-section h3 {
-      color: #00f59b;
-      font-size: 1.5rem;
-      margin-bottom: 15px;
+      text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
-  <h1>🌐 Gas Now — Real-Time Gas Fee Tracker, Uniswap V3 Swaps & OpenSea Sales</h1>
+  <h1>🌐 Gas Now — Real-Time Gas Fee Tracker</h1>
 
   <div class="container">
     <div class="card" id="ethereum-card">
@@ -127,92 +86,69 @@
     </div>
     <div class="card" id="solana-card">
       <div class="blockchain-title">Solana (SOL)</div>
-      <div class="gas-price" id="solana-gas">Loading...</div>
+      <div class="gas-price" id="solana-gas">~0.00001 SOL</div>
       <div class="usd-price" id="solana-usd">Loading...</div>
     </div>
   </div>
 
-  <div class="faq-section">
-    <h2>Frequently Asked Questions (FAQ)</h2>
-    <div class="faq-item">
-      <strong>What are gas fees?</strong>
-      <p>Gas fees are transaction fees required to complete transactions on a blockchain. They vary depending on the network's traffic and the complexity of the transaction.</p>
-    </div>
-    <div class="faq-item">
-      <strong>Why do gas fees vary?</strong>
-      <p>Gas fees fluctuate based on the supply and demand of the blockchain network. When more people are transacting, the gas fees tend to rise.</p>
-    </div>
-    <div class="faq-item">
-      <strong>How can I reduce my gas fees?</strong>
-      <p>You can reduce gas fees by making transactions during less busy times, optimizing your transactions, or using Layer 2 solutions like Polygon.</p>
-    </div>
-  </div>
-
-  <div class="article-section">
-    <h3>Complete Guide to Understanding Gas Fees in Crypto</h3>
-    <p>Gas fees are an essential part of the blockchain ecosystem, but understanding how they work can help you save money and optimize your transactions. This article will break down the key factors that affect gas fees, how to track them in real-time, and how to manage your transaction costs effectively. Stay informed and make smarter decisions when interacting with blockchain networks like Ethereum, Solana, Binance Smart Chain, and more.</p>
-    <a href="https://zizoh.xyz/article" style="color: #00f59b;">Read full article</a>
-  </div>
-
   <footer>
-    Powered by <a href="https://zizoh.xyz">ZIZOH</a>
+    Powered by <a href="https://zizoh.xyz" target="_blank">ZIZOH</a>
   </footer>
 
   <script>
-    const ethereumApiUrl = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
-    const polygonApiUrl = "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
-    const bscApiUrl = "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
-    const solanaApiUrl = "https://api.solana.com/v1/fees";  // Solana API placeholder (make sure to replace it with an actual API if available)
+    const ethApi = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
+    const polygonApi = "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
+    const bscApi = "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken";
+    const coingeckoApi = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum,polygon,binancecoin,solana&vs_currencies=usd";
 
     async function fetchData() {
       try {
-        // Fetch Ethereum gas data
-        const ethRes = await fetch(ethereumApiUrl);
+        const priceRes = await fetch(coingeckoApi);
+        const priceData = await priceRes.json();
+
+        const ethPrice = priceData.ethereum.usd;
+        const maticPrice = priceData.polygon.usd;
+        const bnbPrice = priceData.binancecoin.usd;
+        const solPrice = priceData.solana.usd;
+
+        // Ethereum
+        const ethRes = await fetch(ethApi);
         const ethData = await ethRes.json();
-        const ethGasPrice = ethData.result.ProposeGasPrice;
-        const ethGasPriceUsd = ethGasPrice * 0.000000001 * 3000;
+        const ethGwei = ethData.result.ProposeGasPrice;
+        const ethTxCostUsd = (ethGwei * 21000 * 1e-9) * ethPrice;
 
-        // Update Ethereum
-        document.getElementById("ethereum-gas").innerText = `${ethGasPrice} Gwei`;
-        document.getElementById("ethereum-usd").innerText = `$${ethGasPriceUsd.toFixed(2)} USD`;
+        document.getElementById("ethereum-gas").innerText = `${ethGwei} Gwei`;
+        document.getElementById("ethereum-usd").innerText = `$${ethTxCostUsd.toFixed(2)} per Tx`;
 
-        // Fetch Polygon gas data
-        const polygonRes = await fetch(polygonApiUrl);
+        // Polygon
+        const polygonRes = await fetch(polygonApi);
         const polygonData = await polygonRes.json();
-        const polygonGasPrice = polygonData.result.ProposeGasPrice;
-        const polygonGasPriceUsd = polygonGasPrice * 0.000000001 * 1.2;
+        const polygonGwei = polygonData.result.ProposeGasPrice;
+        const polygonTxCostUsd = (polygonGwei * 21000 * 1e-9) * maticPrice;
 
-        // Update Polygon
-        document.getElementById("polygon-gas").innerText = `${polygonGasPrice} Gwei`;
-        document.getElementById("polygon-usd").innerText = `$${polygonGasPriceUsd.toFixed(2)} USD`;
+        document.getElementById("polygon-gas").innerText = `${polygonGwei} Gwei`;
+        document.getElementById("polygon-usd").innerText = `$${polygonTxCostUsd.toFixed(4)} per Tx`;
 
-        // Fetch Binance Smart Chain gas data
-        const bscRes = await fetch(bscApiUrl);
+        // BSC
+        const bscRes = await fetch(bscApi);
         const bscData = await bscRes.json();
-        const bscGasPrice = bscData.result.ProposeGasPrice;
-        const bscGasPriceUsd = bscGasPrice * 0.000000001 * 350;
+        const bscGwei = bscData.result.ProposeGasPrice;
+        const bscTxCostUsd = (bscGwei * 21000 * 1e-9) * bnbPrice;
 
-        // Update BSC
-        document.getElementById("bsc-gas").innerText = `${bscGasPrice} Gwei`;
-        document.getElementById("bsc-usd").innerText = `$${bscGasPriceUsd.toFixed(2)} USD`;
+        document.getElementById("bsc-gas").innerText = `${bscGwei} Gwei`;
+        document.getElementById("bsc-usd").innerText = `$${bscTxCostUsd.toFixed(4)} per Tx`;
 
-        // Fetch Solana gas data
-        const solanaRes = await fetch(solanaApiUrl);
-        const solanaData = await solanaRes.json();
-        const solanaGasPrice = solanaData.gas_price;
-        const solanaGasPriceUsd = solanaGasPrice * 0.000000001 * 100; // Adjust for Solana's typical fee structure
+        // Solana (aproximado)
+        const solanaTxCostUsd = 0.00001 * solPrice;
+        document.getElementById("solana-usd").innerText = `$${solanaTxCostUsd.toFixed(5)} per Tx`;
 
-        // Update Solana
-        document.getElementById("solana-gas").innerText = `${solanaGasPrice} Lamports`;
-        document.getElementById("solana-usd").innerText = `$${solanaGasPriceUsd.toFixed(2)} USD`;
-
-      } catch (err) {
-        console.error("Error loading data:", err);
+      } catch (error) {
+        console.error("Erro ao carregar os dados:", error);
       }
     }
 
-    setInterval(fetchData, 60000);
     fetchData();
+    setInterval(fetchData, 60000);
   </script>
 </body>
 
