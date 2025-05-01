@@ -1,121 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zizohcoin (ZOH)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minha Página</title>
   <link rel="icon" href="browser.png" type="image/png" />
   <style>
     body {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #033471;
-      color: #fff;
-      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f0f0f0;
+      text-align: center;
     }
-
-    header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 10;
-      background-image: url('space.png');
-      background-size: cover;
-      background-position: center;
-      padding: 20px;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      padding: 10px 20px;
-      background-color: transparent;
-    }
-
-    .logo {
-      height: 60px;
-      width: 60px;
-      border-radius: 10px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 20px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: bold;
-      padding: 10px;
-      font-size: 1.1rem;
-    }
-
-    .nav-links a:hover {
-      color: #1c4f91;
-    }
-
-    .menu-toggle {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-    }
-
-    .menu-toggle span {
-      height: 3px;
-      width: 25px;
-      background: white;
-      margin: 4px 0;
-    }
-
-    @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        background-color: #033471;
-        padding: 10px;
-      }
-
-      .nav-links.active {
-        display: flex;
-      }
-
-      .menu-toggle {
-        display: flex;
-      }
+    h1 {
+      color: #333;
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <img src="logo.png" alt="Zizohcoin Logo" class="logo" />
-      <div class="menu-toggle" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div class="nav-links" id="navLinks">
-        <a href="#about">About Zizohcoin</a>
-        <a href="#tokenomics">Tokenomics</a>
-        <a href="#meme-gallery">Meme Gallery</a>
-        <a href="zizohresearch.html">Research</a>
-        <a href="converter.html">Crypto Converter</a>
-        <a href="https://zizoh.xyz/crypto-gas.html/" target="_blank">Crypto Gas Fees</a>
-        <a href="https://zizoh.iblogger.org/" target="_blank">Blog</a>
-      </div>
-    </nav>
-  </header>
-
-  <script>
-    function toggleMenu() {
-      document.getElementById('navLinks').classList.toggle('active');
-    }
-  </script>
+  <h1>Bem-vindo à minha página!</h1>
+  <p>Este site usa <strong>browser.png</strong> como ícone da guia.</p>
 </body>
 </html>
